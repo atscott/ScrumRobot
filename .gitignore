@@ -8,3 +8,6 @@
 .classpath
 .project
 .settings/
+
+# Cool people have a Mac and we dont want these files #
+.DS_Store
