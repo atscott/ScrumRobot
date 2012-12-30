@@ -10,21 +10,9 @@ description = "generic description"
 // Specify all maven repositories for resolving external dependencies
 repositories {
     mavenCentral()
-    mavenRepo urls: 'https://github.com/atscott/ScrumRobot/libs/'
 }
 
 dependencies {
-    compile 'bcel:bcel:0.9.1'
-    compile 'bluecove-gpl:bluecove-gpl:0.9.1'
-    compile 'bluecove:bluecove:0.9.1'
-    compile 'charting:charting:0.9.1'
-    compile 'commons-cli:commons-cli:0.9.1'
-    compile 'jcommon:jcommon:0.9.1'
-    compile 'jfreechart:jfreechart:0.9.1'
-    compile 'jtools:jtools:0.9.1'
-    compile 'pccomm:pccomm:0.9.1'
-    compile 'pctools:pctools:0.9.1'
-    compile 'stax-api-1.0.1:stax-api-1.0.1:0.9.1'
 	compile 'com.google.guava:guava:14.0'
 	compile fileTree(dir: 'libs', include: '*.jar')
 	testCompile 'org.testng:testng:6.8'
