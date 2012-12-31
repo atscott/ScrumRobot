@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>ScrumRobot</name>
-	<comment></comment>
-	<projects>
-	</projects>
+	<comment>generic description</comment>
+	<projects/>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-			<name>org.lejos.nxt.ldt.leJOSBuilder</name>
-			<arguments>
-			</arguments>
+			<arguments/>
 		</buildCommand>
 	</buildSpec>
-	<natures>
-		<nature>org.springsource.ide.eclipse.gradle.core.nature</nature>
-		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>org.lejos.nxt.ldt.leJOSNature</nature>
-	</natures>
+	<linkedResources/>
 </projectDescription>

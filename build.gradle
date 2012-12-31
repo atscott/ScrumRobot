@@ -13,9 +13,9 @@ repositories {
 }
 
 dependencies {
-	compile 'com.google.guava:guava:14.0'
+	compile 'com.google.guava:guava:14.0-rc1'
 	compile fileTree(dir: 'libs', include: '*.jar')
 	testCompile 'org.testng:testng:6.8'
     testCompile 'org.jbehave:jbehave:3.7.4'
-    testCompile 'com.google.guava:guava:14.0'
+    testCompile 'com.google.guava:guava:14.0-rc1'
 }

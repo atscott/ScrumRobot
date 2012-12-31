@@ -13,3 +13,7 @@
 
 #intellij#
 *.iml
+
+# Even cooler people use build systems and we don't want to share with uncool people
+.gradle/
+build/
