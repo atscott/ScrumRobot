@@ -2,20 +2,33 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-targetCompatibility = "1.6"
-sourceCompatibility = "1.6"
+sourceCompatibility = 1.6
 version = '1.0'
-description = "generic description"
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'ScrumRobot', 'Implementation-Version': version
+    }
+}
 
-// Specify all maven repositories for resolving external dependencies
 repositories {
     mavenCentral()
 }
 
 dependencies {
-	compile 'com.google.guava:guava:14.0-rc1'
+    compile 'com.google.guava:guava:14.0-rc1'
 	compile fileTree(dir: 'libs', include: '*.jar')
-	testCompile 'org.testng:testng:6.8'
-    testCompile 'org.jbehave:jbehave:3.7.4'
     testCompile 'com.google.guava:guava:14.0-rc1'
+    testCompile 'org.testng:testng:6.8'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
 }
