@@ -32,3 +32,22 @@ uploadArchives {
        }
     }
 }
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src'
+		}
+		resources {
+			srcDir 'resources'
+		}
+	}
+	test {
+		java {
+			srcDir 'testSrc'
+		}
+		resources {
+			srcDir 'testResources'
+		}
+	}
+}
