@@ -24,7 +24,7 @@ public class PathTest {
         
         //Ensure we have a fresh start
         mPath.reset();
-        // FIXME add points
+        // FIXME Marius: add points
     }
 
     @Test(expectedExceptions = {
@@ -49,7 +49,7 @@ public class PathTest {
 
     @Test
     public void writeToReadOnlyFile() {
-        // TODO test writing to read only files
+        // TODO Marius: test writing to read only files
     }
 
     @Test
