@@ -1,4 +1,5 @@
 *.class
+bin/
 
 # Package Files #
 *.war
@@ -17,3 +18,6 @@
 # Even cooler people use build systems and we don't want to share with uncool people
 .gradle/
 build/
+
+#TestNG
+test-output/
