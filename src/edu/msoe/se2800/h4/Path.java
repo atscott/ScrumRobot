@@ -40,12 +40,14 @@ public enum Path {
      * @throws FileNotFoundException        Thrown if the file does not exist
      */
     public void readFromFile(File input) throws UnsupportedEncodingException, FileNotFoundException {
+        // check to make sure the input argument is valid
         if (input == null) {
             throw new NullPointerException();
         } else if (!input.exists()) {
             throw new FileNotFoundException();
         }
 
+        //create a temporary list to hold the points in the file
         List<Point> tempPoints = new ArrayList<Point>();
 
         try {
@@ -72,6 +74,7 @@ public enum Path {
                         error = true;
                     } else {
                         try {
+                            // parse the points as integers and add to the temporary points list
                             int x = Integer.parseInt(coordinatesAsString[0]);
                             int y = Integer.parseInt(coordinatesAsString[1]);
                             tempPoints.add(new Point(x, y));
@@ -93,6 +96,7 @@ public enum Path {
             e.printStackTrace();
         }
 
+        // if at this point, no error has ocurred. Set this.points to the tempPoints
         points = tempPoints;
     }
 
