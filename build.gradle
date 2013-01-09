@@ -19,6 +19,7 @@ dependencies {
 	compile fileTree(dir: 'libs', include: '*.jar')
     testCompile 'com.google.guava:guava:14.0-rc1'
     testCompile 'org.testng:testng:6.8'
+    testCompile 'org.apache.commons:commons-io:1.3.2'
 }
 
 test {
@@ -44,10 +45,10 @@ sourceSets {
 	}
 	test {
 		java {
-			srcDir 'testSrc'
+			srcDir 'srcTest'
 		}
 		resources {
-			srcDir 'testResources'
+			srcDir 'resourcesTest'
 		}
 	}
 }

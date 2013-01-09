@@ -1,9 +1,18 @@
+
 package edu.msoe.se2800.h4;
 
-import com.google.common.io.Closeables;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Point;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,31 +22,43 @@ public enum Path {
 
     private List<Point> points = new ArrayList<Point>();
 
-    public void writeToFile(File outputFile) throws IOException {
+    public boolean writeToFile(File outputFile) {
+        checkNotNull(outputFile, "The File instance passed was null");
         boolean threwException = true;
-        Writer writer = null;
+        PrintWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter(outputFile));
+            writer = new PrintWriter(outputFile);
+            writer.println("## The points in this file are represented as <x-value, y-value>. ##");
             for (Point point : points) {
-
+                writer.println(point.getX());
+                writer.println(point.getY());
             }
             threwException = false;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            // TODO Marius: Auto-generated catch block
             e.printStackTrace();
         } finally {
-            Closeables.close(writer, threwException);
+            if (writer != null) {
+                writer.close();
+            }
         }
+        return threwException;
+    }
+
+    public void reset() {
+        points.clear();
     }
 
     /**
-     * Parses the given file for points and assigns those points to the points variable. If there is an error while
-     * parsing or the file or the file could not be found, an exception is thrown and the points variable remains
-     * as it was before entering this method.
-     *
+     * Parses the given file for points and assigns those points to the points
+     * variable. If there is an error while parsing or the file or the file
+     * could not be found, an exception is thrown and the points variable
+     * remains as it was before entering this method.
+     * 
      * @param input The file containing the coordinates
-     * @throws UnsupportedEncodingException Thrown if there was an error while parsing because of bad file format
-     * @throws FileNotFoundException        Thrown if the file does not exist
+     * @throws UnsupportedEncodingException Thrown if there was an error while
+     *             parsing because of bad file format
+     * @throws FileNotFoundException Thrown if the file does not exist
      */
     public void readFromFile(File input) throws UnsupportedEncodingException, FileNotFoundException {
         // check to make sure the input argument is valid
@@ -54,6 +75,8 @@ public enum Path {
             // set up the reader variables
             FileInputStream fs = new FileInputStream(input);
             DataInputStream in = new DataInputStream(fs);
+            
+            //TODO Andrew: this resource isn't closed... We might leak resources
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
             String line;
@@ -68,7 +91,8 @@ public enum Path {
                     }
 
                 } else {
-                    // not on the first line so parse the coordinates. x and y separated by a ,
+                    // not on the first line so parse the coordinates. x and y
+                    // separated by a ,
                     String[] coordinatesAsString = line.split(",");
                     if (coordinatesAsString.length != 2) {
                         error = true;
@@ -87,7 +111,8 @@ public enum Path {
                 }
 
                 if (error) {
-                    throw new UnsupportedEncodingException("File has corrupt data. Line " + lineCount + " was not in the correct format");
+                    throw new UnsupportedEncodingException("File has corrupt data. Line "
+                            + lineCount + " was not in the correct format");
                 }
 
                 lineCount++;
