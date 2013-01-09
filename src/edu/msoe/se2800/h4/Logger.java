@@ -54,7 +54,7 @@ public enum Logger {
      * 
      * @param message to add to the log
      */
-    public void log(String message) {
+    public void log(String tag, String message) {
         if (mWriter != null) {
             synchronized (this) {
                 mWriter.println(message);
@@ -65,6 +65,26 @@ public enum Logger {
             System.out.println("Ignored call to log");
         }
 
+    }
+    
+    /**
+     * Example usage: <p/>
+     * <code>
+     * public class PerfectPerson {<br/>
+     * public static final String TAG = "Logger";<br/>
+     * public PerfectPerson() {<br/>
+     * Logger.INSTANCE.log(TAG, "My eyes are %s and my hair is %s", new String[]{"Green", "Blonde"});<br/> 
+     * }<br/>
+     * }<br/>
+     * </code><br/>
+     * will produce (PerfectPerson, My eyes are Green and my hair is Blonde).
+     * 
+     * @param tag of the class making the call.
+     * @param message to be logged. Use %s to indicate fields.
+     * @param args Strings to populate fields with
+     */
+    public void log(String tag, String message, String[] args) {
+        //TODO stub method
     }
 
 }
