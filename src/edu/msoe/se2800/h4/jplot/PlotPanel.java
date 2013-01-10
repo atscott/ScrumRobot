@@ -9,7 +9,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class PlotPanel extends JPanel {
@@ -41,7 +40,7 @@ public class PlotPanel extends JPanel {
 	 */
 	public JPoint getInterceptedPoint(JPoint point) {
 		JPoint retvalPoint = null;
-		for (JPoint p : Grid.getInstance().getPoints()) {
+		for (JPoint p : Grid.getInstance().getPathPoints()) {
 			JPoint temp = translateToLocation(p);
 			temp.x-=Constants.POINT_RADIUS;
 			temp.y+=Constants.POINT_RADIUS;
@@ -98,7 +97,7 @@ public class PlotPanel extends JPanel {
 	 * @param location the point holding the location on screen that the coordinates will be drawn
 	 */
 	private void drawCoordinatesAbovePoint(Graphics g, JPoint coordinates, JPoint location) {
-		if (Constants.HOVER_INDEX == Grid.getInstance().getPoints().indexOf(coordinates)) {
+		if (Constants.HOVER_INDEX == Grid.getInstance().getPathPoints().indexOf(coordinates)) {
 			g.setColor(Color.WHITE);
 		} else {
 			g.setColor(Color.LIGHT_GRAY);
@@ -199,10 +198,10 @@ public class PlotPanel extends JPanel {
 		drawGridLines(Grid.getInstance().getGridDensity(), g);
 		//loop that draws each point, synchronized helps to take care of accessing the same list
 		//from all of these threads the GUI makes
-		synchronized(Grid.getInstance().getPoints()) {
-			for (JPoint p : Grid.getInstance().getPoints()) {
+		synchronized(Grid.getInstance().getPathPoints()) {
+			for (JPoint p : Grid.getInstance().getPathPoints()) {
 				g.setColor(Color.CYAN);
-				if (Grid.getInstance().getPoints().indexOf(p) == Constants.DRAGGING_INDEX) {
+				if (Grid.getInstance().getPathPoints().indexOf(p) == Constants.DRAGGING_INDEX) {
 					g.setColor(Color.ORANGE);
 				}
 				drawPoint(g, p);
@@ -210,13 +209,13 @@ public class PlotPanel extends JPanel {
 		}
 		
 		//loop that draws the lines between each point
-		for (int i=0;i<Grid.getInstance().getPoints().size();i++) {
-			if (i+1<Grid.getInstance().getPoints().size()) {
+		for (int i=0;i<Grid.getInstance().getPathPoints().size();i++) {
+			if (i+1<Grid.getInstance().getPathPoints().size()) {
 				g.setColor(Color.CYAN);
 				if (Constants.DRAGGING_INDEX == i+1 || Constants.DRAGGING_INDEX == i) {
 					g.setColor(Color.ORANGE);
 				}
-				drawLine(g, Grid.getInstance().getPoints().get(i), Grid.getInstance().getPoints().get(i+1));
+				drawLine(g, Grid.getInstance().getPathPoints().get(i), Grid.getInstance().getPathPoints().get(i+1));
 			}
 		}
 	}
@@ -245,10 +244,10 @@ public class PlotPanel extends JPanel {
 			if (event.getButton() == MouseEvent.BUTTON1) {
 				JPoint point = translateToNearestPoint(new JPoint(event.getX(), event.getY()));
 				boolean found = false;
-				for (JPoint p : Grid.getInstance().getPoints()) {
+				for (JPoint p : Grid.getInstance().getPathPoints()) {
 					if (p.x == point.x && p.y == point.y) {
 						found = true;
-						Grid.getInstance().setHighlightedPoint(Grid.getInstance().getPoints().indexOf(p));
+						Grid.getInstance().setHighlightedPoint(Grid.getInstance().getPathPoints().indexOf(p));
 					}
 				}
 				if (found == false) {
@@ -263,7 +262,7 @@ public class PlotPanel extends JPanel {
 		public void mousePressed(MouseEvent event) {
 			JPoint p = new JPoint(event.getX(), event.getY());
 			activePoint = getInterceptedPoint(p);
-			activePointIndexHolder = Grid.getInstance().getPoints().indexOf(activePoint);
+			activePointIndexHolder = Grid.getInstance().getPathPoints().indexOf(activePoint);
 			Constants.DRAGGING_INDEX = activePointIndexHolder;
 		}
 		@Override
@@ -281,7 +280,7 @@ public class PlotPanel extends JPanel {
 		public void mouseDragged(MouseEvent event) {
 			if (activePoint != null) {
 				activePoint = translateToNearestPoint(new JPoint(event.getX(),event.getY()));
-				Grid.getInstance().getPoints().set(activePointIndexHolder, activePoint);
+				Grid.getInstance().getPathPoints().set(activePointIndexHolder, activePoint);
 				Grid.getInstance().redraw();
 			}
 		}
@@ -290,7 +289,7 @@ public class PlotPanel extends JPanel {
 			if (activePoint == null) {
 				JPoint p = getInterceptedPoint(new JPoint(event.getX(), event.getY()));
 				if (p != null) {
-					Constants.HOVER_INDEX = Grid.getInstance().getPoints().indexOf(p);
+					Constants.HOVER_INDEX = Grid.getInstance().getPathPoints().indexOf(p);
 				} else {
 					Constants.HOVER_INDEX = -5;
 				}

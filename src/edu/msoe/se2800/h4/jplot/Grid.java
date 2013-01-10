@@ -1,11 +1,11 @@
 package edu.msoe.se2800.h4.jplot;
 
+import edu.msoe.se2800.h4.Path;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -27,14 +27,15 @@ public class Grid extends JPanel {
 	
 	private PlotPanel plotPanel;
 	private AxisPanel xAxisPanel, yAxisPanel;
-	private List<JPoint> points;
+	private Path path;
 	private InfoPanel infoPanel;
 	private JPoint highlightedPoint;
 	
 	private int gridDensity = Constants.DEFAULT_GRID_DENSITY;
 
 	private Grid() {
-		points = Collections.synchronizedList(new ArrayList<JPoint>());
+//        Collections.synchronizedList(new ArrayList<JPoint>());
+		path = Path.INSTANCE;
 		
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
@@ -57,12 +58,12 @@ public class Grid extends JPanel {
 	}
 	
 	public void addPoint(JPoint p) {
-		points.add(p);
+		path.add(p);
 		redraw();
 	}
 	
-	public List<JPoint> getPoints() {
-		return this.points;
+	public List<JPoint> getPathPoints() {
+		return this.path.getPoints();
 	}
 	
 	public void zoomIn() {
@@ -97,8 +98,8 @@ public class Grid extends JPanel {
 	public void setHighlightedPoint(int indexInPointsArray) {
 		if (indexInPointsArray == -5) {
 			this.highlightedPoint = null;
-		} else {			
-			this.highlightedPoint = this.points.get(indexInPointsArray);
+		} else {
+			this.highlightedPoint = this.path.get(indexInPointsArray);
 		}
 	}
 	

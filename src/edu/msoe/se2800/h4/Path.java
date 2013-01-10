@@ -1,6 +1,8 @@
 
 package edu.msoe.se2800.h4;
 
+import edu.msoe.se2800.h4.jplot.JPoint;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Point;
@@ -14,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public enum Path {
@@ -22,12 +25,12 @@ public enum Path {
 
     private static final String TAG = "Path";
 
-    private List<Point> points = new ArrayList<Point>();
+    private List<JPoint> points = Collections.synchronizedList(new ArrayList<JPoint>());
     Logger mLogger = Logger.INSTANCE;
 
     /**
      * Writes the current path to a specified file
-     * 
+     *
      * @param outputFile File to which the Path should be written
      * @return true if the path was written succesfully
      */
@@ -62,8 +65,19 @@ public enum Path {
         points.clear();
     }
 
-    public boolean add(Point point) {
+    public boolean add(JPoint point) {
         return points.add(point);
+    }
+
+    public List<JPoint> getPoints(){
+        return points;
+    }
+
+    public JPoint get(int index){
+        if (index < 0 || index > points.size()){
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return points.get(index);
     }
 
     public int size() {
@@ -75,11 +89,11 @@ public enum Path {
      * variable. If there is an error while parsing or the file or the file
      * could not be found, an exception is thrown and the points variable
      * remains as it was before entering this method.
-     * 
+     *
      * @param input The file containing the coordinates
      * @throws UnsupportedEncodingException Thrown if there was an error while
-     *             parsing because of bad file format
-     * @throws FileNotFoundException Thrown if the file does not exist
+     *                                      parsing because of bad file format
+     * @throws FileNotFoundException        Thrown if the file does not exist
      */
     public void readFromFile(File input) throws UnsupportedEncodingException, FileNotFoundException {
         // check to make sure the input argument is valid
@@ -90,7 +104,7 @@ public enum Path {
         }
 
         // create a temporary list to hold the points in the file
-        List<Point> tempPoints = new ArrayList<Point>();
+        List<JPoint> tempPoints = new ArrayList<JPoint>();
 
         try {
             // set up the reader variables
@@ -124,7 +138,7 @@ public enum Path {
                             // temporary points list
                             int x = Integer.parseInt(coordinatesAsString[0].trim());
                             int y = Integer.parseInt(coordinatesAsString[1].trim());
-                            tempPoints.add(new Point(x, y));
+                            tempPoints.add(new JPoint(x, y));
                         } catch (Exception e) {
                             error = true;
                         }
