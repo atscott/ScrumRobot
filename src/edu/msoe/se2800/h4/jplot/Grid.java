@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,14 +27,14 @@ public class Grid extends JPanel {
 	
 	private PlotPanel plotPanel;
 	private AxisPanel xAxisPanel, yAxisPanel;
-	private List<Point> points;
+	private List<JPoint> points;
 	private InfoPanel infoPanel;
-	private Point highlightedPoint;
+	private JPoint highlightedPoint;
 	
 	private int gridDensity = Constants.DEFAULT_GRID_DENSITY;
 
 	private Grid() {
-		points = Collections.synchronizedList(new ArrayList<Point>());
+		points = Collections.synchronizedList(new ArrayList<JPoint>());
 		
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
@@ -57,12 +56,12 @@ public class Grid extends JPanel {
 		add(plotPanel, BorderLayout.CENTER);
 	}
 	
-	public void addPoint(Point p) {
+	public void addPoint(JPoint p) {
 		points.add(p);
 		redraw();
 	}
 	
-	public List<Point> getPoints() {
+	public List<JPoint> getPoints() {
 		return this.points;
 	}
 	
@@ -91,7 +90,7 @@ public class Grid extends JPanel {
 		}
 	}
 	
-	public Point getHighlightedPoint() {
+	public JPoint getHighlightedPoint() {
 		return this.highlightedPoint;
 	}
 	

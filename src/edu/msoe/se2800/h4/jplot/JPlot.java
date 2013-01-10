@@ -40,12 +40,12 @@ public class JPlot extends JFrame {
 		grid.addPoint(new Point(20,20));
 		grid.addPoint(new Point(40,30));
 		grid.addPoint(new Point(60,5));*/
-		grid.addPoint(new Point(0,0));
-		grid.addPoint(new Point(12,12));
-		grid.addPoint(new Point(24,24));
-		grid.addPoint(new Point(36,36));
-		grid.addPoint(new Point(48,48));
-		grid.addPoint(new Point(60,60));
+		grid.addPoint(new JPoint(0,0));
+		grid.addPoint(new JPoint(12,12));
+		grid.addPoint(new JPoint(24,24));
+		grid.addPoint(new JPoint(36,36));
+		grid.addPoint(new JPoint(48,48));
+		grid.addPoint(new JPoint(60,60));
 	}
 	
 	/** copied this from the interwebs **/
