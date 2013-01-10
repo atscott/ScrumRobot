@@ -20,8 +20,17 @@ public enum Path {
 
     INSTANCE;
 
-    private List<Point> points = new ArrayList<Point>();
+    private static final String TAG = "Path";
 
+    private List<Point> points = new ArrayList<Point>();
+    Logger mLogger = Logger.INSTANCE;
+
+    /**
+     * Writes the current path to a specified file
+     * 
+     * @param outputFile File to which the Path should be written
+     * @return true if the path was written succesfully
+     */
     public boolean writeToFile(File outputFile) {
         checkNotNull(outputFile, "The File instance passed was null");
         boolean threwException = true;
@@ -30,26 +39,34 @@ public enum Path {
             writer = new PrintWriter(outputFile);
             writer.println("## The points in this file are represented as <x-value, y-value>. ##");
             for (Point point : points) {
-                writer.println(point.getX());
+                writer.print(point.getX());
+                writer.print(", ");
                 writer.println(point.getY());
             }
             threwException = false;
+            mLogger.log(TAG, "Successfully wrote Path to file at :(" + outputFile.getAbsolutePath()
+                    + ")");
         } catch (IOException e) {
-            // TODO Marius: Auto-generated catch block
+            mLogger.log(TAG, "Problem writing Path to file at :(" + outputFile.getAbsolutePath()
+                    + ")");
             e.printStackTrace();
         } finally {
             if (writer != null) {
                 writer.close();
             }
         }
-        return threwException;
+        return !threwException;
     }
 
     public void reset() {
         points.clear();
     }
 
-    public int size(){
+    public boolean add(Point point) {
+        return points.add(point);
+    }
+
+    public int size() {
         return points.size();
     }
 
@@ -72,15 +89,16 @@ public enum Path {
             throw new FileNotFoundException();
         }
 
-        //create a temporary list to hold the points in the file
+        // create a temporary list to hold the points in the file
         List<Point> tempPoints = new ArrayList<Point>();
 
         try {
             // set up the reader variables
             FileInputStream fs = new FileInputStream(input);
             DataInputStream in = new DataInputStream(fs);
-            
-            //TODO Andrew: this resource isn't closed... We might leak resources
+
+            // TODO Andrew: this resource isn't closed... We might leak
+            // resources
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
             String line;
@@ -102,7 +120,8 @@ public enum Path {
                         error = true;
                     } else {
                         try {
-                            // parse the points as integers and add to the temporary points list
+                            // parse the points as integers and add to the
+                            // temporary points list
                             int x = Integer.parseInt(coordinatesAsString[0]);
                             int y = Integer.parseInt(coordinatesAsString[1]);
                             tempPoints.add(new Point(x, y));
@@ -125,7 +144,8 @@ public enum Path {
             e.printStackTrace();
         }
 
-        // if at this point, no error has ocurred. Set this.points to the tempPoints
+        // if at this point, no error has ocurred. Set this.points to the
+        // tempPoints
         points = tempPoints;
     }
 
