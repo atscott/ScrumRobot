@@ -80,12 +80,21 @@ public class PathTest {
 //
 //    }
 //
-//    @Test(expectedExceptions = {
-//            UnsupportedEncodingException.class
-//    })
-//    public void testBadFormatCoordinates(){
-//
-//    }
+    @Test(expectedExceptions = {
+            UnsupportedEncodingException.class
+    })
+    public void testBadFormatCoordinates() throws UnsupportedEncodingException, FileNotFoundException {
+        File f = new File("./resourcesTest/BadCoordinates.scrumbot");
+        try {
+            mPath.readFromFile(f);
+        } catch (UnsupportedEncodingException e) {
+            //verify that the path was not modified
+            assertEquals(mPath.size(), 0);
+            throw e;
+        } catch (FileNotFoundException e) {
+            throw e;
+        }
+    }
 
     @Test
     public void testEmptyPath(){

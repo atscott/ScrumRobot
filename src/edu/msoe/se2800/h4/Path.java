@@ -108,7 +108,7 @@ public enum Path {
             while ((line = br.readLine()) != null) {
                 // verify that the first line is the predefined header
                 if (lineCount == 1) {
-                    if (!line.equals("some defined header")) {
+                    if (!line.trim().equals("## The points in this file are represented as <x-value, y-value>. ##")) {
                         error = true;
                     }
 
@@ -122,8 +122,8 @@ public enum Path {
                         try {
                             // parse the points as integers and add to the
                             // temporary points list
-                            int x = Integer.parseInt(coordinatesAsString[0]);
-                            int y = Integer.parseInt(coordinatesAsString[1]);
+                            int x = Integer.parseInt(coordinatesAsString[0].trim());
+                            int y = Integer.parseInt(coordinatesAsString[1].trim());
                             tempPoints.add(new Point(x, y));
                         } catch (Exception e) {
                             error = true;
