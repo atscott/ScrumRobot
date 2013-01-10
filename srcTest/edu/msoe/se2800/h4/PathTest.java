@@ -10,11 +10,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.awt.Point;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class PathTest {
 
@@ -61,6 +57,46 @@ public class PathTest {
         assertFalse(mPath.writeToFile(new File("")));
     }
 
+
+    @Test(expectedExceptions = {
+        NullPointerException.class
+    })
+    public void testReadNull() throws UnsupportedEncodingException, FileNotFoundException {
+            mPath.readFromFile(null);
+    }
+
+    @Test(expectedExceptions = {
+            FileNotFoundException.class
+    })
+    public void testNonExistentFile() throws UnsupportedEncodingException, FileNotFoundException {
+        File f = new File("aaa");
+        mPath.readFromFile(f);
+    }
+
+    @Test(expectedExceptions = {
+            UnsupportedEncodingException.class
+    })
+    public void testBadFormatHeaderLine(){
+
+    }
+
+    @Test(expectedExceptions = {
+            UnsupportedEncodingException.class
+    })
+    public void testBadFormatCoordinates(){
+
+    }
+
+    @Test
+    public void testEmptyPath(){
+
+    }
+
+    @Test
+    public void testMultipleCoordinates(){
+
+    }
+
     /*
      * This was taken from StackTrace & slightly modified
      * http://stackoverflow.com
@@ -85,6 +121,7 @@ public class PathTest {
             is.close();
         }
     }
+
 
     @AfterClass
     public void resetPath() {
