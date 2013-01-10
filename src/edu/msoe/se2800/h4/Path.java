@@ -49,6 +49,10 @@ public enum Path {
         points.clear();
     }
 
+    public int size(){
+        return points.size();
+    }
+
     /**
      * Parses the given file for points and assigns those points to the points
      * variable. If there is an error while parsing or the file or the file
