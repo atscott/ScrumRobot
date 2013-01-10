@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestNGWebDriver" parallel="none">
+  <test name="All">
+    <classes>
+      <class name="edu.msoe.se2800.h4.PathTest"/>
+    </classes>
+  </test> <!-- All -->
+</suite> <!-- TestNGWebDriver -->
