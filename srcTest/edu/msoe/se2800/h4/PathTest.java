@@ -72,20 +72,20 @@ public class PathTest {
         File f = new File("aaa");
         mPath.readFromFile(f);
     }
-
-    @Test(expectedExceptions = {
-            UnsupportedEncodingException.class
-    })
-    public void testBadFormatHeaderLine(){
-
-    }
-
-    @Test(expectedExceptions = {
-            UnsupportedEncodingException.class
-    })
-    public void testBadFormatCoordinates(){
-
-    }
+//
+//    @Test(expectedExceptions = {
+//            UnsupportedEncodingException.class
+//    })
+//    public void testBadFormatHeaderLine(){
+//
+//    }
+//
+//    @Test(expectedExceptions = {
+//            UnsupportedEncodingException.class
+//    })
+//    public void testBadFormatCoordinates(){
+//
+//    }
 
     @Test
     public void testEmptyPath(){
