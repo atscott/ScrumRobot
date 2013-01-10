@@ -52,6 +52,14 @@ public enum Path {
     public void reset() {
         points.clear();
     }
+    
+    public boolean add(Point point) {
+        return points.add(point);
+    }
+    
+    public int size() {
+        return points.size();
+    }
 
     /**
      * Parses the given file for points and assigns those points to the points

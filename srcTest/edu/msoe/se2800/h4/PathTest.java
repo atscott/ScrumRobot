@@ -9,6 +9,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.awt.Point;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +25,11 @@ public class PathTest {
         
         //Ensure we have a fresh start
         mPath.reset();
-        // FIXME Marius: add points
+        
+        // add 10 points along a straight line
+        for (int i = 0; i < 10; i++) {
+            mPath.add(new Point(i*10, i*10));
+        }
     }
 
     @Test(expectedExceptions = {
@@ -47,7 +52,7 @@ public class PathTest {
         file.delete();
     }
 
-    @Test
+    @Test(enabled=false)
     public void writeToReadOnlyFile() {
         // TODO Marius: test writing to read only files
     }
