@@ -25,6 +25,12 @@ public enum Path {
     private List<Point> points = new ArrayList<Point>();
     Logger mLogger = Logger.INSTANCE;
 
+    /**
+     * Writes the current path to a specified file
+     * 
+     * @param outputFile File to which the Path should be written
+     * @return true if the path was written succesfully
+     */
     public boolean writeToFile(File outputFile) {
         checkNotNull(outputFile, "The File instance passed was null");
         boolean threwException = true;
@@ -33,30 +39,33 @@ public enum Path {
             writer = new PrintWriter(outputFile);
             writer.println("## The points in this file are represented as <x-value, y-value>. ##");
             for (Point point : points) {
-                writer.println(point.getX());
+                writer.print(point.getX());
+                writer.print(", ");
                 writer.println(point.getY());
             }
             threwException = false;
-            mLogger.log(TAG, "Successfully wrote Path to file at :(" + outputFile.getAbsolutePath() + ")");
+            mLogger.log(TAG, "Successfully wrote Path to file at :(" + outputFile.getAbsolutePath()
+                    + ")");
         } catch (IOException e) {
-            mLogger.log(TAG, "Problem writing Path to file at :(" + outputFile.getAbsolutePath() + ")");
+            mLogger.log(TAG, "Problem writing Path to file at :(" + outputFile.getAbsolutePath()
+                    + ")");
             e.printStackTrace();
         } finally {
             if (writer != null) {
                 writer.close();
             }
         }
-        return threwException;
+        return !threwException;
     }
 
     public void reset() {
         points.clear();
     }
-    
+
     public boolean add(Point point) {
         return points.add(point);
     }
-    
+
     public int size() {
         return points.size();
     }

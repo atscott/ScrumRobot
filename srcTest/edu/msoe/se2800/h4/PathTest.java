@@ -42,14 +42,13 @@ public class PathTest {
     @Test
     public void writeAsExpected() throws IOException {
         File file = new File("TestFile.scrumbot");
+        file.deleteOnExit();
         assertTrue(mPath.writeToFile(file));
 
         // Make sure we have the number of lines we expect
         int count = lineCount(file);
         int expectedCount = mPath.size() + 1;
         assertEquals(count, expectedCount, "Test the line counts");
-
-        file.delete();
     }
 
     @Test(enabled=false)
