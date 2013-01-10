@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -22,6 +23,7 @@ public class InfoPanel extends JPanel {
 	private static final long serialVersionUID = 4846524799433655631L;
 	
 	private JTextField xTextField, yTextField;
+	private JList pointsList;
 	
 	public InfoPanel() {
 		setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
@@ -39,6 +41,8 @@ public class InfoPanel extends JPanel {
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setPreferredSize(new Dimension(100,20));
 		add(label);
+		
+		pointsList = new JList();
 		
 		JButton zoomIn = new JButton("+");
 		zoomIn.setActionCommand("zoom_in");
