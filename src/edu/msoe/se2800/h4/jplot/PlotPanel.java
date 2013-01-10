@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class PlotPanel extends JPanel {
@@ -30,6 +31,8 @@ public class PlotPanel extends JPanel {
 		addMouseListener(new PlotMouseAdapter());
 		this.addMouseWheelListener(new PlotMouseWheelListener());
 	}
+	
+	
 	
 	/**
 	 * This method returns one of the points in the Grid class that is within 10 pixels of the passed
@@ -219,26 +222,16 @@ public class PlotPanel extends JPanel {
 		}
 	}
 	
-	public void zoomIn() {
-		Grid.getInstance().setGridDensity(Grid.getInstance().getGridDensity()+1);
-		Grid.getInstance().redraw();
-	}
-	
-	public void zoomOut() {
-		Grid.getInstance().setGridDensity(Grid.getInstance().getGridDensity()-1);
-		Grid.getInstance().redraw();
-	}
-	
 	private class PlotMouseWheelListener implements MouseWheelListener {
 
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent event) {
 			System.out.println("wheel moved mouseevent");
 			
-			if (event.getWheelRotation() > 0) {
-				zoomIn();
+			if (event.getWheelRotation() < 0) {
+				Grid.getInstance().zoomIn();
 			} else {
-				zoomOut();
+				Grid.getInstance().zoomOut();
 			}
 			
 		}

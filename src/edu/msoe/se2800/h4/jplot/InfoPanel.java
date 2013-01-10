@@ -3,9 +3,12 @@ package edu.msoe.se2800.h4.jplot;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -36,8 +39,37 @@ public class InfoPanel extends JPanel {
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setPreferredSize(new Dimension(100,20));
 		add(label);
+		
+		JButton zoomIn = new JButton("+");
+		zoomIn.setActionCommand("zoom_in");
+		zoomIn.addActionListener(new ZoomListener());
+		
+		JButton zoomOut = new JButton("-");
+		zoomOut.setActionCommand("zoom_out");
+		zoomOut.addActionListener(new ZoomListener());
+		
+		zoomIn.setPreferredSize(new Dimension(70,30));
+		zoomOut.setPreferredSize(new Dimension(70,30));
+		
+		//TODO add list of points
+		
 		add(xTextField);
 		add(yTextField);
+		add(zoomIn);
+		add(zoomOut);
+	}
+	
+	public class ZoomListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equalsIgnoreCase("zoom_in")) {
+				Grid.getInstance().zoomIn();
+			} else if (e.getActionCommand().equalsIgnoreCase("zoom_out")) {
+				Grid.getInstance().zoomOut();
+			}
+		}
+		
 	}
 	
 	public class EnterListener implements KeyListener {

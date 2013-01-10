@@ -66,6 +66,16 @@ public class Grid extends JPanel {
 		return this.points;
 	}
 	
+	public void zoomIn() {
+		setGridDensity(getGridDensity()-1);
+		redraw();
+	}
+	
+	public void zoomOut() {
+		setGridDensity(getGridDensity()+1);
+		redraw();
+	}
+	
 	public void redraw() {
 		repaint();
 	}
