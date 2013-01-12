@@ -1,9 +1,10 @@
 
-package edu.msoe.se2800.h4;
+package edu.msoe.se2800.h4.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+import edu.msoe.se2800.h4.Path;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -30,12 +31,12 @@ public class PathTest {
 
     @Test(expectedExceptions = {
             NullPointerException.class
-    })
+    }, description = "Tests passing a null parameter. Expects a NullPointerException")
     public void writeToFileNullParameter() {
         mPath.writeToFile(null);
     }
 
-    @Test
+    @Test(description = "This is a test writing under 'normal' conditions")
     public void writeAsExpected() throws IOException {
         File file = new File("TestFile.scrumbot");
         file.deleteOnExit();
@@ -52,7 +53,7 @@ public class PathTest {
         // TODO Marius: test writing to read only files
     }
 
-    @Test
+    @Test(description = "Tries to write to a non-existent file")
     public void writeToNonExistentFile() {
         assertFalse(mPath.writeToFile(new File("")));
     }

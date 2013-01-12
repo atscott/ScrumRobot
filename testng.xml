@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="TestNGWebDriver" parallel="none">
+<suite name="ScrumRobot" parallel="classes">
   <test name="All">
-    <classes>
-      <class name="edu.msoe.se2800.h4.PathTest"/>
-    </classes>
+      <packages>
+          <package name="edu.msoe.se288.h4.test"
+      </packages>
   </test> <!-- All -->
-</suite> <!-- TestNGWebDriver -->
+</suite> <!-- ScrumRobot -->
