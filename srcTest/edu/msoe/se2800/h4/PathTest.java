@@ -1,11 +1,7 @@
 
-package edu.msoe.se2800.h4.test;
+package edu.msoe.se2800.h4;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-import edu.msoe.se2800.h4.Path;
-
+import edu.msoe.se2800.h4.jplot.JPoint;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -13,19 +9,21 @@ import org.testng.annotations.Test;
 import java.awt.Point;
 import java.io.*;
 
+import static org.testng.Assert.*;
+
 public class PathTest {
 
     private Path mPath = Path.INSTANCE;
 
     @BeforeClass
     public void setupPath() {
-        
+
         //Ensure we have a fresh start
         mPath.reset();
-        
+
         // add 10 points along a straight line
         for (int i = 0; i < 10; i++) {
-            mPath.add(new Point(i*10, i*10));
+            mPath.add(new JPoint(i * 10, i * 10));
         }
     }
 
@@ -48,7 +46,7 @@ public class PathTest {
         assertEquals(count, expectedCount, "Test the line counts");
     }
 
-    @Test(enabled=false)
+    @Test(enabled = false)
     public void writeToReadOnlyFile() {
         // TODO Marius: test writing to read only files
     }
@@ -60,10 +58,10 @@ public class PathTest {
 
 
     @Test(expectedExceptions = {
-        NullPointerException.class
+            NullPointerException.class
     })
     public void testReadNull() throws UnsupportedEncodingException, FileNotFoundException {
-            mPath.readFromFile(null);
+        mPath.readFromFile(null);
     }
 
     @Test(expectedExceptions = {
@@ -74,28 +72,50 @@ public class PathTest {
         mPath.readFromFile(f);
     }
 
+    //
+//    @Test(expectedExceptions = {
+//            UnsupportedEncodingException.class
+//    })
+//    public void testBadFormatHeaderLine(){
+//
+//    }
+//
     @Test(expectedExceptions = {
             UnsupportedEncodingException.class
     })
-    public void testBadFormatHeaderLine(){
-
-    }
-
-    @Test(expectedExceptions = {
-            UnsupportedEncodingException.class
-    })
-    public void testBadFormatCoordinates(){
-
-    }
-
-    @Test
-    public void testEmptyPath(){
-
+    public void testBadFormatCoordinates() throws UnsupportedEncodingException, FileNotFoundException {
+        File f = new File("./resourcesTest/BadCoordinates.scrumbot");
+        try {
+            mPath.readFromFile(f);
+        } catch (UnsupportedEncodingException e) {
+            //verify that the path was not modified
+            assertEquals(mPath.size(), 0);
+            throw e;
+        }
     }
 
     @Test
-    public void testMultipleCoordinates(){
+    public void testEmptyPath() throws UnsupportedEncodingException, FileNotFoundException {
+        File f = new File("./resourcesTest/ExamplePathFileNoCoordinates.scrumbot");
+        mPath.readFromFile(f);
+    }
 
+    @Test
+    public void testMultipleCoordinates() throws UnsupportedEncodingException, FileNotFoundException {
+        File f = new File("./resourcesTest/ReadOnlyFile.scrumbot");
+
+        mPath.readFromFile(f);
+        FileReader f2 = new FileReader(f);
+        BufferedReader br = new BufferedReader(f2);
+        int lines = 0;
+        try {
+            while (br.readLine() != null) {
+                lines++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        assertEquals(mPath.size(), lines - 1);
     }
 
     /*

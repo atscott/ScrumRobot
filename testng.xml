@@ -3,7 +3,7 @@
 <suite name="ScrumRobot" parallel="classes">
   <test name="All">
       <packages>
-          <package name="edu.msoe.se288.h4.test"
+          <package name="edu.msoe.se2800.h4" />
       </packages>
   </test> <!-- All -->
 </suite> <!-- ScrumRobot -->
