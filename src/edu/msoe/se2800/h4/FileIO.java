@@ -62,7 +62,7 @@ public class FileIO {
 		panel.setLayout(new GridLayout(2,1));
 		panel.add(display);
 		frame.add(panel, BorderLayout.NORTH);
-		frame.setSize(200, 200);
+		frame.setSize(300, 200);
 		frame.setVisible(true);
 	}
 	/**
