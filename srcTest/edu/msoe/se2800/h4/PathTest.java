@@ -4,6 +4,7 @@ package edu.msoe.se2800.h4;
 import edu.msoe.se2800.h4.jplot.JPoint;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.awt.Point;
@@ -27,6 +28,11 @@ public class PathTest {
         for (int i = 0; i < 10; i++) {
             mPath.add(new JPoint(i * 10, i * 10));
         }
+    }
+
+    @BeforeMethod
+    public void beforeMethod() {
+        mPath.reset();
     }
 
     @Test(expectedExceptions = {
@@ -62,14 +68,14 @@ public class PathTest {
     @Test(expectedExceptions = {
             NullPointerException.class
     })
-    public void testReadNull() throws UnsupportedEncodingException, FileNotFoundException {
+    public void testReadNull() throws Path.BadFormatException, FileNotFoundException {
         mPath.readFromFile(null);
     }
 
     @Test(expectedExceptions = {
             FileNotFoundException.class
     })
-    public void testNonExistentFile() throws UnsupportedEncodingException, FileNotFoundException {
+    public void testNonExistentFile() throws Path.BadFormatException, FileNotFoundException {
         File f = new File("aaa");
         mPath.readFromFile(f);
     }
@@ -83,27 +89,26 @@ public class PathTest {
 //    }
 //
     @Test(expectedExceptions = {
-            UnsupportedEncodingException.class
+            Path.BadFormatException.class
     })
-    public void testBadFormatCoordinates() throws UnsupportedEncodingException, FileNotFoundException {
+    public void testBadFormatCoordinates() throws Path.BadFormatException, FileNotFoundException {
         File f = new File("./resourcesTest/BadCoordinates.scrumbot");
         try {
             mPath.readFromFile(f);
-        } catch (UnsupportedEncodingException e) {
-            //verify that the path was not modified
+        } catch (Path.BadFormatException e) {
             assertEquals(mPath.size(), 0);
             throw e;
         }
     }
 
     @Test
-    public void testEmptyPath() throws UnsupportedEncodingException, FileNotFoundException {
+    public void testEmptyPath() throws Path.BadFormatException, FileNotFoundException {
         File f = new File("./resourcesTest/ExamplePathFileNoCoordinates.scrumbot");
         mPath.readFromFile(f);
     }
 
     @Test
-    public void testMultipleCoordinates() throws UnsupportedEncodingException, FileNotFoundException {
+    public void testMultipleCoordinates() throws Path.BadFormatException, FileNotFoundException {
         File f = new File("./resourcesTest/ReadOnlyFile.scrumbot");
 
         mPath.readFromFile(f);
