@@ -23,8 +23,8 @@ public class InfoPanel extends JPanel {
 	private static final long serialVersionUID = 4846524799433655631L;
 	
 	private JTextField xTextField, yTextField;
+	private JLabel filePath;
 	private JList pointsList;
-	private JLabel numPoints;
 	
 	public InfoPanel() {
 		setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
@@ -38,15 +38,14 @@ public class InfoPanel extends JPanel {
 		yTextField = new JTextField(3);
 		xTextField.addKeyListener(new EnterListener());
 		yTextField.addKeyListener(new EnterListener());
-		numPoints = new JLabel();
-		JLabel pointLabel = new JLabel("Number of Points: ");
 		JLabel label = new JLabel("x, y");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setPreferredSize(new Dimension(100,20));
 		add(label);
 		
-		
 		pointsList = new JList();
+		pointsList.setPreferredSize(new Dimension());
+		pointsList.setListData(Grid.getInstance().getPathPoints().toArray());
 		
 		JButton zoomIn = new JButton("+");
 		zoomIn.setActionCommand("zoom_in");
@@ -56,21 +55,52 @@ public class InfoPanel extends JPanel {
 		zoomOut.setActionCommand("zoom_out");
 		zoomOut.addActionListener(new ZoomListener());
 		
+		JButton load = new JButton("Load");
+		load.setActionCommand("load");
+		load.addActionListener(new PathListener());
+		
+		JButton save = new JButton("Save");
+		save.setActionCommand("save");
+		save.addActionListener(new PathListener());
+		
 		zoomIn.setPreferredSize(new Dimension(70,30));
 		zoomOut.setPreferredSize(new Dimension(70,30));
+		load.setPreferredSize(new Dimension(70,30));
+		save.setPreferredSize(new Dimension(70,30));
 		
-		//TODO add list of points
+		filePath = new JLabel("Current Path: "+Grid.getInstance());
+		filePath.setHorizontalAlignment(SwingConstants.CENTER);
+		filePath.setPreferredSize(new Dimension(140,30));
 		
 		add(xTextField);
 		add(yTextField);
+		add(pointsList);
 		add(zoomIn);
 		add(zoomOut);
-		add(pointLabel);
-		add(numPoints);
+		add(load);
+		add(save);
+		//TODO add(filePath);
 	}
 	
-	public void setPointsLabel(int num){
-		numPoints.setText(num + "");
+	private void savePath() {
+		Grid.getInstance().savePathFile();
+		Grid.getInstance().redraw();
+	}
+	
+	private void loadPath() {
+		Grid.getInstance().loadPathFile();
+		Grid.getInstance().redraw();
+	}
+	
+	public class PathListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equalsIgnoreCase("save")) {
+				savePath();
+			} else if (e.getActionCommand().equalsIgnoreCase("load")) {
+				loadPath();
+			}
+		}
 	}
 	
 	public class ZoomListener implements ActionListener {
