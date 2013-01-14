@@ -95,7 +95,7 @@ public enum Path {
      *                                      parsing because of bad file format
      * @throws FileNotFoundException        Thrown if the file does not exist
      */
-    public void readFromFile(File input) throws UnsupportedEncodingException, FileNotFoundException {
+    public void readFromFile(File input) throws BadFormatException, FileNotFoundException {
         // check to make sure the input argument is valid
         if (input == null) {
             throw new NullPointerException();
@@ -148,7 +148,7 @@ public enum Path {
                 }
 
                 if (error) {
-                    throw new UnsupportedEncodingException("File has corrupt data. Line "
+                    throw new BadFormatException("File has corrupt data. Line "
                             + lineCount + " was not in the correct format");
                 }
 
@@ -161,6 +161,14 @@ public enum Path {
         // if at this point, no error has ocurred. Set this.points to the
         // tempPoints
         points = tempPoints;
+    }
+
+    public class BadFormatException extends Exception{
+
+        public BadFormatException(String message){
+            super(message);
+        }
+
     }
 
 }
