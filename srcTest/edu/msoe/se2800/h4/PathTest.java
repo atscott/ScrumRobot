@@ -8,6 +8,8 @@ import org.testng.annotations.Test;
 
 import java.awt.Point;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -141,6 +143,40 @@ public class PathTest {
         } finally {
             is.close();
         }
+    }
+    @Test
+    public void testReset() {
+    	List<JPoint> points = new ArrayList<JPoint>();
+    	JPoint point1 = new JPoint();
+    	JPoint point2 = new JPoint();
+    	points.add(point1);
+    	points.add(point2);
+    	mPath.reset();
+    }
+    
+    @Test
+    public void testAdd(){
+    	JPoint point1 = new JPoint();
+    	mPath.add(point1);
+    }
+    
+    @Test
+    public void testGetNull(){
+    	mPath.get(0);
+    }
+    
+    @Test
+    public void testGet(){
+    	mPath.add(new JPoint());
+    	List<JPoint> points = mPath.getPoints();
+    	points.get(0);
+    }
+    
+    @Test
+    public void testSize(){
+    	mPath.add(new JPoint());
+    	mPath.size();
+    	
     }
 
 
