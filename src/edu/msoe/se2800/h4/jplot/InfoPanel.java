@@ -24,6 +24,7 @@ public class InfoPanel extends JPanel {
 	
 	private JTextField xTextField, yTextField;
 	private JList pointsList;
+	private JLabel numPoints;
 	
 	public InfoPanel() {
 		setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
@@ -37,10 +38,13 @@ public class InfoPanel extends JPanel {
 		yTextField = new JTextField(3);
 		xTextField.addKeyListener(new EnterListener());
 		yTextField.addKeyListener(new EnterListener());
+		numPoints = new JLabel();
+		JLabel pointLabel = new JLabel("Number of Points: ");
 		JLabel label = new JLabel("x, y");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setPreferredSize(new Dimension(100,20));
 		add(label);
+		
 		
 		pointsList = new JList();
 		
@@ -61,6 +65,12 @@ public class InfoPanel extends JPanel {
 		add(yTextField);
 		add(zoomIn);
 		add(zoomOut);
+		add(pointLabel);
+		add(numPoints);
+	}
+	
+	public void setPointsLabel(int num){
+		numPoints.setText(num + "");
 	}
 	
 	public class ZoomListener implements ActionListener {
