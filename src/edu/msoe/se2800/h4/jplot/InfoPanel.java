@@ -107,21 +107,6 @@ public class InfoPanel extends JPanel {
 		numPoints.setText("Number of points: "+num);
 	}
 	
-	private void savePath() {
-		Grid.getInstance().savePathFile();
-		Grid.getInstance().redraw();
-	}
-	
-	private void loadPath() {
-		Grid.getInstance().loadPathFile();
-		Grid.getInstance().redraw();
-	}
-	
-	private void saveAsPath() {
-		Grid.getInstance().saveAsPathFile();
-		Grid.getInstance().redraw();
-	}
-	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -165,13 +150,7 @@ public class InfoPanel extends JPanel {
 	public class PathListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equalsIgnoreCase("save")) {
-				savePath();
-			} else if (e.getActionCommand().equalsIgnoreCase("load")) {
-				loadPath();
-			} else if (e.getActionCommand().equalsIgnoreCase("save_as")) {
-				saveAsPath();
-			}
+			//TODO @marius implement the save load and save_as actions
 		}
 	}
 	
