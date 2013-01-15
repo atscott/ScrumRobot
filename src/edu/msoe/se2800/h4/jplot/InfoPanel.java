@@ -2,11 +2,14 @@ package edu.msoe.se2800.h4.jplot;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +17,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class InfoPanel extends JPanel {
 	
@@ -38,15 +43,19 @@ public class InfoPanel extends JPanel {
 		yTextField = new JTextField(3);
 		xTextField.addKeyListener(new EnterListener());
 		yTextField.addKeyListener(new EnterListener());
-		numPoints = new JLabel();
-		JLabel pointLabel = new JLabel("Number of Points: ");
+		
+		numPoints = new JLabel("Number of points: "+Grid.getInstance().getPathPoints().size());
+		
 		JLabel label = new JLabel("x, y");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setPreferredSize(new Dimension(100,20));
 		add(label);
 		
-		
 		pointsList = new JList();
+		pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 400));
+		pointsList.setListData(Grid.getInstance().getPathPoints().toArray());
+		pointsList.addMouseListener(new PointsMouseListener());
+		pointsList.addListSelectionListener(new PointsListListener());
 		
 		JButton zoomIn = new JButton("+");
 		zoomIn.setActionCommand("zoom_in");
@@ -56,21 +65,92 @@ public class InfoPanel extends JPanel {
 		zoomOut.setActionCommand("zoom_out");
 		zoomOut.addActionListener(new ZoomListener());
 		
+		JButton load = new JButton("Load");
+		load.setActionCommand("load");
+		load.addActionListener(new PathListener());
+		
+		JButton save = new JButton("Save");
+		save.setActionCommand("save");
+		save.addActionListener(new PathListener());
+		
 		zoomIn.setPreferredSize(new Dimension(70,30));
 		zoomOut.setPreferredSize(new Dimension(70,30));
-		
-		//TODO add list of points
+		load.setPreferredSize(new Dimension(70,30));
+		save.setPreferredSize(new Dimension(70,30));
 		
 		add(xTextField);
 		add(yTextField);
+		add(pointsList);
+		add(numPoints);
 		add(zoomIn);
 		add(zoomOut);
-		add(pointLabel);
-		add(numPoints);
+		add(load);
+		add(save);
 	}
 	
 	public void setPointsLabel(int num){
-		numPoints.setText(num + "");
+		numPoints.setText("Number of points: "+num);
+	}
+	
+	private void savePath() {
+		Grid.getInstance().savePathFile();
+		Grid.getInstance().redraw();
+	}
+	
+	private void loadPath() {
+		Grid.getInstance().loadPathFile();
+		Grid.getInstance().redraw();
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		pointsList.setListData(Grid.getInstance().getPathPoints().toArray());
+		pointsList.repaint();
+	}
+	
+	public class PointsListListener implements ListSelectionListener {
+
+		@Override
+		public void valueChanged(ListSelectionEvent event) {
+			if (event.getLastIndex() >= 0) {
+                Grid.getInstance().setHighlightedPoint(event.getLastIndex());
+                Grid.getInstance().redraw();
+            }
+		}
+		
+	}
+	
+	public class PointsMouseListener extends MouseAdapter {
+
+		@Override
+        public void mouseClicked(MouseEvent event) {
+
+            if (event.getSource().equals(pointsList)) {
+            	
+                int index = pointsList.locationToIndex(event.getPoint());
+                if (event.getButton() == MouseEvent.BUTTON1) {
+                    // left click only once
+                    if (event.getClickCount() == 1) {
+                        if (index >= 0) { //if they clicked on an actual JList item, continue
+                            Grid.getInstance().setHighlightedPoint(index);
+                            Grid.getInstance().redraw();
+                        }
+                    }
+                }
+            }
+		}
+	}
+	
+	public class PathListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equalsIgnoreCase("save")) {
+				savePath();
+			} else if (e.getActionCommand().equalsIgnoreCase("load")) {
+				loadPath();
+			}
+		}
 	}
 	
 	public class ZoomListener implements ActionListener {

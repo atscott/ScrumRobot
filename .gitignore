@@ -22,3 +22,4 @@ build/
 
 #TestNG
 test-output/
+output.log

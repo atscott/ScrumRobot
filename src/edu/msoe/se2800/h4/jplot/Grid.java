@@ -1,14 +1,19 @@
 package edu.msoe.se2800.h4.jplot;
 
-import edu.msoe.se2800.h4.Path;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.swing.JPanel;
+
+import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.Path;
+import edu.msoe.se2800.h4.Path.BadFormatException;
 
 public class Grid extends JPanel {
 	
@@ -30,22 +35,21 @@ public class Grid extends JPanel {
 	private Path path;
 	private InfoPanel infoPanel;
 	private JPoint highlightedPoint;
+	private File loadedFile;
 	
 	private int gridDensity = Constants.DEFAULT_GRID_DENSITY;
 
 	private Grid() {
-//        Collections.synchronizedList(new ArrayList<JPoint>());
 		path = Path.INSTANCE;
 		
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-		initSubviews();
 		setVisible(true);
 		
 		redraw();
 	}
 	
-	private void initSubviews() {
+	public void initSubviews() {
 		plotPanel = new PlotPanel();
 		xAxisPanel = new AxisPanel(Constants.HORIZONTAL);
 		yAxisPanel = new AxisPanel(Constants.VERTICAL);
@@ -101,6 +105,42 @@ public class Grid extends JPanel {
 			this.highlightedPoint = null;
 		} else {
 			this.highlightedPoint = this.path.get(indexInPointsArray);
+		}
+	}
+	
+	public Path getPath() {
+		return path;
+	}
+	
+	public File getLoadedPathFile() {
+		return loadedFile;
+	}
+	
+	public void setLoadedPathFile(File file) {
+		this.loadedFile = file;
+	}
+	
+	public void savePathFile() {
+		path.writeToFile(loadedFile);
+	}
+	
+	public void loadPathFile() {
+		savePathFile();
+		FileIO f = new FileIO();
+		File file = null;
+		try {
+			file = f.getFile();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();//TODO
+		}
+		if (file != null) {
+			try {
+				path.readFromFile(file);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();//TODO
+			} catch (BadFormatException e) {
+				e.printStackTrace();//TODO
+			}
 		}
 	}
 	

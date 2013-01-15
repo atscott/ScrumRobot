@@ -1,7 +1,6 @@
 package edu.msoe.se2800.h4.jplot;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -26,6 +25,7 @@ public class JPlot extends JFrame {
         getContentPane().setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
         
         grid = Grid.getInstance();
+        grid.initSubviews();
         
 		getContentPane().add(grid);
 		
