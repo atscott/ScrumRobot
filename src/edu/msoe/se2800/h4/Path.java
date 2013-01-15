@@ -1,9 +1,11 @@
 
 package edu.msoe.se2800.h4;
 
-import edu.msoe.se2800.h4.jplot.JPoint;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.io.Closeables;
+
+import edu.msoe.se2800.h4.jplot.JPoint;
 
 import java.awt.Point;
 import java.io.BufferedReader;
@@ -30,7 +32,7 @@ public enum Path {
 
     /**
      * Writes the current path to a specified file
-     *
+     * 
      * @param outputFile File to which the Path should be written
      * @return true if the path was written succesfully
      */
@@ -52,7 +54,7 @@ public enum Path {
         } catch (IOException e) {
             mLogger.log(TAG, "Problem writing Path to file at :(" + outputFile.getAbsolutePath()
                     + ")");
-            e.printStackTrace();
+            System.out.println("Threw IO Exception");
         } finally {
             if (writer != null) {
                 writer.close();
@@ -69,12 +71,12 @@ public enum Path {
         return points.add(point);
     }
 
-    public List<JPoint> getPoints(){
+    public List<JPoint> getPoints() {
         return points;
     }
 
-    public JPoint get(int index){
-        if (index < 0 || index > points.size()){
+    public JPoint get(int index) {
+        if (index < 0 || index > points.size()) {
             throw new ArrayIndexOutOfBoundsException();
         }
         return points.get(index);
@@ -85,15 +87,14 @@ public enum Path {
     }
 
     /**
-     * Parses the given file for points and assigns those points to the points
-     * variable. If there is an error while parsing or the file or the file
-     * could not be found, an exception is thrown and the points variable
-     * remains as it was before entering this method.
-     *
+     * Parses the given file for points and assigns those points to the points variable. If there is
+     * an error while parsing or the file or the file could not be found, an exception is thrown and
+     * the points variable remains as it was before entering this method.
+     * 
      * @param input The file containing the coordinates
-     * @throws UnsupportedEncodingException Thrown if there was an error while
-     *                                      parsing because of bad file format
-     * @throws FileNotFoundException        Thrown if the file does not exist
+     * @throws UnsupportedEncodingException Thrown if there was an error while parsing because of
+     *             bad file format
+     * @throws FileNotFoundException Thrown if the file does not exist
      */
     public void readFromFile(File input) throws BadFormatException, FileNotFoundException {
         // check to make sure the input argument is valid
@@ -110,9 +111,6 @@ public enum Path {
             // set up the reader variables
             FileInputStream fs = new FileInputStream(input);
             DataInputStream in = new DataInputStream(fs);
-
-            // TODO Andrew: this resource isn't closed... We might leak
-            // resources
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
             String line;
@@ -122,7 +120,8 @@ public enum Path {
             while ((line = br.readLine()) != null) {
                 // verify that the first line is the predefined header
                 if (lineCount == 1) {
-                    if (!line.trim().equals("## The points in this file are represented as <x-value, y-value>. ##")) {
+                    if (!line.trim().equals(
+                            "## The points in this file are represented as <x-value, y-value>. ##")) {
                         error = true;
                     }
 
@@ -148,12 +147,14 @@ public enum Path {
                 }
 
                 if (error) {
+                    Closeables.close(br, true);
                     throw new BadFormatException("File has corrupt data. Line "
                             + lineCount + " was not in the correct format");
                 }
 
                 lineCount++;
             }
+            Closeables.close(br, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -163,9 +164,10 @@ public enum Path {
         points = tempPoints;
     }
 
-    public class BadFormatException extends Exception{
+    @SuppressWarnings("serial")
+    public class BadFormatException extends Exception {
 
-        public BadFormatException(String message){
+        public BadFormatException(String message) {
             super(message);
         }
 
