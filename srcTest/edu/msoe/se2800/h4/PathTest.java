@@ -1,18 +1,27 @@
 
 package edu.msoe.se2800.h4;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
+import com.google.common.io.Closeables;
+
 import edu.msoe.se2800.h4.jplot.JPoint;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.awt.Point;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.testng.Assert.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class PathTest {
 
@@ -21,7 +30,7 @@ public class PathTest {
     @BeforeClass
     public void setupPath() {
 
-        //Ensure we have a fresh start
+        // Ensure we have a fresh start
         mPath.reset();
 
         // add 10 points along a straight line
@@ -64,7 +73,6 @@ public class PathTest {
         assertFalse(mPath.writeToFile(new File("")));
     }
 
-
     @Test(expectedExceptions = {
             NullPointerException.class
     })
@@ -79,15 +87,6 @@ public class PathTest {
         File f = new File("aaa");
         mPath.readFromFile(f);
     }
-
-    //
-//    @Test(expectedExceptions = {
-//            UnsupportedEncodingException.class
-//    })
-//    public void testBadFormatHeaderLine(){
-//
-//    }
-//
     @Test(expectedExceptions = {
             Path.BadFormatException.class
     })
@@ -108,7 +107,7 @@ public class PathTest {
     }
 
     @Test
-    public void testMultipleCoordinates() throws Path.BadFormatException, FileNotFoundException {
+    public void testMultipleCoordinates() throws Path.BadFormatException, IOException {
         File f = new File("./resourcesTest/ReadOnlyFile.scrumbot");
 
         mPath.readFromFile(f);
@@ -120,14 +119,16 @@ public class PathTest {
                 lines++;
             }
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace(); // To change body of catch statement use File | Settings | File
+                                 // Templates.
+        } finally {
+            Closeables.close(br, true);
         }
         assertEquals(mPath.size(), lines - 1);
     }
 
     /*
-     * This was taken from StackTrace & slightly modified
-     * http://stackoverflow.com
+     * This was taken from StackTrace & slightly modified http://stackoverflow.com
      * /questions/453018/number-of-lines-in-a-file-in-java
      */
     private int lineCount(File file) throws IOException {
@@ -152,36 +153,35 @@ public class PathTest {
 
     @Test
     public void testReset() {
-    	mPath.add(new JPoint());
-    	mPath.add(new JPoint());
-    	mPath.reset();
-    }
-    
-    @Test
-    public void testAdd(){
-    	JPoint point1 = new JPoint();
-    	assertTrue(mPath.add(point1));
-    }
-    
-    @Test
-    public void testGetNull(){
-    	assertEquals(null, mPath.get(0));
-    }
-    
-    @Test
-    public void testGet(){
-    	JPoint point = new JPoint();
-    	assertEquals(point, mPath.get(0));
-    }
-    
-    @Test
-    public void testSize(){
-    	mPath.add(new JPoint());
-    	int count = 1;
-    	assertEquals(mPath.size(), count);
-    	
+        mPath.add(new JPoint());
+        mPath.add(new JPoint());
+        mPath.reset();
     }
 
+    @Test
+    public void testAdd() {
+        JPoint point1 = new JPoint();
+        assertTrue(mPath.add(point1));
+    }
+
+    @Test
+    public void testGetNull() {
+        assertEquals(null, mPath.get(0));
+    }
+
+    @Test
+    public void testGet() {
+        JPoint point = new JPoint();
+        assertEquals(point, mPath.get(0));
+    }
+
+    @Test
+    public void testSize() {
+        mPath.add(new JPoint());
+        int count = 1;
+        assertEquals(mPath.size(), count);
+
+    }
 
     @AfterClass
     public void resetPath() {
