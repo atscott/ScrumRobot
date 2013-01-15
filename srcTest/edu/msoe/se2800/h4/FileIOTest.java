@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
@@ -13,18 +12,30 @@ public class FileIOTest {
 
 	private FileIO io;
 	
-	@BeforeClass public void setUp(){
-		io = new FileIO();
+	
+	/**
+	 * Checking null.
+	 */
+	@Test
+	public void nullFileSave(){
+		try {
+			File file = FileIO.open();
+		} catch (FileNotFoundException e) {
+			Assert.assertTrue(true);
+		}
+		
 	}
 	
-//	@Test
-//	public void nullFile(){
-//		try {
-//			//File file = io.getFile();
-//		} catch (FileNotFoundException e) {
-//			Assert.assertTrue(true);
-//		}
-//		
-//	}
-	
+	/**
+	 * Checking null.
+	 */
+	@Test
+	public void nullFileOpen(){
+		try {
+			File file = FileIO.save();
+		} catch (FileNotFoundException e) {
+			Assert.assertTrue(true);
+		}
+		
+	}
 }
