@@ -1,7 +1,10 @@
 package edu.msoe.se2800.h4;
 
+import java.io.File;
+
 import junit.framework.Assert;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import edu.msoe.se2800.h4.jplot.Grid;
@@ -9,22 +12,29 @@ import edu.msoe.se2800.h4.jplot.JPoint;
 
 public class GridTest {
 	
+	private Grid g = Grid.getInstance();
+	
+	@BeforeClass
+    public void setupGridTesting() {
+
+        // Ensure that we dont get null pointer exceptions from Grid child views not being initialized
+        g.initSubviews();
+    }
+	
 	/**
 	 * This test makes sure that after you initialize the Grid, the internal Path
 	 * is not null
 	 */
 	@Test
-	public void testNullPathConstructor() {
-		Grid g = Grid.getInstance();
+	public void testNullPath() {
 		Assert.assertNotNull(g.getPath());
 	}
 
 	/**
 	 * ensuring that adding a point adds the correct point
 	 */
-	@Test
+	@Test(dependsOnMethods = {"testNullPath"})
 	public void testAddPoint() {
-		Grid g = Grid.getInstance();
 		g.addPoint(new JPoint(1,2));
 		Assert.assertEquals(g.getPathPoints().size(), 1);
 		Assert.assertEquals(g.getPathPoints().get(0).x, 1);
@@ -36,7 +46,7 @@ public class GridTest {
 	 */
 	@Test
 	public void testNullPointsList() {
-		Assert.assertNotNull(Grid.getInstance().getPathPoints());
+		Assert.assertNotNull(g.getPathPoints());
 	}
 	
 	/**
@@ -45,7 +55,6 @@ public class GridTest {
 	 */
 	@Test
 	public void testGridDensity() {
-		Grid g = Grid.getInstance();
 		g.setGridDensity(5);
 		Assert.assertEquals(g.getGridDensity(), 5);
 		
@@ -59,30 +68,29 @@ public class GridTest {
 	 */
 	@Test(dependsOnMethods = { "testGridDensity" })
 	public void testZoomIn() {
-		
+		g.setGridDensity(10);
+		g.zoomIn();
+		Assert.assertEquals(g.getGridDensity(), 9);
 	}
 	
 	/**
-	 * TODO
+	 * ensures that the zoom out method only zooms out by one step
+	 * will require testGridDensity() to pass
 	 */
-	@Test
+	@Test(dependsOnMethods = { "testGridDensity" })
 	public void testZoomOut() {
-		
+		g.setGridDensity(10);
+		g.zoomOut();
+		Assert.assertEquals(g.getGridDensity(), 11);
 	}
 	
 	/**
-	 * TODO
-	 */
-	@Test
-	public void testHighlightedPoint() {
-		
-	}
-	
-	/**
-	 * TODO
+	 * makes sure the getters and setters for loadedFile work
 	 */
 	@Test
 	public void testLoadedFile() {
-		
+		File f = new File("file.txt");
+		g.setLoadedPathFile(f);
+		Assert.assertEquals(f, g.getLoadedPathFile());
 	}
 }
