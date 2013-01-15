@@ -63,6 +63,7 @@ public class Grid extends JPanel {
 	
 	public void addPoint(JPoint p) {
 		path.add(p);
+		infoPanel.setPointsLabel(path.getPoints().size());
 		redraw();
 	}
 	

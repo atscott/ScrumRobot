@@ -28,8 +28,8 @@ public class InfoPanel extends JPanel {
 	private static final long serialVersionUID = 4846524799433655631L;
 	
 	private JTextField xTextField, yTextField;
-	private JLabel filePath;
 	private JList pointsList;
+	private JLabel numPoints;
 	
 	public InfoPanel() {
 		setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
@@ -43,6 +43,9 @@ public class InfoPanel extends JPanel {
 		yTextField = new JTextField(3);
 		xTextField.addKeyListener(new EnterListener());
 		yTextField.addKeyListener(new EnterListener());
+		
+		numPoints = new JLabel("Number of points: "+Grid.getInstance().getPathPoints().size());
+		
 		JLabel label = new JLabel("x, y");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setPreferredSize(new Dimension(100,20));
@@ -75,18 +78,18 @@ public class InfoPanel extends JPanel {
 		load.setPreferredSize(new Dimension(70,30));
 		save.setPreferredSize(new Dimension(70,30));
 		
-		filePath = new JLabel("Current Path: "+Grid.getInstance());
-		filePath.setHorizontalAlignment(SwingConstants.CENTER);
-		filePath.setPreferredSize(new Dimension(140,30));
-		
 		add(xTextField);
 		add(yTextField);
 		add(pointsList);
+		add(numPoints);
 		add(zoomIn);
 		add(zoomOut);
 		add(load);
 		add(save);
-		//TODO add(filePath);
+	}
+	
+	public void setPointsLabel(int num){
+		numPoints.setText("Number of points: "+num);
 	}
 	
 	private void savePath() {
