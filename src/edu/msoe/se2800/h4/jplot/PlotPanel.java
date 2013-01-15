@@ -255,6 +255,7 @@ public class PlotPanel extends JPanel {
 				}
 				Grid.getInstance().redraw();
 			} else if (event.getButton() == MouseEvent.BUTTON3) {
+				System.out.println("dispatching right click");
 				Grid.getInstance().getParent().getParent().dispatchEvent(event);//TODO
 			}
 		}

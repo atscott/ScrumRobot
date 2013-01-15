@@ -165,20 +165,20 @@ public class PathTest {
     
     @Test
     public void testGetNull(){
-        assertTrue(mPath.get(0));
+    	assertEquals(null, mPath.get(0));
     }
     
     @Test
     public void testGet(){
-    	mPath.add(new JPoint());
-    	List<JPoint> points = mPath.getPoints();
-    	assertTrue(points.get(0));
+    	JPoint point = new JPoint();
+    	assertEquals(point, mPath.get(0));
     }
     
     @Test
     public void testSize(){
     	mPath.add(new JPoint());
-    	mPath.size();
+    	int count = 1;
+    	assertEquals(mPath.size(), count);
     	
     }
 
