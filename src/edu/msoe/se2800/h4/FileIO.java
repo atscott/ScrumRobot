@@ -99,7 +99,7 @@ public class FileIO {
 			file = chooser.getSelectedFile();
 			System.out.println("file is opened");
 		}    		
-		if(file == null){
+		if(file != null){
 			return file;
 		} else {
 			throw new FileNotFoundException();
