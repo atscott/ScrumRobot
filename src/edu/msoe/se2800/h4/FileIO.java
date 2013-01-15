@@ -20,6 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  */
 public class FileIO {
+	
 	/**
 	 * A simple JFileChooser for saving and opening paths.
 	 */
