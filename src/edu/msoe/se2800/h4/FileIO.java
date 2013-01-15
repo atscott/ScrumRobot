@@ -20,100 +20,85 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  */
 public class FileIO {
+	
 	/**
 	 * A simple JFileChooser for saving and opening paths.
 	 */
-	private JFileChooser chooser;
+	private static JFileChooser chooser;
 	/**
 	 * A file filter to filter out all files except .scrumbot
 	 */
-    private FileNameExtensionFilter filter;
+    private static FileNameExtensionFilter filter;
     /**
      * A open button
      */
-    private JButton open = new JButton("open");
+    private static JButton open = new JButton("open");
     /**
      * A save button
      */
-    private JButton save = new JButton("save");
+    private static JButton save = new JButton("save");
     /**
      * A text field to prompt user to open or save
      */
-    private JTextField display = new JTextField();
+    private static JTextField display = new JTextField();
     /**
      * The file selected by the user
      */
-    private File file;
+    private static File file;
     
 	/**
-	 * A dialog for opening or saving. Buttons have action listeners provided by the inner classes below
-	 */
-	public FileIO(){
-		JFrame frame = new JFrame();
-		JPanel panel = new JPanel();
-		open.addActionListener(new Open());
-		panel.add(open);
-		save.addActionListener(new Save());
-		panel.add(save);
-		frame.add(panel);
-		display.setEditable(false);
-		display.setText("Do you wanna load or save a file?");
-		panel = new JPanel();
-		panel.setLayout(new GridLayout(2,1));
-		panel.add(display);
-		frame.add(panel, BorderLayout.NORTH);
-		frame.setSize(300, 200);
-		frame.setVisible(true);
-	}
-	/**
-	 * Opens a JFileChooser with a .scrumbot filter
+	 * Opens a JFileChooser and returns the file to be opened.
 	 * @author koenigj
 	 *
 	 */
-	private class Open implements ActionListener {
-	    public void actionPerformed(ActionEvent e) {
+	public static File open() throws FileNotFoundException{
+	    
 	    	JFrame directory = new JFrame();
-	    	JFileChooser chooser = new JFileChooser();
-	    	filter = new FileNameExtensionFilter("Robot files", "scrumbot");
+			JFileChooser chooser = new JFileChooser();
+			filter = new FileNameExtensionFilter("Robot files", "scrumbot");
 			chooser.setFileFilter(filter);
 			int value = chooser.showOpenDialog(directory);
-	    	 if (value == JFileChooser.APPROVE_OPTION) {
-	             file = chooser.getSelectedFile();
-	             System.out.println("file is opened");
-	    	 }    
-	    }
+			if (value == JFileChooser.APPROVE_OPTION) {
+				file = chooser.getSelectedFile();
+				System.out.println("file is opened");
+			}    		
+			if(file == null){
+				return file;
+			} else {
+				throw new FileNotFoundException();
+			}
+		
 	 }
-	 /**
-	  * Opens a JFileChooser with a .scrumbot filter
-	  * @author koenigj
-	  *
-	  */
-	  private class Save implements ActionListener {
-	    public void actionPerformed(ActionEvent e) {
-	    	JFrame directory = new JFrame();
-	    	JFileChooser chooser = new JFileChooser();
-	    	filter = new FileNameExtensionFilter("Robot files", "scrumbot");
-			chooser.setFileFilter(filter);
-			int value = chooser.showOpenDialog(directory);
-	    	 if (value == JFileChooser.APPROVE_OPTION) {
-	             file = chooser.getSelectedFile();
-	             System.out.println("file is opened");
-	    	 }    
-	    }
-	  }
+	 
+	  
 	/**
 	 * Testing out the ui.
 	 * @param args
 	 */
 	public static void main(String[] args){
-		FileIO run = new FileIO();
+		try {
+			FileIO.save();
+			FileIO.open();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
-	 * Returns the file.
+	 * Returns the file to be saved.
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public File getFile() throws FileNotFoundException{
+	public static File save() throws FileNotFoundException{
+		JFrame directory = new JFrame();
+		JFileChooser chooser = new JFileChooser();
+		filter = new FileNameExtensionFilter("Robot files", "scrumbot");
+		chooser.setFileFilter(filter);
+		int value = chooser.showSaveDialog(directory);
+		if (value == JFileChooser.APPROVE_OPTION) {
+			file = chooser.getSelectedFile();
+			System.out.println("file is opened");
+		}    		
 		if(file == null){
 			return file;
 		} else {
