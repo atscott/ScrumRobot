@@ -135,7 +135,7 @@ public class PathTest {
         try {
             byte[] c = new byte[1024];
             int count = 0;
-            int readChars = 0;
+            int readChars;
             boolean empty = true;
             while ((readChars = is.read(c)) != -1) {
                 empty = false;
@@ -149,6 +149,7 @@ public class PathTest {
             is.close();
         }
     }
+
     @Test
     public void testReset() {
     	List<JPoint> points = new ArrayList<JPoint>();

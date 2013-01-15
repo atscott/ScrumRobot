@@ -113,7 +113,7 @@ public class PlotPanel extends JPanel {
 	 * @return the rounded number
 	 */
 	public int round(int num) {
-		int newNum = 0;
+		int newNum;
 		
 		boolean keepStepping = true;
 		int highestStep = 0;
