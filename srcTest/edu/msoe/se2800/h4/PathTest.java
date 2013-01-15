@@ -152,11 +152,10 @@ public class PathTest {
 
     @Test
     public void testReset() {
-    	List<JPoint> points = new ArrayList<JPoint>();
     	JPoint point1 = new JPoint();
     	JPoint point2 = new JPoint();
-    	points.add(point1);
-    	points.add(point2);
+    	mPath.add(point2);
+    	mPath.add(point1);
     	mPath.reset();
     }
     
