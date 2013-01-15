@@ -51,7 +51,7 @@ public class FileIO {
 	 * @author koenigj
 	 *
 	 */
-	public static File open() throws FileNotFoundException{
+	public static File open(){
 	    
 	    	JFrame directory = new JFrame();
 			JFileChooser chooser = new JFileChooser();
@@ -62,34 +62,16 @@ public class FileIO {
 				file = chooser.getSelectedFile();
 				System.out.println("file is opened");
 			}    		
-			if(file == null){
-				return file;
-			} else {
-				throw new FileNotFoundException();
-			}
+			return file;
 		
 	 }
-	 
-	  
-	/**
-	 * Testing out the ui.
-	 * @param args
-	 */
-	public static void main(String[] args){
-		try {
-			FileIO.save();
-			FileIO.open();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 	/**
 	 * Returns the file to be saved.
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public static File save() throws FileNotFoundException{
+	public static File save(){
 		JFrame directory = new JFrame();
 		JFileChooser chooser = new JFileChooser();
 		filter = new FileNameExtensionFilter("Robot files", "scrumbot");
@@ -99,10 +81,6 @@ public class FileIO {
 			file = chooser.getSelectedFile();
 			System.out.println("file is opened");
 		}    		
-		if(file != null){
-			return file;
-		} else {
-			throw new FileNotFoundException();
-		}
+		return file;
 	}
 }
