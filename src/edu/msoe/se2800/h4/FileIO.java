@@ -22,25 +22,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class FileIO {
 	
 	/**
-	 * A simple JFileChooser for saving and opening paths.
-	 */
-	private static JFileChooser chooser;
-	/**
 	 * A file filter to filter out all files except .scrumbot
 	 */
     private static FileNameExtensionFilter filter;
-    /**
-     * A open button
-     */
-    private static JButton open = new JButton("open");
-    /**
-     * A save button
-     */
-    private static JButton save = new JButton("save");
-    /**
-     * A text field to prompt user to open or save
-     */
-    private static JTextField display = new JTextField();
+  
     /**
      * The file selected by the user
      */
