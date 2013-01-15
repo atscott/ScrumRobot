@@ -120,43 +120,6 @@ public class Grid extends JPanel {
 		this.loadedFile = file;
 	}
 	
-	public void savePathFile() {
-		path.writeToFile(loadedFile);
-	}
-	
-	public void saveAsPathFile() {
-		File saveFile = null;
-		try {
-			saveFile = FileIO.save();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();//TODO
-		}
-		if (saveFile != null) {
-			setLoadedPathFile(saveFile);
-			path.writeToFile(saveFile);
-		}
-	}
-	
-	public void loadPathFile() {
-		savePathFile();
-		File file = null;
-		try {
-			file = FileIO.open();
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();//TODO
-		}
-		if (file != null) {
-			try {
-				path.readFromFile(file);
-				redraw();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();//TODO
-			} catch (BadFormatException e) {
-				e.printStackTrace();//TODO
-			}
-		}
-	}
-	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
