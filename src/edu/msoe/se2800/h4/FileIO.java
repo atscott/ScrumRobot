@@ -13,37 +13,29 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  */
 public class FileIO {
-	
+
 	/**
 	 * A file filter to filter out all files except .scrumbot
 	 */
-    private static FileNameExtensionFilter filter;
-  
-    /**
-     * The file selected by the user
-     */
-    private static File file;
-    
+	private static FileNameExtensionFilter filter;
+
+
 	/**
 	 * Opens a JFileChooser and returns the file to be opened.
 	 * @author koenigj
 	 *
 	 */
 	public static File open(){
-	    
-	    	JFrame directory = new JFrame();
-			JFileChooser chooser = new JFileChooser();
-			filter = new FileNameExtensionFilter("Robot files", "scrumbot");
-			chooser.setFileFilter(filter);
-			int value = chooser.showOpenDialog(directory);
-			if (value == JFileChooser.APPROVE_OPTION) {
-				file = chooser.getSelectedFile();
-				System.out.println("file is opened");
-			}    		
-			return file;
-		
-	 }
-	
+
+		JFrame directory = new JFrame();
+		JFileChooser chooser = new JFileChooser();
+		filter = new FileNameExtensionFilter("Robot files", "scrumbot");
+		chooser.setFileFilter(filter);
+		chooser.showOpenDialog(directory);
+		return chooser.getSelectedFile();
+
+	}
+
 	/**
 	 * Returns the file to be saved.
 	 * @return
@@ -54,11 +46,7 @@ public class FileIO {
 		JFileChooser chooser = new JFileChooser();
 		filter = new FileNameExtensionFilter("Robot files", "scrumbot");
 		chooser.setFileFilter(filter);
-		int value = chooser.showSaveDialog(directory);
-		if (value == JFileChooser.APPROVE_OPTION) {
-			file = chooser.getSelectedFile();
-			System.out.println("file is opened");
-		}    		
-		return file;
+		chooser.showSaveDialog(directory);	
+		return chooser.getSelectedFile();
 	}
 }
