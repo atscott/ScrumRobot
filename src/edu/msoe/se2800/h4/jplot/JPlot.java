@@ -4,9 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JFrame;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 public class JPlot extends JFrame {
 	
@@ -19,7 +17,7 @@ public class JPlot extends JFrame {
 	private PopUpDemo popUp;
 	
 	public JPlot() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(true);
         setTitle("JPlot");
         getContentPane().setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));

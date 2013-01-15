@@ -135,7 +135,7 @@ public class PathTest {
         try {
             byte[] c = new byte[1024];
             int count = 0;
-            int readChars = 0;
+            int readChars;
             boolean empty = true;
             while ((readChars = is.read(c)) != -1) {
                 empty = false;
@@ -149,32 +149,30 @@ public class PathTest {
             is.close();
         }
     }
+
     @Test
     public void testReset() {
-    	List<JPoint> points = new ArrayList<JPoint>();
-    	JPoint point1 = new JPoint();
-    	JPoint point2 = new JPoint();
-    	points.add(point1);
-    	points.add(point2);
+    	mPath.add(new JPoint());
+    	mPath.add(new JPoint());
     	mPath.reset();
     }
     
     @Test
     public void testAdd(){
     	JPoint point1 = new JPoint();
-    	mPath.add(point1);
+    	assertTrue(mPath.add(point1));
     }
     
     @Test
     public void testGetNull(){
-    	mPath.get(0);
+    	assertTrue(mPath.get(0));
     }
     
     @Test
     public void testGet(){
     	mPath.add(new JPoint());
     	List<JPoint> points = mPath.getPoints();
-    	points.get(0);
+    	assertTrue(points.get(0));
     }
     
     @Test
