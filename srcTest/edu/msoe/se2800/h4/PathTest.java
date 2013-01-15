@@ -165,7 +165,7 @@ public class PathTest {
     
     @Test
     public void testGetNull(){
-    	assertTrue(mPath.get(0));
+        assertTrue(mPath.get(0));
     }
     
     @Test
