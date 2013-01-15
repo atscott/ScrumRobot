@@ -2,6 +2,7 @@ package edu.msoe.se2800.h4.jplot;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -39,44 +40,57 @@ public class InfoPanel extends JPanel {
 	}
 	
 	public void initSubviews() {
+		Font font = new Font("Arial", Font.PLAIN, 12);
 		xTextField = new JTextField(3);
 		yTextField = new JTextField(3);
 		xTextField.addKeyListener(new EnterListener());
 		yTextField.addKeyListener(new EnterListener());
 		
 		numPoints = new JLabel("Number of points: "+Grid.getInstance().getPathPoints().size());
+		numPoints.setFont(font);
 		
 		JLabel label = new JLabel("x, y");
+		label.setFont(font);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setPreferredSize(new Dimension(100,20));
 		add(label);
 		
 		pointsList = new JList();
-		pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 400));
+		pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 350));
 		pointsList.setListData(Grid.getInstance().getPathPoints().toArray());
 		pointsList.addMouseListener(new PointsMouseListener());
 		pointsList.addListSelectionListener(new PointsListListener());
 		
-		JButton zoomIn = new JButton("+");
+		JButton zoomIn = new JButton("Zoom +");
+		zoomIn.setFont(font);
 		zoomIn.setActionCommand("zoom_in");
 		zoomIn.addActionListener(new ZoomListener());
 		
-		JButton zoomOut = new JButton("-");
+		JButton zoomOut = new JButton("Zoom -");
+		zoomOut.setFont(font);
 		zoomOut.setActionCommand("zoom_out");
 		zoomOut.addActionListener(new ZoomListener());
 		
 		JButton load = new JButton("Load");
+		load.setFont(font);
 		load.setActionCommand("load");
 		load.addActionListener(new PathListener());
 		
 		JButton save = new JButton("Save");
+		save.setFont(font);
 		save.setActionCommand("save");
 		save.addActionListener(new PathListener());
+		
+		JButton saveAs = new JButton("Save as...");
+		saveAs.setFont(font);
+		saveAs.setActionCommand("save_as");
+		saveAs.addActionListener(new PathListener());
 		
 		zoomIn.setPreferredSize(new Dimension(70,30));
 		zoomOut.setPreferredSize(new Dimension(70,30));
 		load.setPreferredSize(new Dimension(70,30));
 		save.setPreferredSize(new Dimension(70,30));
+		saveAs.setPreferredSize(new Dimension(100,30));
 		
 		add(xTextField);
 		add(yTextField);
@@ -86,6 +100,7 @@ public class InfoPanel extends JPanel {
 		add(zoomOut);
 		add(load);
 		add(save);
+		add(saveAs);
 	}
 	
 	public void setPointsLabel(int num){
@@ -99,6 +114,11 @@ public class InfoPanel extends JPanel {
 	
 	private void loadPath() {
 		Grid.getInstance().loadPathFile();
+		Grid.getInstance().redraw();
+	}
+	
+	private void saveAsPath() {
+		Grid.getInstance().saveAsPathFile();
 		Grid.getInstance().redraw();
 	}
 	
@@ -149,6 +169,8 @@ public class InfoPanel extends JPanel {
 				savePath();
 			} else if (e.getActionCommand().equalsIgnoreCase("load")) {
 				loadPath();
+			} else if (e.getActionCommand().equalsIgnoreCase("save_as")) {
+				saveAsPath();
 			}
 		}
 	}
