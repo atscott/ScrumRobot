@@ -152,29 +152,27 @@ public class PathTest {
 
     @Test
     public void testReset() {
-    	JPoint point1 = new JPoint();
-    	JPoint point2 = new JPoint();
-    	mPath.add(point2);
-    	mPath.add(point1);
+    	mPath.add(new JPoint());
+    	mPath.add(new JPoint());
     	mPath.reset();
     }
     
     @Test
     public void testAdd(){
     	JPoint point1 = new JPoint();
-    	mPath.add(point1);
+    	assertTrue(mPath.add(point1));
     }
     
     @Test
     public void testGetNull(){
-    	mPath.get(0);
+    	assertTrue(mPath.get(0));
     }
     
     @Test
     public void testGet(){
     	mPath.add(new JPoint());
     	List<JPoint> points = mPath.getPoints();
-    	points.get(0);
+    	assertTrue(points.get(0));
     }
     
     @Test
