@@ -93,6 +93,9 @@ public class Grid extends JPanel {
 		if (density > 1) {
 			gridDensity = density;
 			redraw();
+		} else {
+			gridDensity = 1;
+			redraw();
 		}
 	}
 	
