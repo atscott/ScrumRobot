@@ -1,10 +1,9 @@
 package edu.msoe.se2800.h4.jplot;
 
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 public class JPlot extends JFrame {
 	
@@ -14,7 +13,6 @@ public class JPlot extends JFrame {
 	private static final long serialVersionUID = -8344597455042452839L;
 	
 	private Grid grid;
-	private PopUpDemo popUp;
 	
 	public JPlot() {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -26,8 +24,6 @@ public class JPlot extends JFrame {
         grid.initSubviews();
         
 		getContentPane().add(grid);
-		
-		addMouseListener(new JPlotMouseAdapter());
 		
 		pack();
 		setVisible(true);
@@ -44,36 +40,6 @@ public class JPlot extends JFrame {
 		grid.addPoint(new JPoint(36,36));
 		grid.addPoint(new JPoint(48,48));
 		grid.addPoint(new JPoint(60,60));
-	}
-	
-	/** copied this from the interwebs **/
-	private void doPop(MouseEvent e){
-		popUp = new PopUpDemo();
-		popUp.show(e.getComponent(), e.getX(), e.getY());
-	}
-	private class PopUpDemo extends JPopupMenu {
-	    /** Generated serialVersionUID */
-		private static final long serialVersionUID = -926882311315622109L;
-		JMenuItem add;
-	    JMenuItem delete;
-	    public PopUpDemo(){
-	        add = new JMenuItem("Add point");
-	        delete = new JMenuItem("Delete point");
-	        add(add);
-	        add(delete);
-	    }
-	}
-	
-	/** Listeners and Adapters **/
-	private class JPlotMouseAdapter extends MouseAdapter {
-
-		@Override
-		public void mouseClicked(MouseEvent event) {
-			if (event.getButton() == MouseEvent.BUTTON3) {
-				System.out.println("right clicked");
-				doPop(event);
-			}
-		}
 	}
 
 }
