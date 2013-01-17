@@ -10,7 +10,7 @@ import java.sql.*;
 public class DatabaseConnection {
     private static DatabaseConnection ourInstance = new DatabaseConnection();
 
-    private final String DB_NAME = "sample.db";
+    private final String DB_NAME = "userDB.db";
     private final String TABLE_NAME = "users";
     Connection connection;
 
