@@ -67,6 +67,12 @@ public class Grid extends JPanel {
 		redraw();
 	}
 	
+	public void removePoint(int indexOfPoint) {
+		path.getPoints().remove(indexOfPoint);
+		infoPanel.setPointsLabel(path.getPoints().size());
+		redraw();
+	}
+	
 	public List<JPoint> getPathPoints() {
 		return this.path.getPoints();
 	}

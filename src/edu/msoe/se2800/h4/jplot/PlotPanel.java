@@ -3,13 +3,17 @@ package edu.msoe.se2800.h4.jplot;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 public class PlotPanel extends JPanel {
 	
@@ -20,6 +24,7 @@ public class PlotPanel extends JPanel {
 	
 	private int activePointIndexHolder;
 	private JPoint activePoint;
+	private PopUpDemo popUp;
 
 	public PlotPanel() {
 		setPreferredSize(new Dimension(Constants.GRID_WIDTH, Constants.GRID_HEIGHT));
@@ -256,7 +261,7 @@ public class PlotPanel extends JPanel {
 				Grid.getInstance().redraw();
 			} else if (event.getButton() == MouseEvent.BUTTON3) {
 				System.out.println("dispatching right click");
-				Grid.getInstance().getParent().getParent().dispatchEvent(event);//TODO
+				doPop(event);
 			}
 		}
 		@Override
@@ -297,5 +302,44 @@ public class PlotPanel extends JPanel {
 				Grid.getInstance().repaint();
 			}
 		}
+	}
+	
+	/** copied this from the interwebs **/
+	private void doPop(MouseEvent e){
+		popUp = new PopUpDemo(e);
+		popUp.show(e.getComponent(), e.getX(), e.getY());
+	}
+	private class PopUpDemo extends JPopupMenu {
+	    /** Generated serialVersionUID */
+		private static final long serialVersionUID = -926882311315622109L;
+		JMenuItem add;
+	    JMenuItem delete;
+	    JPoint clickedPoint;
+	    MenuListener menuListener;
+	    public PopUpDemo(MouseEvent e){
+	    	menuListener = new MenuListener();
+	    	clickedPoint = new JPoint(e.getX(), e.getY());
+	        add = new JMenuItem("Add point");
+	        add.setActionCommand("add_point");
+	        add.addActionListener(menuListener);
+	        delete = new JMenuItem("Delete point");
+	        delete.setActionCommand("delete_point");
+	        delete.addActionListener(menuListener);
+	        add(add);
+	        add(delete);
+	    }
+	    private class MenuListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getActionCommand().equalsIgnoreCase("add_point")) {
+					Grid.getInstance().addPoint(translateToNearestPoint(clickedPoint));
+				} else if (e.getActionCommand().equalsIgnoreCase("delete_point")) {
+					JPoint p = getInterceptedPoint(clickedPoint);
+					if (p != null) {
+						Grid.getInstance().removePoint(Grid.getInstance().getPathPoints().indexOf(p));
+					}
+				}
+			}
+	    }
 	}
 }
