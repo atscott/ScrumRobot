@@ -1,6 +1,13 @@
 package edu.msoe.se2800.h4.AdministrationFeatures;
 
-import java.sql.*;
+import com.healthmarketscience.jackcess.Cursor;
+import com.healthmarketscience.jackcess.Database;
+import com.healthmarketscience.jackcess.Table;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * User: scottat
@@ -10,9 +17,9 @@ import java.sql.*;
 public class DatabaseConnection {
     private static DatabaseConnection ourInstance = new DatabaseConnection();
 
-    private final String DB_NAME = "userDB.db";
+    private final String DB_NAME = "resources/userDB.mdb";
     private final String TABLE_NAME = "users";
-    Connection connection;
+    private Database db;
 
     public static DatabaseConnection getInstance() {
         return ourInstance;
@@ -20,58 +27,27 @@ public class DatabaseConnection {
 
     private DatabaseConnection() {
         try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + DB_NAME);
-
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+            db = Database.open(new File(DB_NAME));
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public boolean IsConnected() {
-        boolean active = false;
-        if (connection != null) {
-            try {
-                active = !connection.isClosed();
-            } catch (SQLException e) {
-                active = false;
-            }
-        }
-
-        return active;
+        return db != null;
     }
 
-    public boolean ValidateUser(String username, String password) throws SQLException {
-        boolean isValid = false;
-        Statement statement = connection.createStatement();
+    public boolean ValidateUser(String username, String password) throws IOException {
 
-        String SQL = "SELECT password FROM " + TABLE_NAME + " WHERE username = '" + username + "'";
-        ResultSet rs = statement.executeQuery(SQL);
-        while (rs.next() && !isValid) {
-            if (rs.getString("password").equals(password)) {
-                isValid = true;
-            }
-        }
-        statement.close();
-
-        return isValid;
+        return false;
     }
 
-    public static void main(String[] args) throws SQLException {
-        DatabaseConnection dbc = DatabaseConnection.ourInstance;
-        dbc.test();
+    public static void main(String[] args) throws IOException {
+        DatabaseConnection.getInstance().test();
     }
 
-    public void test() throws SQLException {
-        Statement statement = connection.createStatement();
-        String SQL = "SELECT * FROM " + TABLE_NAME;
-        ResultSet rs = statement.executeQuery(SQL);
-        while(rs.next()){
-            System.out.println(rs.getString("username"));
-        }
+    private void test() throws IOException {
+        System.out.println(db.getTable(TABLE_NAME).display());
     }
 
 
