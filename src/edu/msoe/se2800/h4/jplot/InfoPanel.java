@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -150,7 +151,16 @@ public class InfoPanel extends JPanel {
 	public class PathListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//TODO @marius implement the save load and save_as actions
+		    
+		    if (pointsList.getModel().getSize() > 0) {
+		        int response = JOptionPane.showConfirmDialog(null, "Do you wish to save the current path", "Save prompt", JOptionPane.YES_NO_OPTION);
+		        switch (response) {
+		            case JOptionPane.YES_OPTION:
+		                break;
+		            case JOptionPane.NO_OPTION:   // Discard file
+		                break;
+		        }
+		    }
 		}
 	}
 	
