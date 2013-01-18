@@ -23,6 +23,7 @@ public class DatabaseConnection {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + DB_NAME);
 
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -59,5 +60,20 @@ public class DatabaseConnection {
         return isValid;
     }
 
+    public static void main(String[] args) throws SQLException {
+        DatabaseConnection dbc = DatabaseConnection.ourInstance;
+        dbc.test();
+    }
+
+    public void test() throws SQLException {
+        Statement statement = connection.createStatement();
+        String SQL = "SELECT * FROM " + TABLE_NAME;
+        ResultSet rs = statement.executeQuery(SQL);
+        while(rs.next()){
+            System.out.println(rs.getString("username"));
+        }
+    }
+
 
 }
+
