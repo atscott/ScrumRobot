@@ -1,35 +1,28 @@
 
 package edu.msoe.se2800.h4;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.io.Closeables;
-
 import edu.msoe.se2800.h4.jplot.JPoint;
 
-import java.awt.Point;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public enum Path {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    INSTANCE;
+public class Path {
 
     private static final String TAG = "Path";
-
-    private List<JPoint> points = Collections.synchronizedList(new ArrayList<JPoint>());
+    private List<JPoint> points;
     Logger mLogger = Logger.INSTANCE;
 
+    /**
+     * Constructor - Initializes points list
+     */
+    public Path(){
+        points = new ArrayList<JPoint>();
+    }
     /**
      * Writes the current path to a specified file
      * 
