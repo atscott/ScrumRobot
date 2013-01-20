@@ -76,9 +76,6 @@ public enum Path {
     }
 
     public JPoint get(int index) {
-        if (index < 0 || index > points.size()) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
         return points.get(index);
     }
 
