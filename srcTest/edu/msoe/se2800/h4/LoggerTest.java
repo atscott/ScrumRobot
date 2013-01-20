@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -19,27 +20,20 @@ public class LoggerTest {
     private Logger logs;
 
     @BeforeMethod
-    public void setupLogger(){
+    public void setupLogger() {
         logs = Logger.INSTANCE;
     }
 
     /**
-     * Testing for attempting to print with a null logger
-     * expecting null pointer exception
-     */
-    @Test(expectedExceptions = NullPointerException.class)
-    public void nullLogger(){
-        logs = null;
-        logs.log("NullTest","NULLPRINT");
-    }
-
-    /**
-     * Testing for the existance of the output.txt
+     * Testing for the existence of the output.txt
      */
     @Test
-    public void validLogOutputFile(){
-        logs.log("testing","testingprint");
+    public void validLogOutputFile() {
         File f = new File("output.log");
+        if(f.exists()){
+            f.delete();
+        }
+        logs.log("testing", "testingprint");
         Assert.assertTrue(f.exists());
     }
 
@@ -47,20 +41,18 @@ public class LoggerTest {
      * Testing that the given phrase was parsed correctly
      */
     @Test
-    public void validPrintInFile(){
-        try{
-            logs.log("testing","testingprint");
-            File f = new File("output.log");
-            Scanner scan = new Scanner(f);
-            String s = scan.next();
-            Assert.assertEquals(s,"testingprint");
-        } catch  (Exception e) {
-            System.out.println("Shouldn't file i/o print");
-        }
+    public void validPrintInFile() throws FileNotFoundException {
+
+        logs.log("testing", "testingprint");
+        File f = new File("output.log");
+        Scanner scan = new Scanner(f);
+        String s = scan.next();
+        Assert.assertEquals(s, "testingprint");
+
     }
 
     @AfterClass
-    public void finish(){
+    public void finish() {
         logs = null;
     }
 
