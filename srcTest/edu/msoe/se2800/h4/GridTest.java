@@ -7,8 +7,8 @@ import junit.framework.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import edu.msoe.se2800.h4.jplot.Grid;
 import edu.msoe.se2800.h4.jplot.JPoint;
+import edu.msoe.se2800.h4.jplot.grid.Grid;
 
 public class GridTest {
 	

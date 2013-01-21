@@ -1,28 +1,38 @@
-package edu.msoe.se2800.h4.jplot;
+package edu.msoe.se2800.h4.jplot.grid;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import edu.msoe.se2800.h4.FileIO;
 import edu.msoe.se2800.h4.Path;
-import edu.msoe.se2800.h4.Path.BadFormatException;
+import edu.msoe.se2800.h4.jplot.AxisPanel;
+import edu.msoe.se2800.h4.jplot.Constants;
+import edu.msoe.se2800.h4.jplot.JPoint;
+import edu.msoe.se2800.h4.jplot.Constants.GridMode;
+import edu.msoe.se2800.h4.jplot.plotpanel.PlotPanel;
+import edu.msoe.se2800.h4.jplot.plotpanel.PlotPanelAdminDecorator;
+import edu.msoe.se2800.h4.jplot.plotpanel.PlotPanelImmediateDecorator;
+import edu.msoe.se2800.h4.jplot.plotpanel.PlotPanelInterface;
 
-public class Grid extends JPanel {
+public class Grid extends JPanel implements GridInterface {
+	
+	private static Grid instance = null;
 	
 	public static Grid getInstance() {
-		return LazyHolder.instance;
-	}
-	
-	private static class LazyHolder {
-		private static Grid instance = new Grid();
+		if (instance == null) {
+			synchronized(Grid.class) {
+				if (instance == null) {
+					instance = new Grid();
+				}
+			}
+		}
+		return instance;
 	}
 	
 	/**
@@ -30,10 +40,9 @@ public class Grid extends JPanel {
 	 */
 	private static final long serialVersionUID = 1623331249534914071L;
 	
-	private PlotPanel plotPanel;
+	private PlotPanelInterface plotPanel;
 	private AxisPanel xAxisPanel, yAxisPanel;
 	private Path path;
-	private InfoPanel infoPanel;
 	private JPoint highlightedPoint;
 	private File loadedFile;
 	
@@ -49,27 +58,35 @@ public class Grid extends JPanel {
 		redraw();
 	}
 	
+	@Override
 	public void initSubviews() {
 		plotPanel = new PlotPanel();
+		if (Constants.CURRENT_MODE == GridMode.ADMINISTRATOR_MODE) {
+			plotPanel = new PlotPanelAdminDecorator(plotPanel);
+		} else if (Constants.CURRENT_MODE == GridMode.IMMEDIATE_MODE) {
+			plotPanel = new PlotPanelImmediateDecorator(plotPanel);
+		}
 		xAxisPanel = new AxisPanel(Constants.HORIZONTAL);
 		yAxisPanel = new AxisPanel(Constants.VERTICAL);
-		infoPanel = new InfoPanel();
 		
 		add(xAxisPanel, BorderLayout.SOUTH);
 		add(yAxisPanel, BorderLayout.WEST);
-		add(infoPanel, BorderLayout.EAST);
-		add(plotPanel, BorderLayout.CENTER);
+		add(plotPanel.getComponent(), BorderLayout.CENTER);
 	}
 	
+	@Override
+	public void addSubview(Component c, Object constraints) {
+		add(c, constraints);
+	}
+	
+	@Override
 	public void addPoint(JPoint p) {
 		path.add(p);
-		infoPanel.setPointsLabel(path.getPoints().size());
 		redraw();
 	}
 	
 	public void removePoint(int indexOfPoint) {
 		path.getPoints().remove(indexOfPoint);
-		infoPanel.setPointsLabel(path.getPoints().size());
 		redraw();
 	}
 	
@@ -97,7 +114,7 @@ public class Grid extends JPanel {
 	
 	public void setGridDensity(int density) {
 		if (density > 1) {
-			gridDensity = density;
+			gridDensity = Math.min(density, 100);
 			redraw();
 		} else {
 			gridDensity = 1;
@@ -134,6 +151,11 @@ public class Grid extends JPanel {
 		super.paintComponent(g);
 		setBackground(Color.BLACK);
 		g.clearRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+	}
+
+	@Override
+	public Component getComponent() {
+		return this;
 	}
 
 }

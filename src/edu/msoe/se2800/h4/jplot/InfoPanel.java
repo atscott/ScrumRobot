@@ -1,5 +1,6 @@
 package edu.msoe.se2800.h4.jplot;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -22,6 +23,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import edu.msoe.se2800.h4.jplot.grid.Grid;
+
 public class InfoPanel extends JPanel {
 	
 	/**
@@ -36,7 +39,6 @@ public class InfoPanel extends JPanel {
 	public InfoPanel() {
 		setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
 		setLayout(new FlowLayout(FlowLayout.CENTER));
-		initSubviews();
 		setVisible(true);
 	}
 	
@@ -102,6 +104,12 @@ public class InfoPanel extends JPanel {
 		add(load);
 		add(save);
 		add(saveAs);
+	}
+	
+	public void disableSubviews() {
+		for (Component c : this.getComponents()) {
+			c.setEnabled(false);
+		}
 	}
 	
 	public void setPointsLabel(int num){

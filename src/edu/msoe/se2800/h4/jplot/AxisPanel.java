@@ -6,6 +6,8 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import edu.msoe.se2800.h4.jplot.grid.Grid;
+
 public class AxisPanel extends JPanel {
 	
 	/**
@@ -29,7 +31,7 @@ public class AxisPanel extends JPanel {
 	}
 	
 	private void initHorizontal() {
-		setPreferredSize(new Dimension(Constants.GRID_WIDTH, Constants.X_AXIS_HEIGHT));
+		setPreferredSize(new Dimension(Constants.GRID_WIDTH(), Constants.X_AXIS_HEIGHT));
 	}
 	
 	private void initVertical() {
@@ -39,9 +41,9 @@ public class AxisPanel extends JPanel {
 	/** Draws the x axis numbers */
 	public void drawAxisMarkersHorizontal(int density, Graphics g) {
 		g.setColor(Color.BLACK);
-		int newWidth = Constants.GRID_WIDTH+(Constants.GRID_WIDTH/density);
+		int newWidth = Constants.GRID_WIDTH()+(Constants.GRID_WIDTH()/density);
 		int counter = 0;
-		for (int i=getHeight()+Constants.GRID_OFFSET;i<newWidth+getHeight();i+=(Constants.GRID_WIDTH/density)) {
+		for (int i=getHeight()+Constants.GRID_OFFSET;i<newWidth+getHeight();i+=(Constants.GRID_WIDTH()/density)) {
 			g.drawString(""+counter, i-((""+counter).length()*4), 30);
 			counter+=Constants.STEP_INCREMENT;
 		}
