@@ -22,7 +22,7 @@ public class FileIO {
 
     /**
      * Opens a JFileChooser and returns the file to be opened.
-     * 
+     * @return file, null if cancel is pressed
      * @author koenigj
      */
     public static File open() {
@@ -39,7 +39,7 @@ public class FileIO {
     /**
      * Returns the file to be saved.
      * 
-     * @return
+     * @return file, null if cancel is pressed
      * @throws FileNotFoundException
      */
     public static File save() {
