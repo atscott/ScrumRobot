@@ -1,6 +1,7 @@
 package edu.msoe.se2800.h4.jplot;
 
 import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.Path.BadFormatException;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 
 import java.awt.Component;
@@ -17,6 +18,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -38,8 +40,10 @@ public class InfoPanel extends JPanel {
 	private JTextField xTextField, yTextField;
 	private JList pointsList;
 	private JLabel numPoints;
+	private File mPathFile;
 	
 	public InfoPanel() {
+	    mPathFile = null;
 		setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setVisible(true);
@@ -82,7 +86,7 @@ public class InfoPanel extends JPanel {
 		JButton load = new JButton("Load");
 		load.setFont(font);
 		load.setActionCommand("load");
-		load.addActionListener(new PathListener());
+		load.addActionListener(new LoadListener());
 		
 		JButton save = new JButton("Save");
 		save.setFont(font);
@@ -176,6 +180,32 @@ public class InfoPanel extends JPanel {
 		        }
 		    }
 		}
+	}
+    
+    public class SaveAsListener implements ActionListener {
+        
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+        }
+    }
+	
+	public class LoadListener implements ActionListener {
+	    
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        mPathFile = FileIO.open();
+	        try {
+                Grid.getInstance().getPath().readFromFile(mPathFile);
+            } catch (FileNotFoundException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (BadFormatException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+	        Grid.getInstance().redraw();
+	    }
 	}
 	
 	public class ZoomListener implements ActionListener {
