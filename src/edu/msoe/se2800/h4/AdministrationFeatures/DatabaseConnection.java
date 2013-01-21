@@ -50,6 +50,10 @@ public class DatabaseConnection {
     }
 
     public boolean ValidateUser(String username, String password) throws IOException {
+        if(db==null){
+            throw new IOException("Database not connected");
+        }
+
         boolean valid = false;
 
         Table table = db.getTable(TABLE_NAME);
@@ -63,14 +67,6 @@ public class DatabaseConnection {
         }
 
         return valid;
-    }
-
-    public static void main(String[] args) throws IOException {
-        DatabaseConnection.getInstance().test();
-    }
-
-    private void test() throws IOException {
-        System.out.println(db.getTable(TABLE_NAME).display());
     }
 
 
