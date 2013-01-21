@@ -49,7 +49,7 @@ public class Grid extends JPanel implements GridInterface {
 	private int gridDensity = Constants.DEFAULT_GRID_DENSITY;
 
 	private Grid() {
-		path = Path.INSTANCE;
+		path = new Path();
 		
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
