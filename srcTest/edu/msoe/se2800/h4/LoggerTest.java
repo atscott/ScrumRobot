@@ -10,11 +10,9 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- * Created with IntelliJ IDEA.
  * User: tohtzk
  * Date: 1/15/13
  * Time: 10:19 AM
- * To change this template use File | Settings | File Templates.
  */
 public class LoggerTest {
     private Logger logs;

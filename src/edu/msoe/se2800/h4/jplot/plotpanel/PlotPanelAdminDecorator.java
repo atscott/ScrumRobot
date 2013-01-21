@@ -35,7 +35,7 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 						Grid.getInstance().setHighlightedPoint(Grid.getInstance().getPathPoints().indexOf(p));
 					}
 				}
-				if (found == false) {
+				if (!found) {
 					Grid.getInstance().setHighlightedPoint(-5);
 				}
 				Grid.getInstance().redraw();

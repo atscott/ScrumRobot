@@ -232,8 +232,8 @@ public class InfoPanel extends JPanel {
 		public void keyTyped(KeyEvent event) {
 			if (event.getKeyChar() == '\n') {
 				try {
-					int x = Integer.parseInt(xTextField.getText().toString());
-					int y = Integer.parseInt(yTextField.getText().toString());
+					int x = Integer.parseInt(xTextField.getText());
+					int y = Integer.parseInt(yTextField.getText());
 					Point p = Grid.getInstance().getHighlightedPoint();
 					if (p != null) {
 						p.x = x;

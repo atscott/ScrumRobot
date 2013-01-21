@@ -18,7 +18,7 @@ import java.io.InputStream;
 
 public class WritePathTest {
 
-    private Path mPath;;
+    private Path mPath;
 
     @BeforeClass
     public void setupPath() {

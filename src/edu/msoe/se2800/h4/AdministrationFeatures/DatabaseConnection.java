@@ -30,9 +30,9 @@ public class DatabaseConnection {
     }
 
     /**
-     * Tries to set the database to the
+     * Tries to set the database to the given path.
      *
-     * @return
+     * @return true if the database was opened successfully
      */
     public boolean tryConnect(String dbName) {
         boolean success = false;
@@ -49,6 +49,13 @@ public class DatabaseConnection {
         return db != null;
     }
 
+    /**
+     * Validates given username, password combination against currently opened table
+     * @param username
+     * @param password
+     * @return true if username and password match the table
+     * @throws IOException
+     */
     public boolean ValidateUser(String username, String password) throws IOException {
         if(db==null){
             throw new IOException("Database not connected");
@@ -57,8 +64,7 @@ public class DatabaseConnection {
         boolean valid = false;
 
         Table table = db.getTable(TABLE_NAME);
-        Object name = username;
-        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", name));
+        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", (Object)username));
         if (row != null) {
             String actualPassword = (String) row.get("password");
             if (password != null && password.equals(actualPassword)) {
