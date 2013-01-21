@@ -62,6 +62,7 @@ public class LoggerTest {
     
     //TODO write the tests for the stub method in the logger class. It's documented so you should be able to write the tests for it without knowing the implementation.
     //TODO i updated the log method javadoc so make sure all that functionality is tested.
+    //TODO test tread safety of Logger
 
     @AfterClass
     public void finish() {
