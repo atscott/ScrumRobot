@@ -6,6 +6,7 @@ import static org.testng.Assert.assertEquals;
 import com.google.common.io.Closeables;
 
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -17,7 +18,12 @@ import java.io.IOException;
 
 public class ReadPathTest {
 
-    private Path mPath = Path.INSTANCE;
+    private Path mPath;
+    
+    @BeforeClass
+    public void beforeClass() {
+        mPath = new Path();
+    }
 
     @BeforeMethod
     public void beforeMethod() {

@@ -18,10 +18,12 @@ import java.io.InputStream;
 
 public class WritePathTest {
 
-    private Path mPath = Path.INSTANCE;
+    private Path mPath;;
 
     @BeforeClass
     public void setupPath() {
+        
+        mPath = new Path();
 
         // Ensure we have a fresh start
         mPath.reset();

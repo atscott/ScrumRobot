@@ -20,14 +20,15 @@ public class Path {
     /**
      * Constructor - Initializes points list
      */
-    public Path(){
+    public Path() {
         points = new ArrayList<JPoint>();
     }
+
     /**
      * Writes the current path to a specified file
      * 
      * @param outputFile File to which the Path should be written
-     * @return true if the path was written succesfully
+     * @return true if the path was written successfully
      */
     public boolean writeToFile(File outputFile) {
         checkNotNull(outputFile, "The File instance passed was null");
@@ -149,7 +150,7 @@ public class Path {
             e.printStackTrace();
         }
 
-        // if at this point, no error has ocurred. Set this.points to the
+        // if at this point, no error has occurred. Set this.points to the
         // tempPoints
         points = tempPoints;
     }
