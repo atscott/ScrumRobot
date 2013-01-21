@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,7 +58,7 @@ public class InfoPanel extends JPanel {
 		JLabel label = new JLabel("x, y");
 		label.setFont(font);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setPreferredSize(new Dimension(100,20));
+		label.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH,20));
 		add(label);
 		
 		pointsList = new JList();
@@ -70,11 +71,13 @@ public class InfoPanel extends JPanel {
 		zoomIn.setFont(font);
 		zoomIn.setActionCommand("zoom_in");
 		zoomIn.addActionListener(new ZoomListener());
+		zoomIn.setMargin(new Insets(0,0,0,0));
 		
 		JButton zoomOut = new JButton("Zoom -");
 		zoomOut.setFont(font);
 		zoomOut.setActionCommand("zoom_out");
 		zoomOut.addActionListener(new ZoomListener());
+		zoomOut.setMargin(new Insets(0,0,0,0));
 		
 		JButton load = new JButton("Load");
 		load.setFont(font);
