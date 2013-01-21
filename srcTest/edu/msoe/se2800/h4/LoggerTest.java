@@ -21,7 +21,12 @@ public class LoggerTest {
 
     @BeforeMethod
     public void setupLogger() {
+        
+      //TODO this only needs to happen once. @BeforeClass is what you're looking for.
         logs = Logger.INSTANCE;
+        
+        //TODO before each method, we should be "resetting" the environment. This means deleteing any log files that potentially exist.
+        //TODO for convenience i've made the file name for the logger a static variable so get it by using Logger.FILE_NAME in all the tests
     }
 
     /**
@@ -29,6 +34,8 @@ public class LoggerTest {
      */
     @Test
     public void validLogOutputFile() {
+        
+        //TODO put the description in a description annotation. doing javadoc style doesnt give the description in the reports. see the WritePathTest for details
         File f = new File("output.log");
         if(f.exists()){
             f.delete();
@@ -42,6 +49,8 @@ public class LoggerTest {
      */
     @Test
     public void validPrintInFile() throws FileNotFoundException {
+        
+        //TODO put the description in a description annotation. doing javadoc style doesnt give the description in the reports. see the WritePathTest for details
 
         logs.log("testing", "testingprint");
         File f = new File("output.log");
@@ -50,10 +59,15 @@ public class LoggerTest {
         Assert.assertEquals(s, "testingprint");
 
     }
+    
+    //TODO write the tests for the stub method in the logger class. It's documented so you should be able to write the tests for it without knowing the implementation.
+    //TODO i updated the log method javadoc so make sure all that functionality is tested.
 
     @AfterClass
     public void finish() {
         logs = null;
+        
+        //TODO this isn't strictly needed. The reference will go out of scope & will be collected
     }
 
 }
