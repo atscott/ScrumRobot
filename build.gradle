@@ -21,6 +21,7 @@ dependencies {
 	compile fileTree(dir: 'libs', include: '*.jar')
     testCompile 'com.google.guava:guava:14.0-rc2'
     testCompile 'org.testng:testng:6.8'
+    testCompile 'jackcess:jackcess:1.1.10'
 }
 
 test {
