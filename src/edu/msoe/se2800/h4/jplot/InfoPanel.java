@@ -1,5 +1,8 @@
 package edu.msoe.se2800.h4.jplot;
 
+import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.jplot.grid.Grid;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -12,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,8 +26,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import edu.msoe.se2800.h4.jplot.grid.Grid;
 
 public class InfoPanel extends JPanel {
 	
@@ -161,12 +163,13 @@ public class InfoPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 		    
 		    if (pointsList.getModel().getSize() > 0) {
-		        int response = JOptionPane.showConfirmDialog(null, "Do you wish to save the current path", "Save prompt", JOptionPane.YES_NO_OPTION);
-		        switch (response) {
-		            case JOptionPane.YES_OPTION:
-		                break;
-		            case JOptionPane.NO_OPTION:   // Discard file
-		                break;
+		        boolean fileWasSaved = false;
+		        File toSave = FileIO.save();
+                if (toSave != null) {
+                    fileWasSaved = Grid.getInstance().getPath().writeToFile(toSave);
+                }
+		        if (fileWasSaved) {
+		            JOptionPane.showMessageDialog(null, "Path saved succesfully!");
 		        }
 		    }
 		}
