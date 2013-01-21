@@ -16,9 +16,13 @@
 
 package edu.msoe.se2800.h4;
 
+import com.google.common.base.CharMatcher;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
  * Provides a mechanism for reporting events to a file.
@@ -32,11 +36,14 @@ public enum Logger {
      */
     INSTANCE;
 
+    public static final String FILE_NAME = "output.log";
+    private static final String[] EMPTY = new String[0];
+
     private volatile PrintWriter mWriter;
 
     private Logger() {
         try {
-            File dest = new File("output.log");
+            File dest = new File(FILE_NAME);
             if (dest.exists()) {
                 dest.delete();
             }
@@ -52,23 +59,16 @@ public enum Logger {
     /**
      * Adds the provided message to the log. Is thread safe.
      * 
+     * @param tag of the class making the call.
      * @param message to add to the log
      */
     public void log(String tag, String message) {
-        if (mWriter != null) {
-            synchronized (this) {
-                mWriter.println(message);
-                mWriter.flush();
-            }
-
-        } else {
-            System.out.println("Ignored call to log");
-        }
-
+        log(tag, message, EMPTY);
     }
-    
+
     /**
-     * Example usage: <p/>
+     * Example usage:
+     * <p/>
      * <code>
      * public class PerfectPerson {<br/>
      * public static final String TAG = "Logger";<br/>
@@ -81,10 +81,40 @@ public enum Logger {
      * 
      * @param tag of the class making the call.
      * @param message to be logged. Use %s to indicate fields.
-     * @param args Strings to populate fields with
+     * @param args Strings to populate fields with. These need to be in the order they are found in
+     *            the message
      */
     public void log(String tag, String message, String[] args) {
-        //TODO stub method
+
+        if (mWriter != null) {
+            synchronized (this) {
+                DateFormat format = DateFormat.getInstance();
+
+                // Print the date/timestamp
+                mWriter.print(format.format(new Date()));
+                mWriter.print(" | ");
+
+                // Print the tag
+                mWriter.print(tag);
+                mWriter.print(" | ");
+
+                if (CharMatcher.anyOf("%s").countIn(message) != args.length) {
+                    throw new IllegalArgumentException("The number of placeholders in (" + message
+                            + ") was not the same as the number of args (" + args.length + ").");
+                }
+                for (String s : args) {
+                    message = message.replace("%s", s);
+                }
+
+                // Print the message
+                mWriter.println(message);
+                mWriter.flush();
+            }
+
+        } else {
+            System.out.println("Ignored call to log");
+        }
+
     }
 
 }
