@@ -38,8 +38,17 @@ public class DatabaseConnection {
     }
 
     public boolean ValidateUser(String username, String password) throws IOException {
+        boolean valid = false;
 
-        return false;
+        Table table = db.getTable(TABLE_NAME);
+        Object name = username;
+        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", name));
+        String actualPassword = (String) row.get("password");
+        if (password.equals(actualPassword)) {
+            valid = true;
+        }
+
+        return valid;
     }
 
     public static void main(String[] args) throws IOException {
