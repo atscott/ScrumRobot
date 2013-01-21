@@ -10,8 +10,7 @@ public class AdminGridDecorator extends GridDecorator {
 	
 	@Override
 	public void initSubviews() {
-		grid.initSubviews();
-		
+		super.initSubviews();
 	}
 	
 	@Override
