@@ -1,21 +1,19 @@
-package edu.msoe.se2800.h4.jplot;
+package edu.msoe.se2800.h4.jplot.plotpanel;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 
-public class PlotPanel extends JPanel {
+import edu.msoe.se2800.h4.jplot.Constants;
+import edu.msoe.se2800.h4.jplot.JPoint;
+import edu.msoe.se2800.h4.jplot.grid.Grid;
+
+public class PlotPanel extends JPanel implements PlotPanelInterface {
 	
 	/**
 	 * Generated serialVersionUID
@@ -24,18 +22,20 @@ public class PlotPanel extends JPanel {
 	
 	private int activePointIndexHolder;
 	private JPoint activePoint;
-	private PopUpDemo popUp;
 
 	public PlotPanel() {
-		setPreferredSize(new Dimension(Constants.GRID_WIDTH, Constants.GRID_HEIGHT));
+		setPreferredSize(new Dimension(Constants.GRID_WIDTH(), Constants.GRID_HEIGHT));
 		setBackground(Color.BLACK);
 		setVisible(true);
-		addMouseMotionListener(new PlotMouseMotionListener());
-		addMouseListener(new PlotMouseAdapter());
+		//TODO addMouseMotionListener(new PlotMouseMotionListener());
+		//TODO addMouseListener(new PlotMouseAdapter());
 		this.addMouseWheelListener(new PlotMouseWheelListener());
 	}
 	
-	
+	@Override
+	public Component getComponent() {
+		return this;
+	}
 	
 	/**
 	 * This method returns one of the points in the Grid class that is within 10 pixels of the passed
@@ -43,6 +43,7 @@ public class PlotPanel extends JPanel {
 	 * @param point
 	 * @return the actual point in the Grid class that is within tolerance of the parameter point, otherwise null
 	 */
+	@Override
 	public JPoint getInterceptedPoint(JPoint point) {
 		JPoint retvalPoint = null;
 		for (JPoint p : Grid.getInstance().getPathPoints()) {
@@ -62,13 +63,13 @@ public class PlotPanel extends JPanel {
 	 * @param g graphics used to draw the line
 	 */
 	public void drawGridLines(int density, Graphics g) {
-		int drawingWidth = (Constants.GRID_WIDTH/density)+Constants.GRID_WIDTH;
+		int drawingWidth = (Constants.GRID_WIDTH()/density)+Constants.GRID_WIDTH();
 		int drawingHeight = (Constants.GRID_HEIGHT/density)+Constants.GRID_HEIGHT;
 		
 		g.setColor(Color.DARK_GRAY);
 		
 		/** Draws the vertical lines */
-		for (int i=Constants.GRID_OFFSET; i<=drawingWidth;i+=(Constants.GRID_WIDTH/density)) g.drawLine(i, 0, i, drawingHeight);
+		for (int i=Constants.GRID_OFFSET; i<=drawingWidth;i+=(Constants.GRID_WIDTH()/density)) g.drawLine(i, 0, i, drawingHeight);
 		
 		/** Draws the horizontal lines */
 		for (int i=(Constants.GRID_HEIGHT-Constants.GRID_OFFSET); i>=(Constants.GRID_HEIGHT-drawingHeight);i-=(Constants.GRID_HEIGHT/density)) g.drawLine(0, i, drawingWidth, i);
@@ -141,7 +142,7 @@ public class PlotPanel extends JPanel {
 		JPoint translated1 = translateToLocation(one);
 		JPoint translated2 = translateToLocation(two);
 		
-		//we must add 10 to the y coordinates because the translate method accounts for the offset for points, not a line
+		//we must add 10 to the y coordinates because the translate method accounts for the offset for points, a line does not need this offset
 		g.drawLine(translated1.x, translated1.y+10, translated2.x, translated2.y+10);
 	}
 	
@@ -161,7 +162,7 @@ public class PlotPanel extends JPanel {
 			p.y = y;
 		}
 		
-		x = (int)Math.floor(0.5+((Constants.GRID_WIDTH/Grid.getInstance().getGridDensity())*(x/Constants.STEP_INCREMENT)));
+		x = (int)Math.floor(0.5+((Constants.GRID_WIDTH()/Grid.getInstance().getGridDensity())*(x/Constants.STEP_INCREMENT)));
 		y = (int)Math.floor(0.5+((Constants.GRID_HEIGHT/Grid.getInstance().getGridDensity())*(y/Constants.STEP_INCREMENT)));
 		y = Constants.GRID_HEIGHT-Constants.GRID_OFFSET-y;
 		x+=Constants.GRID_OFFSET;
@@ -172,6 +173,7 @@ public class PlotPanel extends JPanel {
 		return translated;
 	}
 	
+	@Override
 	public JPoint translateToNearestPoint(JPoint p) {
 		JPoint translated = new JPoint();
 		
@@ -181,7 +183,7 @@ public class PlotPanel extends JPanel {
 		x-=Constants.GRID_OFFSET;
 		y+=Constants.GRID_OFFSET;
 		y = Constants.GRID_HEIGHT-Constants.GRID_OFFSET-y;
-		x = (int)Math.floor(0.5+((x*Constants.STEP_INCREMENT)/(Constants.GRID_WIDTH/Grid.getInstance().getGridDensity())));
+		x = (int)Math.floor(0.5+((x*Constants.STEP_INCREMENT)/(Constants.GRID_WIDTH()/Grid.getInstance().getGridDensity())));
 		y = (int)Math.floor(0.5+((y*Constants.STEP_INCREMENT)/(Constants.GRID_HEIGHT/Grid.getInstance().getGridDensity())));
 		
 		
@@ -229,8 +231,6 @@ public class PlotPanel extends JPanel {
 
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent event) {
-			System.out.println("wheel moved mouseevent");
-			
 			if (event.getWheelRotation() < 0) {
 				Grid.getInstance().zoomIn();
 			} else {
@@ -242,7 +242,7 @@ public class PlotPanel extends JPanel {
 	}
 	
 	/** Listeners and Adapters **/
-	private class PlotMouseAdapter extends MouseAdapter {
+	/*TODO private class PlotMouseAdapter extends MouseAdapter {
 		
 		@Override
 		public void mouseClicked(MouseEvent event) {
@@ -260,7 +260,6 @@ public class PlotPanel extends JPanel {
 				}
 				Grid.getInstance().redraw();
 			} else if (event.getButton() == MouseEvent.BUTTON3) {
-				System.out.println("dispatching right click");
 				doPop(event);
 			}
 		}
@@ -279,9 +278,9 @@ public class PlotPanel extends JPanel {
 			Grid.getInstance().repaint();
 			Constants.HOVER_INDEX = -5;
 		}
-	}
+	}*/
 	
-	private class PlotMouseMotionListener implements MouseMotionListener {
+	/*TODO private class PlotMouseMotionListener implements MouseMotionListener {
 		@Override
 		public void mouseDragged(MouseEvent event) {
 			if (activePoint != null) {
@@ -302,44 +301,26 @@ public class PlotPanel extends JPanel {
 				Grid.getInstance().repaint();
 			}
 		}
+	}*/
+
+	@Override
+	public JPoint getActivePoint() {
+		return activePoint;
+	}
+
+	@Override
+	public int getActivePointIndexHolder() {
+		return activePointIndexHolder;
 	}
 	
-	/** copied this from the interwebs **/
-	private void doPop(MouseEvent e){
-		popUp = new PopUpDemo(e);
-		popUp.show(e.getComponent(), e.getX(), e.getY());
+	@Override
+	public void setActivePoint(JPoint p) {
+		activePoint = p;
 	}
-	private class PopUpDemo extends JPopupMenu {
-	    /** Generated serialVersionUID */
-		private static final long serialVersionUID = -926882311315622109L;
-		JMenuItem add;
-	    JMenuItem delete;
-	    JPoint clickedPoint;
-	    MenuListener menuListener;
-	    public PopUpDemo(MouseEvent e){
-	    	menuListener = new MenuListener();
-	    	clickedPoint = new JPoint(e.getX(), e.getY());
-	        add = new JMenuItem("Add point");
-	        add.setActionCommand("add_point");
-	        add.addActionListener(menuListener);
-	        delete = new JMenuItem("Delete point");
-	        delete.setActionCommand("delete_point");
-	        delete.addActionListener(menuListener);
-	        add(add);
-	        add(delete);
-	    }
-	    private class MenuListener implements ActionListener {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getActionCommand().equalsIgnoreCase("add_point")) {
-					Grid.getInstance().addPoint(translateToNearestPoint(clickedPoint));
-				} else if (e.getActionCommand().equalsIgnoreCase("delete_point")) {
-					JPoint p = getInterceptedPoint(clickedPoint);
-					if (p != null) {
-						Grid.getInstance().removePoint(Grid.getInstance().getPathPoints().indexOf(p));
-					}
-				}
-			}
-	    }
+
+	@Override
+	public void setActivePointIndexHolder(int index) {
+		activePointIndexHolder = index;
 	}
+	
 }
