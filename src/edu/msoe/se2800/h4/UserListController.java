@@ -5,7 +5,7 @@ public class UserListController {
 	private UserListUI ui;
 	
 	public UserListController() {
-		UserListUI ui = new UserListUI(this);
+		//UserListUI ui = new UserListUI(this);
 	}
 
 }

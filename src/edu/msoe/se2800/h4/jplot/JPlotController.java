@@ -5,10 +5,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
-import edu.msoe.se2800.h4.UserListController;
+import edu.msoe.se2800.h4.UserListUI;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 import edu.msoe.se2800.h4.jplot.grid.GridInterface;
@@ -156,6 +157,12 @@ public class JPlotController {
 	}
 	
 	public void listUsers() {
-		new UserListController();
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                //Turn off metal's use of bold fonts
+	        UIManager.put("swing.boldMetal", Boolean.FALSE);
+                UserListUI.createAndShowGUI();
+            }
+        });
 	}
 }
