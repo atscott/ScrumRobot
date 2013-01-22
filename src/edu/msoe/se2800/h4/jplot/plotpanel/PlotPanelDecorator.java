@@ -23,7 +23,7 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 		public void mouseDragged(MouseEvent event) {
 			if (getActivePoint() != null) {
 				setActivePoint(translateToNearestPoint(new JPoint(event.getX(),event.getY())));
-				JPlotController.getInstance().getPathPoints().set(getActivePointIndexHolder(), getActivePoint());
+				JPlotController.getInstance().getPath().set(getActivePointIndexHolder(), getActivePoint());
 				JPlotController.getInstance().getGrid().redraw();
 			}
 		}
@@ -32,7 +32,7 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 			if (getActivePoint() == null) {
 				JPoint p = getInterceptedPoint(new JPoint(event.getX(), event.getY()));
 				if (p != null) {
-					Constants.HOVER_INDEX = JPlotController.getInstance().getPathPoints().indexOf(p);
+					Constants.HOVER_INDEX = JPlotController.getInstance().getPath().indexOf(p);
 				} else {
 					Constants.HOVER_INDEX = -5;
 				}

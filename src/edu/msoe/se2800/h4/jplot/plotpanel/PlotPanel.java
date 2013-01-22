@@ -1,5 +1,9 @@
 package edu.msoe.se2800.h4.jplot.plotpanel;
 
+import edu.msoe.se2800.h4.jplot.Constants;
+import edu.msoe.se2800.h4.jplot.JPlotController;
+import edu.msoe.se2800.h4.jplot.JPoint;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -9,9 +13,7 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
-import edu.msoe.se2800.h4.jplot.Constants;
-import edu.msoe.se2800.h4.jplot.JPlotController;
-import edu.msoe.se2800.h4.jplot.JPoint;
+import lejos.robotics.navigation.Waypoint;
 
 public class PlotPanel extends JPanel implements PlotPanelInterface {
 	
@@ -46,12 +48,12 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
 	@Override
 	public JPoint getInterceptedPoint(JPoint point) {
 		JPoint retvalPoint = null;
-		for (JPoint p : JPlotController.getInstance().getPathPoints()) {
-			JPoint temp = translateToLocation(p);
+		for (Waypoint p : JPlotController.getInstance().getPath()) {
+			JPoint temp = translateToLocation((JPoint) p);
 			temp.x-=Constants.POINT_RADIUS;
 			temp.y+=Constants.POINT_RADIUS;
 			if ((point.x < temp.x+10 && point.x > temp.x-10) && (point.y < temp.y+10 && point.y > temp.y-10)) {
-				retvalPoint = p;
+				retvalPoint = (JPoint) p;
 			}
 		}
 		return retvalPoint;
@@ -147,7 +149,6 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
 	}
 	
 	public JPoint translateToLocation(JPoint p) {
-		JPoint translated = new JPoint();
 		
 		int x = p.x;
 		int y = p.y;
@@ -167,10 +168,8 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
 		y = Constants.GRID_HEIGHT-Constants.GRID_OFFSET-y;
 		x+=Constants.GRID_OFFSET;
 		y-=Constants.GRID_OFFSET;
-		translated.x = x;
-		translated.y = y;
 		
-		return translated;
+		return new JPoint(x, y);
 	}
 	
 	@Override
@@ -205,10 +204,11 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
 		drawGridLines(JPlotController.getInstance().getGridDensity(), g);
 		//loop that draws each point, synchronized helps to take care of accessing the same list
 		//from all of these threads the GUI makes
+		//TODO take a look at this synchronized block. do we need it? if yes, are we locking on the right object?
 		synchronized(JPlotController.getInstance().getPathPoints()) {
-			for (JPoint p : JPlotController.getInstance().getPathPoints()) {
+			for (Waypoint p : JPlotController.getInstance().getPath()) {
 				g.setColor(Color.CYAN);
-				if (JPlotController.getInstance().getPathPoints().indexOf(p) == Constants.DRAGGING_INDEX) {
+				if (JPlotController.getInstance().getPath().indexOf(p) == Constants.DRAGGING_INDEX) {
 					g.setColor(Color.ORANGE);
 				}
 				drawPoint(g, p);
@@ -216,13 +216,13 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
 		}
 		
 		//loop that draws the lines between each point
-		for (int i=0;i<JPlotController.getInstance().getPathPoints().size();i++) {
-			if (i+1<JPlotController.getInstance().getPathPoints().size()) {
+		for (int i=0;i<JPlotController.getInstance().getPath().size();i++) {
+			if (i+1<JPlotController.getInstance().getPath().size()) {
 				g.setColor(Color.CYAN);
 				if (Constants.DRAGGING_INDEX == i+1 || Constants.DRAGGING_INDEX == i) {
 					g.setColor(Color.ORANGE);
 				}
-				drawLine(g, JPlotController.getInstance().getPathPoints().get(i), JPlotController.getInstance().getPathPoints().get(i+1));
+				drawLine(g, JPlotController.getInstance().getPath().get(i), JPlotController.getInstance().getPath().get(i+1));
 			}
 		}
 	}

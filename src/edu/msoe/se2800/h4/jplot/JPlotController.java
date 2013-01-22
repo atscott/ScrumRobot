@@ -1,14 +1,17 @@
 package edu.msoe.se2800.h4.jplot;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.SwingUtilities;
-
-import edu.msoe.se2800.h4.Path;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 import edu.msoe.se2800.h4.jplot.grid.GridInterface;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
+import javax.swing.SwingUtilities;
+
+import lejos.robotics.navigation.Waypoint;
+import lejos.robotics.pathfinding.Path;
 
 public class JPlotController {
 
@@ -62,7 +65,7 @@ public class JPlotController {
 	public void changeMode(GridMode mode) {
 		grid = new Grid();
 		if (Constants.CURRENT_MODE == GridMode.IMMEDIATE_MODE) {
-			path.getPoints().clear();
+			path.clear();
 			for (JPoint p : oldList) {
 				path.add(p);
 			}
@@ -70,7 +73,7 @@ public class JPlotController {
 		Constants.CURRENT_MODE = mode;
 		if (mode == GridMode.IMMEDIATE_MODE) {
 			copyPoints();
-			path.getPoints().clear();
+			path.clear();
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -85,8 +88,8 @@ public class JPlotController {
 		return path;
 	}
 	
-	public List<JPoint> getPathPoints() {
-		return path.getPoints();
+	public ListIterator<Waypoint> getPathPoints() {
+	    return path.listIterator();
 	}
 	
 	public void addPoint(JPoint point) {
@@ -97,16 +100,16 @@ public class JPlotController {
 	}
 	
 	public void removePoint(int indexOfPoint) {
-		path.getPoints().remove(indexOfPoint);
+		path.remove(indexOfPoint);
 		jplot.repaint();
 	}
 	
 	public void copyPoints() {
 		oldList.clear();
-		for (JPoint j : getPathPoints()) {
-			oldList.add(j);
+		for (Waypoint j : path) {
+			oldList.add((JPoint) j);
 		}
-		getPathPoints().clear();
+		path.clear();
 		grid.redraw();
 	}
 	
@@ -142,7 +145,7 @@ public class JPlotController {
 		if (indexInPointsArray == -5) {
 			this.highlightedPoint = null;
 		} else {
-			this.highlightedPoint = JPlotController.getInstance().getPath().get(indexInPointsArray);
+			this.highlightedPoint = (JPoint) JPlotController.getInstance().getPath().get(indexInPointsArray);
 		}
 	}
 }

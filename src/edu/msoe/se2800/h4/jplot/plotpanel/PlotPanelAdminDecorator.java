@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import lejos.robotics.navigation.Waypoint;
+
 import edu.msoe.se2800.h4.jplot.Constants;
 import edu.msoe.se2800.h4.jplot.JPlotController;
 import edu.msoe.se2800.h4.jplot.JPoint;
@@ -29,10 +31,10 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 			if (event.getButton() == MouseEvent.BUTTON1) {
 				JPoint point = plotPanel.translateToNearestPoint(new JPoint(event.getX(), event.getY()));
 				boolean found = false;
-				for (JPoint p : JPlotController.getInstance().getPathPoints()) {
+				for (Waypoint p : JPlotController.getInstance().getPath()) {
 					if (p.x == point.x && p.y == point.y) {
 						found = true;
-						JPlotController.getInstance().setHighlightedPoint(JPlotController.getInstance().getPathPoints().indexOf(p));
+						JPlotController.getInstance().setHighlightedPoint(JPlotController.getInstance().getPath().indexOf(p));
 					}
 				}
 				if (found == false) {
@@ -47,7 +49,7 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 		public void mousePressed(MouseEvent event) {
 			JPoint p = new JPoint(event.getX(), event.getY());
 			setActivePoint(getInterceptedPoint(p));
-			setActivePointIndexHolder(JPlotController.getInstance().getPathPoints().indexOf(getActivePoint()));
+			setActivePointIndexHolder(JPlotController.getInstance().getPath().indexOf(getActivePoint()));
 			Constants.DRAGGING_INDEX = getActivePointIndexHolder();
 		}
 		@Override
@@ -92,7 +94,7 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 				} else if (e.getActionCommand().equalsIgnoreCase("delete_point")) {
 					JPoint p = getInterceptedPoint(clickedPoint);
 					if (p != null) {
-						JPlotController.getInstance().removePoint(JPlotController.getInstance().getPathPoints().indexOf(p));
+						JPlotController.getInstance().removePoint(JPlotController.getInstance().getPath().indexOf(p));
 					}
 				}
 			}
