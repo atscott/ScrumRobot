@@ -6,8 +6,6 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import edu.msoe.se2800.h4.jplot.grid.Grid;
-
 public class AxisPanel extends JPanel {
 	
 	/**
@@ -64,9 +62,9 @@ public class AxisPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (ORIENTATION == Constants.HORIZONTAL) {
-			drawAxisMarkersHorizontal(Grid.getInstance().getGridDensity(), g);
+			drawAxisMarkersHorizontal(JPlotController.getInstance().getGridDensity(), g);
 		} else if (ORIENTATION == Constants.VERTICAL) {
-			drawAxisMarkersVertical(Grid.getInstance().getGridDensity(), g);
+			drawAxisMarkersVertical(JPlotController.getInstance().getGridDensity(), g);
 		}
 	}
 
