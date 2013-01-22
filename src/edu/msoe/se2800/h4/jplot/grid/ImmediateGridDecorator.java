@@ -1,6 +1,5 @@
 package edu.msoe.se2800.h4.jplot.grid;
 
-import edu.msoe.se2800.h4.jplot.JPoint;
 
 
 public class ImmediateGridDecorator extends GridDecorator {
@@ -14,11 +13,10 @@ public class ImmediateGridDecorator extends GridDecorator {
 		super.initSubviews();
 		infoPanel.disableSubviews();
 	}
-	
+
 	@Override
-	public void addPoint(JPoint point) {
-		Grid.getInstance().getPathPoints().clear();
-		grid.addPoint(point);
+	public void redraw() {
+		grid.redraw();
 	}
 
 }

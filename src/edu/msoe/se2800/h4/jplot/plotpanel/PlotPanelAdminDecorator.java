@@ -9,8 +9,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import edu.msoe.se2800.h4.jplot.Constants;
+import edu.msoe.se2800.h4.jplot.JPlotController;
 import edu.msoe.se2800.h4.jplot.JPoint;
-import edu.msoe.se2800.h4.jplot.grid.Grid;
 
 public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 	
@@ -29,16 +29,16 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 			if (event.getButton() == MouseEvent.BUTTON1) {
 				JPoint point = plotPanel.translateToNearestPoint(new JPoint(event.getX(), event.getY()));
 				boolean found = false;
-				for (JPoint p : Grid.getInstance().getPathPoints()) {
+				for (JPoint p : JPlotController.getInstance().getPathPoints()) {
 					if (p.x == point.x && p.y == point.y) {
 						found = true;
-						Grid.getInstance().setHighlightedPoint(Grid.getInstance().getPathPoints().indexOf(p));
+						JPlotController.getInstance().setHighlightedPoint(JPlotController.getInstance().getPathPoints().indexOf(p));
 					}
 				}
-				if (!found) {
-					Grid.getInstance().setHighlightedPoint(-5);
+				if (found == false) {
+					JPlotController.getInstance().setHighlightedPoint(-5);
 				}
-				Grid.getInstance().redraw();
+				JPlotController.getInstance().getGrid().redraw();
 			} else if (event.getButton() == MouseEvent.BUTTON3) {
 				doPop(event);
 			}
@@ -47,7 +47,7 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 		public void mousePressed(MouseEvent event) {
 			JPoint p = new JPoint(event.getX(), event.getY());
 			setActivePoint(getInterceptedPoint(p));
-			setActivePointIndexHolder(Grid.getInstance().getPathPoints().indexOf(getActivePoint()));
+			setActivePointIndexHolder(JPlotController.getInstance().getPathPoints().indexOf(getActivePoint()));
 			Constants.DRAGGING_INDEX = getActivePointIndexHolder();
 		}
 		@Override
@@ -55,7 +55,7 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 			setActivePoint(null);
 			setActivePointIndexHolder(-5);
 			Constants.DRAGGING_INDEX = -5;
-			Grid.getInstance().repaint();
+			JPlotController.getInstance().getGrid().redraw();
 			Constants.HOVER_INDEX = -5;
 		}
 	}
@@ -88,11 +88,11 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getActionCommand().equalsIgnoreCase("add_point")) {
-					Grid.getInstance().addPoint(translateToNearestPoint(clickedPoint));
+					JPlotController.getInstance().addPoint(translateToNearestPoint(clickedPoint));
 				} else if (e.getActionCommand().equalsIgnoreCase("delete_point")) {
 					JPoint p = getInterceptedPoint(clickedPoint);
 					if (p != null) {
-						Grid.getInstance().removePoint(Grid.getInstance().getPathPoints().indexOf(p));
+						JPlotController.getInstance().removePoint(JPlotController.getInstance().getPathPoints().indexOf(p));
 					}
 				}
 			}
