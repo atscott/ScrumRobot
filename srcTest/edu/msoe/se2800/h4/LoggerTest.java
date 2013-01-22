@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -66,15 +67,15 @@ public class LoggerTest {
      * Testiing for log method
      */
     @Test(description = "This is testing using the log method normally as intended")
-    public void normalLogTest(){
+    public void normalLogTest() throws FileNotFoundException {
         DateFormat format = DateFormat.getInstance();
         String date = format.format(new Date());
         String tag = "LoggerTest";
         String message = "This is a %s, %s";
         String[] args = new String[]{"%^$#%$#", "Test"};
         logs.log(tag, message, args);
-        Scanner scan = new Scanner(Logger.FILE_NAME);
-        String s = scan.next();
+        Scanner scan = new Scanner(new FileReader(Logger.FILE_NAME));
+        String s = scan.nextLine();
         Assert.assertEquals(s,date + " | " + "LoggerTest | " + "This is a %^$#%$# Test");
     }
 }
