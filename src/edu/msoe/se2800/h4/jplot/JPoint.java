@@ -7,6 +7,10 @@ public class JPoint extends Point {
 	/** Generated serialVersionUID */
 	private static final long serialVersionUID = 4437812717373387975L;
 	
+	public JPoint(double x, double y) {
+		this((int)x, (int)y);
+	}
+	
 	public JPoint() {
 		super();
 	}
