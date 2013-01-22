@@ -41,6 +41,7 @@ public class InfoPanel extends JPanel {
     private JList pointsList;
     private JLabel numPoints;
     private File mPathFile;
+    private SaveListener mSaveListener;
 
     public InfoPanel() {
         mPathFile = null;
@@ -50,6 +51,8 @@ public class InfoPanel extends JPanel {
     }
 
     public void initSubviews() {
+        mSaveListener = new SaveListener();
+        
         Font font = new Font("Arial", Font.PLAIN, 12);
         xTextField = new JTextField(3);
         yTextField = new JTextField(3);
@@ -91,12 +94,12 @@ public class InfoPanel extends JPanel {
         JButton save = new JButton("Save");
         save.setFont(font);
         save.setActionCommand("save");
-        save.addActionListener(new SaveListener());
+        save.addActionListener(mSaveListener);
 
         JButton saveAs = new JButton("Save as...");
         saveAs.setFont(font);
         saveAs.setActionCommand("save_as");
-        saveAs.addActionListener(new SaveListener());
+        saveAs.addActionListener(mSaveListener);
 
         zoomIn.setPreferredSize(new Dimension(70, 30));
         zoomOut.setPreferredSize(new Dimension(70, 30));
@@ -207,9 +210,11 @@ public class InfoPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             
-            // We already have a path loaded
-            if (mPathFile != null) {
+            int result = JOptionPane.showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
                 
+                // We want to save
+                mSaveListener.actionPerformed(new ActionEvent(null, 0, "save"));
             }
             
             mPathFile = FileIO.open();
