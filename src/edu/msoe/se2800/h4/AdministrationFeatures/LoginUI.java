@@ -44,7 +44,6 @@ public class LoginUI extends JDialog {
     public LoginUI() {
         setModal(true);
         initComponents();
-        getRootPane().setDefaultButton(loginBtn);
     }
 
     private void initComponents() {
@@ -71,6 +70,7 @@ public class LoginUI extends JDialog {
         this.setResizable(false);
         this.setSize(300, 150);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        getRootPane().setDefaultButton(loginBtn);
         this.setVisible(true);
     }
 
