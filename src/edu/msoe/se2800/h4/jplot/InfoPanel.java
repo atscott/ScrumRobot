@@ -1,10 +1,6 @@
 
 package edu.msoe.se2800.h4.jplot;
 
-import edu.msoe.se2800.h4.FileIO;
-import edu.msoe.se2800.h4.Path.BadFormatException;
-import edu.msoe.se2800.h4.jplot.grid.Grid;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -30,6 +26,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.Path.BadFormatException;
 
 public class InfoPanel extends JPanel {
 
@@ -57,7 +56,7 @@ public class InfoPanel extends JPanel {
         xTextField.addKeyListener(new EnterListener());
         yTextField.addKeyListener(new EnterListener());
 
-        numPoints = new JLabel("Number of points: " + Grid.getInstance().getPathPoints().size());
+        numPoints = new JLabel("Number of points: " + JPlotController.getInstance().getPathPoints().size());
         numPoints.setFont(font);
 
         JLabel label = new JLabel("x, y");
@@ -68,7 +67,7 @@ public class InfoPanel extends JPanel {
 
         pointsList = new JList();
         pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 350));
-        pointsList.setListData(Grid.getInstance().getPathPoints().toArray());
+        pointsList.setListData(JPlotController.getInstance().getPathPoints().toArray());
         pointsList.addMouseListener(new PointsMouseListener());
         pointsList.addListSelectionListener(new PointsListListener());
 
@@ -129,7 +128,7 @@ public class InfoPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        pointsList.setListData(Grid.getInstance().getPathPoints().toArray());
+        pointsList.setListData(JPlotController.getInstance().getPathPoints().toArray());
         pointsList.repaint();
     }
 
@@ -138,8 +137,8 @@ public class InfoPanel extends JPanel {
         @Override
         public void valueChanged(ListSelectionEvent event) {
             if (event.getLastIndex() >= 0) {
-                Grid.getInstance().setHighlightedPoint(event.getLastIndex());
-                Grid.getInstance().redraw();
+            	JPlotController.getInstance().getGrid().setHighlightedPoint(event.getLastIndex());
+            	JPlotController.getInstance().getGrid().redraw();
             }
         }
 
@@ -157,8 +156,8 @@ public class InfoPanel extends JPanel {
                     // left click only once
                     if (event.getClickCount() == 1) {
                         if (index >= 0) { // if they clicked on an actual JList item, continue
-                            Grid.getInstance().setHighlightedPoint(index);
-                            Grid.getInstance().redraw();
+                            JPlotController.getInstance().getGrid().setHighlightedPoint(index);
+                            JPlotController.getInstance().getGrid().redraw();
                         }
                     }
                 }
@@ -191,7 +190,7 @@ public class InfoPanel extends JPanel {
             
             // If the save was not cancelled, save the path
             if (toSave != null) {
-                fileWasSaved = Grid.getInstance().getPath().writeToFile(toSave);
+                fileWasSaved = JPlotController.getInstance().getPath().writeToFile(toSave);
             }
             
             // Report on success/failure
@@ -215,7 +214,7 @@ public class InfoPanel extends JPanel {
             
             mPathFile = FileIO.open();
             try {
-                Grid.getInstance().getPath().readFromFile(mPathFile);
+            	JPlotController.getInstance().getPath().readFromFile(mPathFile);
             } catch (FileNotFoundException e1) {
                 JOptionPane.showMessageDialog(null, "The selected file is no longer available",
                         "Uh-oh!", JOptionPane.ERROR_MESSAGE);
@@ -224,7 +223,7 @@ public class InfoPanel extends JPanel {
                         "The selected file is corrupt! You may be able to manually recover it.",
                         "Uh-oh!", JOptionPane.ERROR_MESSAGE);
             }
-            Grid.getInstance().redraw();
+            JPlotController.getInstance().getGrid().redraw();
         }
     }
 
@@ -233,9 +232,9 @@ public class InfoPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equalsIgnoreCase("zoom_in")) {
-                Grid.getInstance().zoomIn();
+            	JPlotController.getInstance().zoomIn();
             } else if (e.getActionCommand().equalsIgnoreCase("zoom_out")) {
-                Grid.getInstance().zoomOut();
+            	JPlotController.getInstance().zoomOut();
             }
         }
 
@@ -256,11 +255,11 @@ public class InfoPanel extends JPanel {
                 try {
                     int x = Integer.parseInt(xTextField.getText().toString());
                     int y = Integer.parseInt(yTextField.getText().toString());
-                    Point p = Grid.getInstance().getHighlightedPoint();
+                    Point p = JPlotController.getInstance().getGrid().getHighlightedPoint();
                     if (p != null) {
                         p.x = x;
                         p.y = y;
-                        Grid.getInstance().redraw();
+                        JPlotController.getInstance().getGrid().redraw();
                     }
                 } catch (NumberFormatException nfe) {
                     // pass and ignore

@@ -6,14 +6,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.File;
-import java.util.List;
 
 import javax.swing.JPanel;
 
-import edu.msoe.se2800.h4.Path;
 import edu.msoe.se2800.h4.jplot.AxisPanel;
 import edu.msoe.se2800.h4.jplot.Constants;
-import edu.msoe.se2800.h4.jplot.JPoint;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.plotpanel.PlotPanel;
 import edu.msoe.se2800.h4.jplot.plotpanel.PlotPanelAdminDecorator;
@@ -22,19 +19,6 @@ import edu.msoe.se2800.h4.jplot.plotpanel.PlotPanelInterface;
 
 public class Grid extends JPanel implements GridInterface {
 	
-	private static Grid instance = null;
-	
-	public static Grid getInstance() {
-		if (instance == null) {
-			synchronized(Grid.class) {
-				if (instance == null) {
-					instance = new Grid();
-				}
-			}
-		}
-		return instance;
-	}
-	
 	/**
 	 * Generated serialVersionUID
 	 */
@@ -42,14 +26,9 @@ public class Grid extends JPanel implements GridInterface {
 	
 	private PlotPanelInterface plotPanel;
 	private AxisPanel xAxisPanel, yAxisPanel;
-	private Path path;
-	private JPoint highlightedPoint;
 	private File loadedFile;
-	
-	private int gridDensity = Constants.DEFAULT_GRID_DENSITY;
 
-	private Grid() {
-		path = new Path();
+	public Grid() {
 		
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
@@ -80,62 +59,8 @@ public class Grid extends JPanel implements GridInterface {
 	}
 	
 	@Override
-	public void addPoint(JPoint p) {
-		path.add(p);
-		redraw();
-	}
-	
-	public void removePoint(int indexOfPoint) {
-		path.getPoints().remove(indexOfPoint);
-		redraw();
-	}
-	
-	public List<JPoint> getPathPoints() {
-		return this.path.getPoints();
-	}
-	
-	public void zoomIn() {
-		setGridDensity(getGridDensity()-1);
-		redraw();
-	}
-	
-	public void zoomOut() {
-		setGridDensity(getGridDensity()+1);
-		redraw();
-	}
-	
 	public void redraw() {
 		repaint();
-	}
-	
-	public int getGridDensity() {
-		return gridDensity;
-	}
-	
-	public void setGridDensity(int density) {
-		if (density > 1) {
-			gridDensity = Math.min(density, 100);
-			redraw();
-		} else {
-			gridDensity = 1;
-			redraw();
-		}
-	}
-	
-	public JPoint getHighlightedPoint() {
-		return this.highlightedPoint;
-	}
-	
-	public void setHighlightedPoint(int indexInPointsArray) {
-		if (indexInPointsArray == -5) {
-			this.highlightedPoint = null;
-		} else {
-			this.highlightedPoint = this.path.get(indexInPointsArray);
-		}
-	}
-	
-	public Path getPath() {
-		return path;
 	}
 	
 	public File getLoadedPathFile() {

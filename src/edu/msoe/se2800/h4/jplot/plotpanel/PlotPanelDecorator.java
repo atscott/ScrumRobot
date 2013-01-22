@@ -5,8 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 import edu.msoe.se2800.h4.jplot.Constants;
+import edu.msoe.se2800.h4.jplot.JPlotController;
 import edu.msoe.se2800.h4.jplot.JPoint;
-import edu.msoe.se2800.h4.jplot.grid.Grid;
 
 
 public abstract class PlotPanelDecorator implements PlotPanelInterface {
@@ -23,8 +23,8 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 		public void mouseDragged(MouseEvent event) {
 			if (getActivePoint() != null) {
 				setActivePoint(translateToNearestPoint(new JPoint(event.getX(),event.getY())));
-				Grid.getInstance().getPathPoints().set(getActivePointIndexHolder(), getActivePoint());
-				Grid.getInstance().redraw();
+				JPlotController.getInstance().getPathPoints().set(getActivePointIndexHolder(), getActivePoint());
+				JPlotController.getInstance().getGrid().redraw();
 			}
 		}
 		@Override
@@ -32,11 +32,11 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 			if (getActivePoint() == null) {
 				JPoint p = getInterceptedPoint(new JPoint(event.getX(), event.getY()));
 				if (p != null) {
-					Constants.HOVER_INDEX = Grid.getInstance().getPathPoints().indexOf(p);
+					Constants.HOVER_INDEX = JPlotController.getInstance().getPathPoints().indexOf(p);
 				} else {
 					Constants.HOVER_INDEX = -5;
 				}
-				Grid.getInstance().repaint();
+				JPlotController.getInstance().getGrid().redraw();
 			}
 		}
 	}
