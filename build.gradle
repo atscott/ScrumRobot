@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.5
 version = '1.0'
 jar {
     manifest {
@@ -22,6 +22,7 @@ dependencies {
     testCompile 'com.google.guava:guava:14.0-rc2'
     testCompile 'org.testng:testng:6.8'
     testCompile 'jackcess:jackcess:1.1.10'
+    testCompile 'org.easytesting:fest-swing:1.2.1'
 }
 
 test {
