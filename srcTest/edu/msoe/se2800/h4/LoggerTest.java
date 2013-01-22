@@ -1,12 +1,14 @@
 package edu.msoe.se2800.h4;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -19,56 +21,60 @@ import java.util.Scanner;
 public class LoggerTest {
     private Logger logs;
 
-    @BeforeMethod
+    @BeforeClass
     public void setupLogger() {
-        
-      //TODO this only needs to happen once. @BeforeClass is what you're looking for.
         logs = Logger.INSTANCE;
-        
-        //TODO before each method, we should be "resetting" the environment. This means deleteing any log files that potentially exist.
-        //TODO for convenience i've made the file name for the logger a static variable so get it by using Logger.FILE_NAME in all the tests
+    }
+
+    @BeforeMethod
+    public void setupTestEnv(){
+        File f = new File(logs.FILE_NAME);
+        if(f.exists()){
+            f.delete();
+        }
     }
 
     /**
      * Testing for the existence of the output.txt
      */
-    @Test
+    @Test(description = "This is testing to see that the correct log file is being written")
     public void validLogOutputFile() {
-        
-        //TODO put the description in a description annotation. doing javadoc style doesnt give the description in the reports. see the WritePathTest for details
-        File f = new File("output.log");
+        File f = new File(logs.FILE_NAME);
         if(f.exists()){
             f.delete();
         }
-        logs.log("testing", "testingprint");
+        logs.log("LoggerTest", "testingprint");
         Assert.assertTrue(f.exists());
     }
 
     /**
      * Testing that the given phrase was parsed correctly
      */
-    @Test
+    @Test(description = "This is a test for writing normally in the log file")
     public void validPrintInFile() throws FileNotFoundException {
-        
-        //TODO put the description in a description annotation. doing javadoc style doesnt give the description in the reports. see the WritePathTest for details
-
-        logs.log("testing", "testingprint");
-        File f = new File("output.log");
+        logs.log("LoggerTest", "testingprint");
+        File f = new File(logs.FILE_NAME);
         Scanner scan = new Scanner(f);
-        String s = scan.next();
+        String s = scan.next().trim();
         Assert.assertEquals(s, "testingprint");
-
     }
-    
+
     //TODO write the tests for the stub method in the logger class. It's documented so you should be able to write the tests for it without knowing the implementation.
     //TODO i updated the log method javadoc so make sure all that functionality is tested.
     //TODO test tread safety of Logger
-
-    @AfterClass
-    public void finish() {
-        logs = null;
-        
-        //TODO this isn't strictly needed. The reference will go out of scope & will be collected
+    /**
+     * Testiing for log method
+     */
+    @Test(description = "This is testing using the log method normally as intended")
+    public void normalLogTest(){
+        DateFormat format = DateFormat.getInstance();
+        String date = format.format(new Date());
+        String tag = "LoggerTest";
+        String message = "This is a %s, %s";
+        String[] args = new String[]{"%^$#%$#", "Test"};
+        logs.log(tag, message, args);
+        Scanner scan = new Scanner(logs.FILE_NAME);
+        String s = scan.next();
+        Assert.assertEquals(s,date + " | " + "LoggerTest | " + "This is a %^$#%$# Test");
     }
-
 }
