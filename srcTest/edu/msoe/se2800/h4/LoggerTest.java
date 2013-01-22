@@ -41,9 +41,6 @@ public class LoggerTest {
     @Test(description = "This is testing to see that the correct log file is being written")
     public void validLogOutputFile() {
         File f = new File(Logger.FILE_NAME);
-        if(f.exists()){
-            f.delete();
-        }
         logs.log("LoggerTest", "testingprint");
         Assert.assertTrue(f.exists());
     }
@@ -53,11 +50,13 @@ public class LoggerTest {
      */
     @Test(description = "This is a test for writing normally in the log file")
     public void validPrintInFile() throws FileNotFoundException {
+        DateFormat format = DateFormat.getInstance();
+        String date = format.format(new Date());
         logs.log("LoggerTest", "testingprint");
         File f = new File(Logger.FILE_NAME);
         Scanner scan = new Scanner(f);
-        String s = scan.next().trim();
-        Assert.assertEquals(s, "testingprint");
+        String s = scan.nextLine().trim();
+        Assert.assertEquals(s, date + " | " + "LoggerTest | " + "testingprint");
     }
 
     //TODO write the tests for the stub method in the logger class. It's documented so you should be able to write the tests for it without knowing the implementation.
@@ -76,6 +75,6 @@ public class LoggerTest {
         logs.log(tag, message, args);
         Scanner scan = new Scanner(new FileReader(Logger.FILE_NAME));
         String s = scan.nextLine();
-        Assert.assertEquals(s,date + " | " + "LoggerTest | " + "This is a %^$#%$# Test");
+        Assert.assertEquals(s,date + " | " + "LoggerTest | " + "This is a %^$#%$#, Test");
     }
 }
