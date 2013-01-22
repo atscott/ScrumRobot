@@ -4,9 +4,9 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
+import lejos.robotics.navigation.Waypoint;
 import edu.msoe.se2800.h4.jplot.Constants;
 import edu.msoe.se2800.h4.jplot.JPlotController;
-import edu.msoe.se2800.h4.jplot.JPoint;
 
 
 public abstract class PlotPanelDecorator implements PlotPanelInterface {
@@ -22,7 +22,7 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 		@Override
 		public void mouseDragged(MouseEvent event) {
 			if (getActivePoint() != null) {
-				setActivePoint(translateToNearestPoint(new JPoint(event.getX(),event.getY())));
+				setActivePoint(translateToNearestPoint(new Waypoint(event.getX(),event.getY())));
 				JPlotController.getInstance().getPath().set(getActivePointIndexHolder(), getActivePoint());
 				JPlotController.getInstance().getGrid().redraw();
 			}
@@ -30,7 +30,7 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 		@Override
 		public void mouseMoved(MouseEvent event) {
 			if (getActivePoint() == null) {
-				JPoint p = getInterceptedPoint(new JPoint(event.getX(), event.getY()));
+				Waypoint p = getInterceptedPoint(new Waypoint(event.getX(), event.getY()));
 				if (p != null) {
 					Constants.HOVER_INDEX = JPlotController.getInstance().getPath().indexOf(p);
 				} else {
@@ -47,17 +47,17 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 	}
 	
 	@Override
-	public JPoint translateToNearestPoint(JPoint p) {
+	public Waypoint translateToNearestPoint(Waypoint p) {
 		return plotPanel.translateToNearestPoint(p);
 	}
 	
 	@Override
-	public JPoint getInterceptedPoint(JPoint point) {
+	public Waypoint getInterceptedPoint(Waypoint point) {
 		return plotPanel.getInterceptedPoint(point);
 	}
 	
 	@Override
-	public JPoint getActivePoint() {
+	public Waypoint getActivePoint() {
 		return plotPanel.getActivePoint();
 	}
 	
@@ -67,7 +67,7 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 	}
 	
 	@Override
-	public void setActivePoint(JPoint p) {
+	public void setActivePoint(Waypoint p) {
 		plotPanel.setActivePoint(p);
 	}
 	

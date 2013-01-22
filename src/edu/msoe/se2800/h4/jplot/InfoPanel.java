@@ -1,8 +1,6 @@
 
 package edu.msoe.se2800.h4.jplot;
 
-import edu.msoe.se2800.h4.FileIO;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -32,6 +30,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import lejos.robotics.navigation.Waypoint;
+import edu.msoe.se2800.h4.FileIO;
 
 public class InfoPanel extends JPanel {
 
@@ -264,7 +265,7 @@ public class InfoPanel extends JPanel {
                 try {
                     int x = Integer.parseInt(xTextField.getText().toString());
                     int y = Integer.parseInt(yTextField.getText().toString());
-                    JPoint p = JPlotController.getInstance().getHighlightedPoint();
+                    Waypoint p = JPlotController.getInstance().getHighlightedPoint();
                     if (p != null) {
                         p.x = x;
                         p.y = y;

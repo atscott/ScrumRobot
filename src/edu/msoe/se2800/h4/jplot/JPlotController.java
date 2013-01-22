@@ -1,17 +1,15 @@
 package edu.msoe.se2800.h4.jplot;
 
-import edu.msoe.se2800.h4.jplot.Constants.GridMode;
-import edu.msoe.se2800.h4.jplot.grid.Grid;
-import edu.msoe.se2800.h4.jplot.grid.GridInterface;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.swing.SwingUtilities;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
+import edu.msoe.se2800.h4.jplot.Constants.GridMode;
+import edu.msoe.se2800.h4.jplot.grid.Grid;
+import edu.msoe.se2800.h4.jplot.grid.GridInterface;
 
 public class JPlotController {
 
@@ -22,8 +20,8 @@ public class JPlotController {
 	private JPlot jplot;
 	private GridInterface grid;
 	private Path path;
-	private List<JPoint> oldList;
-	private JPoint highlightedPoint;
+	private List<Waypoint> oldList;
+	private Waypoint highlightedPoint;
 	
 	public static JPlotController getInstance() {
 		if (instance == null) {
@@ -38,19 +36,19 @@ public class JPlotController {
 	
 	private JPlotController() {
 		path = new Path();
-		oldList = new ArrayList<JPoint>();
-		/*addPoint(new JPoint(10,20));
-		addPoint(new JPoint(10,30));
-		addPoint(new JPoint(10,40));
-		addPoint(new JPoint(20,20));
-		addPoint(new JPoint(40,30));
-		addPoint(new JPoint(60,5));*/
-		addPoint(new JPoint(0,0));
-		addPoint(new JPoint(12,12));
-		addPoint(new JPoint(24,24));
-		addPoint(new JPoint(36,36));
-		addPoint(new JPoint(48,48));
-		addPoint(new JPoint(60,60));
+		oldList = new ArrayList<Waypoint>();
+		/*addPoint(new Waypoint(10,20));
+		addPoint(new Waypoint(10,30));
+		addPoint(new Waypoint(10,40));
+		addPoint(new Waypoint(20,20));
+		addPoint(new Waypoint(40,30));
+		addPoint(new Waypoint(60,5));*/
+		addPoint(new Waypoint(0,0));
+		addPoint(new Waypoint(12,12));
+		addPoint(new Waypoint(24,24));
+		addPoint(new Waypoint(36,36));
+		addPoint(new Waypoint(48,48));
+		addPoint(new Waypoint(60,60));
 	}
 	
 	public void init() {
@@ -66,7 +64,7 @@ public class JPlotController {
 		grid = new Grid();
 		if (Constants.CURRENT_MODE == GridMode.IMMEDIATE_MODE) {
 			path.clear();
-			for (JPoint p : oldList) {
+			for (Waypoint p : oldList) {
 				path.add(p);
 			}
 		}
@@ -88,11 +86,13 @@ public class JPlotController {
 		return path;
 	}
 	
-	public ListIterator<Waypoint> getPathPoints() {
-	    return path.listIterator();
+	public Waypoint[] getPathPoints() {
+		Waypoint[] points = new Waypoint[path.size()];
+	    path.toArray(points);
+	    return points;
 	}
 	
-	public void addPoint(JPoint point) {
+	public void addPoint(Waypoint point) {
 		path.add(point);
 		if (jplot != null) {
 			jplot.repaint();
@@ -107,7 +107,7 @@ public class JPlotController {
 	public void copyPoints() {
 		oldList.clear();
 		for (Waypoint j : path) {
-			oldList.add((JPoint) j);
+			oldList.add((Waypoint) j);
 		}
 		path.clear();
 		grid.redraw();
@@ -137,7 +137,7 @@ public class JPlotController {
 		}
 	}
 	
-	public JPoint getHighlightedPoint() {
+	public Waypoint getHighlightedPoint() {
 		return this.highlightedPoint;
 	}
 	
@@ -145,7 +145,7 @@ public class JPlotController {
 		if (indexInPointsArray == -5) {
 			this.highlightedPoint = null;
 		} else {
-			this.highlightedPoint = (JPoint) JPlotController.getInstance().getPath().get(indexInPointsArray);
+			this.highlightedPoint = (Waypoint) JPlotController.getInstance().getPath().get(indexInPointsArray);
 		}
 	}
 }
