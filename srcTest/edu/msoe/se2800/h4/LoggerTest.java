@@ -1,3 +1,4 @@
+
 package edu.msoe.se2800.h4;
 
 import org.testng.Assert;
@@ -13,11 +14,8 @@ import java.util.Date;
 import java.util.Scanner;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tohtzk
- * Date: 1/15/13
- * Time: 10:19 AM
- * To change this template use File | Settings | File Templates.
+ * Created with IntelliJ IDEA. User: tohtzk Date: 1/15/13 Time: 10:19 AM To change this template use
+ * File | Settings | File Templates.
  */
 public class LoggerTest {
     private Logger logs;
@@ -28,9 +26,9 @@ public class LoggerTest {
     }
 
     @BeforeMethod
-    public void setupTestEnv(){
+    public void setupTestEnv() {
         File f = new File(Logger.FILE_NAME);
-        if(f.exists()){
+        if (f.exists()) {
             f.delete();
         }
     }
@@ -42,6 +40,7 @@ public class LoggerTest {
     public void validLogOutputFile() {
         File f = new File(Logger.FILE_NAME);
         logs.log("LoggerTest", "testingprint");
+        f = new File(Logger.FILE_NAME);
         Assert.assertTrue(f.exists());
     }
 
@@ -59,9 +58,10 @@ public class LoggerTest {
         Assert.assertEquals(s, date + " | " + "LoggerTest | " + "testingprint");
     }
 
-    //TODO write the tests for the stub method in the logger class. It's documented so you should be able to write the tests for it without knowing the implementation.
-    //TODO i updated the log method javadoc so make sure all that functionality is tested.
-    //TODO test tread safety of Logger
+    // TODO write the tests for the stub method in the logger class. It's documented so you should
+    // be able to write the tests for it without knowing the implementation.
+    // TODO i updated the log method javadoc so make sure all that functionality is tested.
+    // TODO test tread safety of Logger
     /**
      * Testiing for log method
      */
@@ -71,10 +71,12 @@ public class LoggerTest {
         String date = format.format(new Date());
         String tag = "LoggerTest";
         String message = "This is a %s, %s";
-        String[] args = new String[]{"%^$#%$#", "Test"};
+        String[] args = new String[] {
+                "%^$#%$#", "Test"
+        };
         logs.log(tag, message, args);
         Scanner scan = new Scanner(new FileReader(Logger.FILE_NAME));
         String s = scan.nextLine();
-        Assert.assertEquals(s,date + " | " + "LoggerTest | " + "This is a %^$#%$#, Test");
+        Assert.assertEquals(s, date + " | " + "LoggerTest | " + "This is a %^$#%$#, Test");
     }
 }

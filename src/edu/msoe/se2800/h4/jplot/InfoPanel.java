@@ -207,6 +207,12 @@ public class InfoPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            
+            // We already have a path loaded
+            if (mPathFile != null) {
+                
+            }
+            
             mPathFile = FileIO.open();
             try {
                 Grid.getInstance().getPath().readFromFile(mPathFile);

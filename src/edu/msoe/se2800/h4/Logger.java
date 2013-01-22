@@ -16,11 +16,14 @@
 
 package edu.msoe.se2800.h4;
 
+import com.google.common.io.Closeables;
+
 import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -38,23 +41,6 @@ public enum Logger {
 
     public static final String FILE_NAME = "output.log";
     private static final String[] EMPTY = new String[0];
-
-    private volatile PrintWriter mWriter;
-
-    private Logger() {
-        try {
-            File dest = new File(FILE_NAME);
-            if (dest.exists()) {
-                dest.delete();
-            }
-            dest.createNewFile();
-            mWriter = new PrintWriter(dest);
-        } catch (IOException e) {
-            mWriter = null;
-            System.out
-                    .println("Unable to create the log file. All future calls to log() will be ignored.");
-        }
-    }
 
     /**
      * Adds the provided message to the log. Is thread safe.
@@ -85,18 +71,19 @@ public enum Logger {
      *            the message
      */
     public void log(String tag, String message, String[] args) {
-
-        if (mWriter != null) {
-            synchronized (this) {
+        synchronized (this) {
+            OutputStreamWriter writer = null;
+            try {
+                writer = new OutputStreamWriter(new FileOutputStream(FILE_NAME));
                 DateFormat format = DateFormat.getInstance();
 
                 // Print the date/timestamp
-                mWriter.print(format.format(new Date()));
-                mWriter.print(" | ");
+                writer.write(format.format(new Date()));
+                writer.write(" | ");
 
                 // Print the tag
-                mWriter.print(tag);
-                mWriter.print(" | ");
+                writer.write(tag);
+                writer.write(" | ");
 
                 if (StringUtils.countMatches(message, "%s") != args.length) {
                     throw new IllegalArgumentException("The number of placeholders in (" + message
@@ -107,14 +94,22 @@ public enum Logger {
                 }
 
                 // Print the message
-                mWriter.println(message);
-                mWriter.flush();
+                writer.write(message);
+                writer.write("\n");
+            } catch (FileNotFoundException e1) {
+                System.out.println("The specified file could not be found.");
+            } catch (IOException e) {
+                System.out
+                        .println("Unable to connect to the logger. This call to log() will be ignored.");
+            } finally {
+                if (writer != null) {
+                    try {
+                        Closeables.close(writer, true);
+                    } catch (IOException e) {
+                    }
+                }
             }
-
-        } else {
-            System.out.println("Ignored call to log");
         }
 
     }
-
 }
