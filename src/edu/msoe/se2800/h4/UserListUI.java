@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.DropMode;
 import javax.swing.JDialog;
 import javax.swing.JTable;
+import javax.swing.WindowConstants;
 
 public class UserListUI extends JDialog {
 
@@ -28,12 +29,7 @@ public class UserListUI extends JDialog {
         setSize(750, 700);
         
         // dispose when exit is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-            	dispose();
-            }
-        });
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
 	}
 	

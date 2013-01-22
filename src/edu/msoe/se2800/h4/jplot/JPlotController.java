@@ -3,10 +3,12 @@ package edu.msoe.se2800.h4.jplot;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
+import edu.msoe.se2800.h4.UserListController;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 import edu.msoe.se2800.h4.jplot.grid.GridInterface;
@@ -147,5 +149,13 @@ public class JPlotController {
 		} else {
 			this.highlightedPoint = (Waypoint) JPlotController.getInstance().getPath().get(indexInPointsArray);
 		}
+	}
+	
+	public void createUser() {
+		JOptionPane.showMessageDialog(null, "Someone implement creating a user.  This is in the createUser() in JPlotController.java", "TEAM .SCRUMBOT", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void listUsers() {
+		new UserListController();
 	}
 }

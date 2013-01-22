@@ -41,6 +41,7 @@ public class JPlot extends JFrame {
         
 		getContentPane().add(grid.getComponent());
 		
+		/** Mode Changing Menu */
 		JMenuBar jMenuBar = new JMenuBar();
 		JMenu jMenuMode = new JMenu();
 		jMenuMode.setText("Operating Mode");
@@ -64,7 +65,25 @@ public class JPlot extends JFrame {
         jMenuMode.add(mnuImmediate);
         jMenuMode.add(mnuAdministrator);
         
+        /** Administrative features menu */
+        JMenu jMenuAdmin = new JMenu();
+		jMenuAdmin.setText("Administration");
+		
+		JMenuItem mnuCreateNew = new JMenuItem();
+		mnuCreateNew.setText("Create User");
+		mnuCreateNew.setActionCommand("create_user");
+		mnuCreateNew.addActionListener(new MenuActionListener());
+		
+		JMenuItem mnuList = new JMenuItem();
+		mnuList.setText("List Users");
+		mnuList.setActionCommand("list_user");
+		mnuList.addActionListener(new MenuActionListener());
+		
+        jMenuAdmin.add(mnuCreateNew);
+        jMenuAdmin.add(mnuList);
+        
         jMenuBar.add(jMenuMode);
+        jMenuBar.add(jMenuAdmin);
         setJMenuBar(jMenuBar);
         
 		pack();
@@ -84,6 +103,10 @@ public class JPlot extends JFrame {
 			} else if (e.getActionCommand().equalsIgnoreCase("administrator")) {
 				System.out.println("you chose administrator mode");
 				JPlotController.getInstance().changeMode(GridMode.ADMINISTRATOR_MODE);
+			} else if (e.getActionCommand().equals("create_user")) {
+				JPlotController.getInstance().createUser();
+			} else if (e.getActionCommand().equals("list_user")) {
+				JPlotController.getInstance().listUsers();
 			}
 		}
 		

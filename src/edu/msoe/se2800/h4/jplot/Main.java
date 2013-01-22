@@ -12,5 +12,4 @@ public class Main {
             controller.init();
         }
     }
-
 }
