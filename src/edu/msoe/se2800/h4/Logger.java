@@ -103,7 +103,7 @@ public enum Logger {
                             + ") was not the same as the number of args (" + args.length + ").");
                 }
                 for (String s : args) {
-                    message = message.replaceFirst("%s", s);
+                    StringUtils.replaceOnce(message, "%s", s);
                 }
 
                 // Print the message
