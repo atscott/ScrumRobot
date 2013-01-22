@@ -28,7 +28,7 @@ public class LoggerTest {
 
     @BeforeMethod
     public void setupTestEnv(){
-        File f = new File(logs.FILE_NAME);
+        File f = new File(Logger.FILE_NAME);
         if(f.exists()){
             f.delete();
         }
@@ -39,7 +39,7 @@ public class LoggerTest {
      */
     @Test(description = "This is testing to see that the correct log file is being written")
     public void validLogOutputFile() {
-        File f = new File(logs.FILE_NAME);
+        File f = new File(Logger.FILE_NAME);
         if(f.exists()){
             f.delete();
         }
@@ -53,7 +53,7 @@ public class LoggerTest {
     @Test(description = "This is a test for writing normally in the log file")
     public void validPrintInFile() throws FileNotFoundException {
         logs.log("LoggerTest", "testingprint");
-        File f = new File(logs.FILE_NAME);
+        File f = new File(Logger.FILE_NAME);
         Scanner scan = new Scanner(f);
         String s = scan.next().trim();
         Assert.assertEquals(s, "testingprint");
@@ -73,7 +73,7 @@ public class LoggerTest {
         String message = "This is a %s, %s";
         String[] args = new String[]{"%^$#%$#", "Test"};
         logs.log(tag, message, args);
-        Scanner scan = new Scanner(logs.FILE_NAME);
+        Scanner scan = new Scanner(Logger.FILE_NAME);
         String s = scan.next();
         Assert.assertEquals(s,date + " | " + "LoggerTest | " + "This is a %^$#%$# Test");
     }

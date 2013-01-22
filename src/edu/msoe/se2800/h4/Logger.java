@@ -16,7 +16,7 @@
 
 package edu.msoe.se2800.h4;
 
-import com.google.common.base.CharMatcher;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,7 +98,7 @@ public enum Logger {
                 mWriter.print(tag);
                 mWriter.print(" | ");
 
-                if (CharMatcher.anyOf("%s").countIn(message) != args.length) {
+                if (StringUtils.countMatches(message, "%s") != args.length) {
                     throw new IllegalArgumentException("The number of placeholders in (" + message
                             + ") was not the same as the number of args (" + args.length + ").");
                 }
