@@ -48,6 +48,11 @@ public class FileIO {
         filter = new FileNameExtensionFilter("Robot files", "scrumbot");
         chooser.setFileFilter(filter);
         chooser.showSaveDialog(directory);
-        return chooser.getSelectedFile();
+        File file = chooser.getSelectedFile();
+        String text = file.getAbsolutePath();
+        if(text.endsWith(".scrumbot")){
+        	file = new File(text+".scrumbot");
+        }
+        return file;
     }
 }
