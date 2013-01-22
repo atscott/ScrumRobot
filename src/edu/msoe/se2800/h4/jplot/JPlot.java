@@ -1,8 +1,13 @@
 package edu.msoe.se2800.h4.jplot;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.WindowConstants;
 
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
@@ -44,6 +49,32 @@ public class JPlot extends JFrame {
         
 		getContentPane().add(grid.getComponent());
 		
+		JMenuBar jMenuBar = new JMenuBar();
+		JMenu jMenuMode = new JMenu();
+		jMenuMode.setText("Operating Mode");
+		
+		JMenuItem mnuObserver = new JMenuItem();
+		mnuObserver.setText("Observer Mode");
+		mnuObserver.setActionCommand("observer");
+		mnuObserver.addActionListener(new MenuActionListener());
+		
+        JMenuItem mnuImmediate = new JMenuItem();
+        mnuImmediate.setText("Immediate Mode");
+        mnuImmediate.setActionCommand("immediate");
+        mnuImmediate.addActionListener(new MenuActionListener());
+        
+        JMenuItem mnuAdministrator = new JMenuItem();
+		mnuAdministrator.setText("Administrator Mode");
+		mnuAdministrator.setActionCommand("administrator");
+		mnuAdministrator.addActionListener(new MenuActionListener());
+		
+        jMenuMode.add(mnuObserver);
+        jMenuMode.add(mnuImmediate);
+        jMenuMode.add(mnuAdministrator);
+        
+        jMenuBar.add(jMenuMode);
+        setJMenuBar(jMenuBar);
+        
 		pack();
 		setVisible(true);
 		
@@ -59,6 +90,21 @@ public class JPlot extends JFrame {
 		grid.addPoint(new JPoint(36,36));
 		grid.addPoint(new JPoint(48,48));
 		grid.addPoint(new JPoint(60,60));
+	}
+	
+	public class MenuActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equalsIgnoreCase("observer")) {
+				System.out.println("you chose observer mode");
+			} else if (e.getActionCommand().equalsIgnoreCase("immediate")) {
+				System.out.println("you chose immediate mode");
+			} else if (e.getActionCommand().equalsIgnoreCase("administrator")) {
+				System.out.println("you chose administrator mode");
+			}
+		}
+		
 	}
 
 }
