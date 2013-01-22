@@ -17,8 +17,8 @@ import java.util.Map;
 public class DatabaseConnection {
     private static DatabaseConnection ourInstance = new DatabaseConnection();
 
-    private final String DB_NAME = "resources/userDB.mdb";
-    private final String TABLE_NAME = "users";
+    public final String DB_NAME = "resources/userDB.mdb";
+    public final String TABLE_NAME = "users";
     private Database db;
 
     public static DatabaseConnection getInstance() {
@@ -26,11 +26,23 @@ public class DatabaseConnection {
     }
 
     private DatabaseConnection() {
+        tryConnect(DB_NAME);
+    }
+
+    /**
+     * Tries to set the database to the
+     *
+     * @return
+     */
+    public boolean tryConnect(String dbName) {
+        boolean success = false;
         try {
-            db = Database.open(new File(DB_NAME));
+            db = Database.open(new File(dbName));
+            success = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            db = null;
         }
+        return success;
     }
 
     public boolean IsConnected() {
@@ -38,25 +50,23 @@ public class DatabaseConnection {
     }
 
     public boolean ValidateUser(String username, String password) throws IOException {
+        if(db==null){
+            throw new IOException("Database not connected");
+        }
+
         boolean valid = false;
 
         Table table = db.getTable(TABLE_NAME);
         Object name = username;
         Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", name));
-        String actualPassword = (String) row.get("password");
-        if (password.equals(actualPassword)) {
-            valid = true;
+        if (row != null) {
+            String actualPassword = (String) row.get("password");
+            if (password != null && password.equals(actualPassword)) {
+                valid = true;
+            }
         }
 
         return valid;
-    }
-
-    public static void main(String[] args) throws IOException {
-        DatabaseConnection.getInstance().test();
-    }
-
-    private void test() throws IOException {
-        System.out.println(db.getTable(TABLE_NAME).display());
     }
 
 
