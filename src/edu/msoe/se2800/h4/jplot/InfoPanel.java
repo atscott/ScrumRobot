@@ -1,21 +1,27 @@
 
 package edu.msoe.se2800.h4.jplot;
 
+import edu.msoe.se2800.h4.FileIO;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,9 +32,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import edu.msoe.se2800.h4.FileIO;
-import edu.msoe.se2800.h4.Path.BadFormatException;
 
 public class InfoPanel extends JPanel {
 
@@ -52,14 +55,15 @@ public class InfoPanel extends JPanel {
 
     public void initSubviews() {
         mSaveListener = new SaveListener();
-        
+
         Font font = new Font("Arial", Font.PLAIN, 12);
         xTextField = new JTextField(3);
         yTextField = new JTextField(3);
         xTextField.addKeyListener(new EnterListener());
         yTextField.addKeyListener(new EnterListener());
 
-        numPoints = new JLabel("Number of points: " + JPlotController.getInstance().getPathPoints().size());
+        numPoints = new JLabel("Number of points: "
+                + JPlotController.getInstance().getPath().size());
         numPoints.setFont(font);
 
         JLabel label = new JLabel("x, y");
@@ -70,7 +74,7 @@ public class InfoPanel extends JPanel {
 
         pointsList = new JList();
         pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 350));
-        pointsList.setListData(JPlotController.getInstance().getPathPoints().toArray());
+        pointsList.setListData(JPlotController.getInstance().getPath().toArray());
         pointsList.addMouseListener(new PointsMouseListener());
         pointsList.addListSelectionListener(new PointsListListener());
 
@@ -131,7 +135,7 @@ public class InfoPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        pointsList.setListData(JPlotController.getInstance().getPathPoints().toArray());
+        pointsList.setListData(JPlotController.getInstance().getPath().toArray());
         pointsList.repaint();
     }
 
@@ -140,8 +144,8 @@ public class InfoPanel extends JPanel {
         @Override
         public void valueChanged(ListSelectionEvent event) {
             if (event.getLastIndex() >= 0) {
-            	JPlotController.getInstance().setHighlightedPoint(event.getLastIndex());
-            	JPlotController.getInstance().getGrid().redraw();
+                JPlotController.getInstance().setHighlightedPoint(event.getLastIndex());
+                JPlotController.getInstance().getGrid().redraw();
             }
         }
 
@@ -180,27 +184,28 @@ public class InfoPanel extends JPanel {
             }
 
             File toSave = mPathFile;
-            
+
             // If performing save as... show the file chooser
             if (actionCommand.equalsIgnoreCase("save_as")) {
                 toSave = FileIO.save();
-                
+
                 // Save the fact that we nowhave a file for future use
                 mPathFile = toSave;
             }
-            
-            boolean fileWasSaved = false;
-            
+
             // If the save was not cancelled, save the path
             if (toSave != null) {
-                fileWasSaved = JPlotController.getInstance().getPath().writeToFile(toSave);
-            }
-            
-            // Report on success/failure
-            if (fileWasSaved) {
-                JOptionPane.showMessageDialog(null, "Path saved succesfully!");
-            } else {
-                JOptionPane.showMessageDialog(null, "An unknown error occurred while saving the Path.", "Uh-oh!", JOptionPane.ERROR_MESSAGE);
+                try {
+                    JPlotController.getInstance().getPath()
+                            .loadObject(new DataInputStream(new FileInputStream(toSave)));
+                    JOptionPane.showMessageDialog(null, "Path saved succesfully!");
+                } catch (FileNotFoundException e1) {
+                    // Already handled in the FileIO
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null,
+                            "An unknown error occurred while saving the Path.", "Uh-oh!",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     }
@@ -209,23 +214,22 @@ public class InfoPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            
-            int result = JOptionPane.showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?", JOptionPane.YES_NO_OPTION);
+
+            int result = JOptionPane
+                    .showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?",
+                            JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
-                
+
                 // We want to save
                 mSaveListener.actionPerformed(new ActionEvent(null, 0, "save"));
             }
-            
+
             mPathFile = FileIO.open();
             try {
-            	JPlotController.getInstance().getPath().readFromFile(mPathFile);
-            } catch (FileNotFoundException e1) {
-                JOptionPane.showMessageDialog(null, "The selected file is no longer available",
-                        "Uh-oh!", JOptionPane.ERROR_MESSAGE);
-            } catch (BadFormatException e1) {
-                JOptionPane.showMessageDialog(null,
-                        "The selected file is corrupt! You may be able to manually recover it.",
+                JPlotController.getInstance().getPath()
+                        .dumpObject(new DataOutputStream(new FileOutputStream(mPathFile)));
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(null, "Unable to access the file.",
                         "Uh-oh!", JOptionPane.ERROR_MESSAGE);
             }
             JPlotController.getInstance().getGrid().redraw();
@@ -237,9 +241,9 @@ public class InfoPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equalsIgnoreCase("zoom_in")) {
-            	JPlotController.getInstance().zoomIn();
+                JPlotController.getInstance().zoomIn();
             } else if (e.getActionCommand().equalsIgnoreCase("zoom_out")) {
-            	JPlotController.getInstance().zoomOut();
+                JPlotController.getInstance().zoomOut();
             }
         }
 
@@ -260,7 +264,7 @@ public class InfoPanel extends JPanel {
                 try {
                     int x = Integer.parseInt(xTextField.getText().toString());
                     int y = Integer.parseInt(yTextField.getText().toString());
-                    Point p = JPlotController.getInstance().getHighlightedPoint();
+                    JPoint p = JPlotController.getInstance().getHighlightedPoint();
                     if (p != null) {
                         p.x = x;
                         p.y = y;

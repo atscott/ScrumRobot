@@ -1,18 +1,12 @@
 package edu.msoe.se2800.h4.jplot;
 
-import java.awt.Point;
+import lejos.robotics.navigation.Waypoint;
 
-public class JPoint extends Point {
 
-	/** Generated serialVersionUID */
-	private static final long serialVersionUID = 4437812717373387975L;
+public class JPoint extends Waypoint {
 	
 	public JPoint(double x, double y) {
 		this((int)x, (int)y);
-	}
-	
-	public JPoint() {
-		super();
 	}
 	
 	public JPoint(int x, int y) {

@@ -14,7 +14,7 @@ public class PlotPanelImmediateDecorator extends PlotPanelDecorator {
 	}
 	
 	public void replacePoint(JPoint point) {
-		JPlotController.getInstance().getPathPoints().clear();
+		JPlotController.getInstance().getPath().clear();
 		JPlotController.getInstance().addPoint(point);
 		JPlotController.getInstance().getGrid().redraw();
 	}
