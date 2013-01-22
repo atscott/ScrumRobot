@@ -82,7 +82,7 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
 	 * @param p
 	 */
 	public void drawPoint(Graphics g, JPoint p) {
-		if (JPlotController.getInstance().getGrid().getHighlightedPoint() != null && JPlotController.getInstance().getGrid().getHighlightedPoint().x == p.x && JPlotController.getInstance().getGrid().getHighlightedPoint().y == p.y) {
+		if (JPlotController.getInstance().getHighlightedPoint() != null && JPlotController.getInstance().getHighlightedPoint().x == p.x && JPlotController.getInstance().getHighlightedPoint().y == p.y) {
 			g.setColor(Color.ORANGE);
 		}
 		JPoint temp = translateToLocation(p);

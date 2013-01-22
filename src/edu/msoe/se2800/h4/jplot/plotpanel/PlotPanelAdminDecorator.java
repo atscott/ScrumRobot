@@ -32,11 +32,11 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 				for (JPoint p : JPlotController.getInstance().getPathPoints()) {
 					if (p.x == point.x && p.y == point.y) {
 						found = true;
-						JPlotController.getInstance().getGrid().setHighlightedPoint(JPlotController.getInstance().getPathPoints().indexOf(p));
+						JPlotController.getInstance().setHighlightedPoint(JPlotController.getInstance().getPathPoints().indexOf(p));
 					}
 				}
 				if (found == false) {
-					JPlotController.getInstance().getGrid().setHighlightedPoint(-5);
+					JPlotController.getInstance().setHighlightedPoint(-5);
 				}
 				JPlotController.getInstance().getGrid().redraw();
 			} else if (event.getButton() == MouseEvent.BUTTON3) {

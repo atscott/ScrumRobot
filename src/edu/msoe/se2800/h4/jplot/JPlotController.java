@@ -36,12 +36,12 @@ public class JPlotController {
 	private JPlotController() {
 		path = new Path();
 		oldList = new ArrayList<JPoint>();
-		/*addPoint(new Point(10,20));
-		addPoint(new Point(10,30));
-		addPoint(new Point(10,40));
-		addPoint(new Point(20,20));
-		addPoint(new Point(40,30));
-		addPoint(new Point(60,5));*/
+		/*addPoint(new JPoint(10,20));
+		addPoint(new JPoint(10,30));
+		addPoint(new JPoint(10,40));
+		addPoint(new JPoint(20,20));
+		addPoint(new JPoint(40,30));
+		addPoint(new JPoint(60,5));*/
 		addPoint(new JPoint(0,0));
 		addPoint(new JPoint(12,12));
 		addPoint(new JPoint(24,24));

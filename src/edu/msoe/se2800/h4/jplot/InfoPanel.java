@@ -140,7 +140,7 @@ public class InfoPanel extends JPanel {
         @Override
         public void valueChanged(ListSelectionEvent event) {
             if (event.getLastIndex() >= 0) {
-            	JPlotController.getInstance().getGrid().setHighlightedPoint(event.getLastIndex());
+            	JPlotController.getInstance().setHighlightedPoint(event.getLastIndex());
             	JPlotController.getInstance().getGrid().redraw();
             }
         }
@@ -159,7 +159,7 @@ public class InfoPanel extends JPanel {
                     // left click only once
                     if (event.getClickCount() == 1) {
                         if (index >= 0) { // if they clicked on an actual JList item, continue
-                            JPlotController.getInstance().getGrid().setHighlightedPoint(index);
+                            JPlotController.getInstance().setHighlightedPoint(index);
                             JPlotController.getInstance().getGrid().redraw();
                         }
                     }
@@ -260,7 +260,7 @@ public class InfoPanel extends JPanel {
                 try {
                     int x = Integer.parseInt(xTextField.getText().toString());
                     int y = Integer.parseInt(yTextField.getText().toString());
-                    Point p = JPlotController.getInstance().getGrid().getHighlightedPoint();
+                    Point p = JPlotController.getInstance().getHighlightedPoint();
                     if (p != null) {
                         p.x = x;
                         p.y = y;
