@@ -1,17 +1,10 @@
 package edu.msoe.se2800.h4.jplot;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.io.IOException;
-import java.text.AttributedCharacterIterator;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -20,6 +13,7 @@ import static org.testng.Assert.*;
  * Date: 1/24/13
  */
 public class AxisPanelTest {
+    private final int TEST_DENSITY = 50;
 
     @Test(description = "This is testing to see that and exception is thrown if illegal orientation is sent",
             expectedExceptions = IllegalArgumentException.class)
@@ -39,22 +33,24 @@ public class AxisPanelTest {
         assertEquals((int) temp.getPreferredSize().getWidth(), Constants.Y_AXIS_WIDTH);
     }
 
-    @Test(description = "This is a test to make sure the expected number of indicators are drawn based on density")
+    @Test(description = "This is a test to make sure the expected number of indicators are drawn based on TEST_DENSITY")
     public void drawTest() {
-        int density = 50;
         CustomGraphics g = new CustomGraphics();
         AxisPanel temp = new AxisPanel(Constants.HORIZONTAL);
-        temp.drawAxisMarkersHorizontal(density, g);
-        assertTrue(g.drawStringCalls.size() == density + 1);
+        temp.drawAxisMarkersHorizontal(TEST_DENSITY, g);
+        //add one to the TEST_DENSITY because 0 is always drawn
+        assertTrue(g.drawStringCalls.size() == TEST_DENSITY + 1);
+        assertTrue(g.drawStringCalls.get(TEST_DENSITY)[0].equals(TEST_DENSITY * Constants.STEP_INCREMENT + ""));
     }
 
-    @Test(description = "This is a test to make sure the expected number of indicators are drawn based on density")
-    public void veritcalDrawTest(){
-        int density = 50;
+    @Test(description = "This is a test to make sure the expected number of indicators are drawn based on TEST_DENSITY")
+    public void veritcalDrawTest() {
         CustomGraphics g = new CustomGraphics();
         AxisPanel temp = new AxisPanel(Constants.VERTICAL);
-        temp.drawAxisMarkersHorizontal(density, g);
-        assertTrue(g.drawStringCalls.size() == density + 1);
+        temp.drawAxisMarkersHorizontal(TEST_DENSITY, g);
+        assertTrue(g.drawStringCalls.size() == TEST_DENSITY + 1);
+        //verify that the last call was drawing the number TEST_DENSITY*step_increment
+        assertTrue(g.drawStringCalls.get(TEST_DENSITY)[0].equals(TEST_DENSITY * Constants.STEP_INCREMENT + ""));
     }
 
     private class CustomGraphics extends DebugGraphics {
