@@ -22,15 +22,7 @@ public class UserListController {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
-	
-	//role parameter is either observer, programmer, or administrator
-	//can be changed to whatever the DB has the columns set to
-	public List<String> getMembersWithRole(String role) {
-		//TODO fetch all users and return their usernames in a List with the given role
-		
-		return null;
-	}
-	
+
 	public void onClose() {
 		//TODO update all users here
 		DefaultListModel observerModel = ui.getObserversListModel();

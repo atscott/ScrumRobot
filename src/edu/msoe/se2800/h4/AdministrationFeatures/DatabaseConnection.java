@@ -2,6 +2,7 @@ package edu.msoe.se2800.h4.AdministrationFeatures;
 
 import com.healthmarketscience.jackcess.Cursor;
 import com.healthmarketscience.jackcess.Database;
+import com.healthmarketscience.jackcess.Index;
 import com.healthmarketscience.jackcess.Table;
 
 import java.io.File;
@@ -129,9 +130,9 @@ public class DatabaseConnection {
         return permission;
     }
 
-    private String getRoleAsString(UserTypes role){
+    private String getRoleAsString(UserTypes role) {
         String roleString;
-        switch (role){
+        switch (role) {
             case OBSERVER:
                 roleString = "observer";
                 break;
@@ -148,22 +149,23 @@ public class DatabaseConnection {
     }
 
     public List<String> getUsernamesWithRole(UserTypes role) throws IOException {
-
         List<String> users = new ArrayList<String>();
-        UserTypes permission = UserTypes.OTHER;
+        //get the string value of the permission that we're looking for
+        String permissionToLookFor = getRoleAsString(role);
         Table table = db.getTable(TABLE_NAME);
-        //get the rows based on the permission column
-        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("permission", (Object) getRoleAsString(role)));
-        if (row != null) {
-
-            String username = (String) row.get("username");
-            if (role != null) {
+        for (Map<String, Object> row : table) {
+            //get the value of the permission in the current row
+            String currentRowPermission = (String) row.get((Object) "permission");
+            //if the row's permission is what we're looking for
+            if(currentRowPermission != null && currentRowPermission.equals(permissionToLookFor)){
+                //get the username for the row and add it to the list
+                users.add((String) row.get((Object) "username"));
             }
+
         }
 
         return users;
     }
-
 
 }
 

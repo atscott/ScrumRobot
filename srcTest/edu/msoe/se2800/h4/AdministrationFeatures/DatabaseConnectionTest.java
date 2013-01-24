@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -55,5 +56,18 @@ public class DatabaseConnectionTest {
         DatabaseConnection db = DatabaseConnection.getInstance();
         boolean retVal = db.ValidateUser("admin", "kwjerlkjwerlkjwer");
         assertEquals(retVal, false);
+    }
+
+    @Test
+    public void getOtherUsersWhichIsEmpty() throws IOException {
+        List<String> users = DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.OTHER);
+        assertTrue(users.size() == 0);
+    }
+
+    @Test
+    public void getAdminUsers() throws IOException{
+        List<String> users = DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.ADMIN);
+        //really, the only thing we know for sure is that the admin user is in the list
+        assertTrue(users.contains("admin"));
     }
 }
