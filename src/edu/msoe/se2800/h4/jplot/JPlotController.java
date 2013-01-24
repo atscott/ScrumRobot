@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import edu.msoe.se2800.h4.AdministrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.Path;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
@@ -81,6 +82,14 @@ public class JPlotController {
 		});
 	}
 	
+    public void changeMode(DatabaseConnection.UserTypes accessLevel) {
+        if (accessLevel == DatabaseConnection.UserTypes.ADMIN || accessLevel == DatabaseConnection.UserTypes.PROGRAMMER) {
+            changeMode(GridMode.ADMINISTRATOR_MODE);
+        } else {
+            changeMode(GridMode.OBSERVER_MODE);
+        }
+    }
+
 	public Path getPath() {
 		return path;
 	}
@@ -111,7 +120,7 @@ public class JPlotController {
 	}
 	
 	public void zoomIn() {
-		setGridDensity(getGridDensity()-1);
+		setGridDensity(getGridDensity() - 1);
 		grid.redraw();
 	}
 	

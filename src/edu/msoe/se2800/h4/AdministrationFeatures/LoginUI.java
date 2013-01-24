@@ -3,15 +3,11 @@ package edu.msoe.se2800.h4.AdministrationFeatures;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
-public class LoginUI {
+public class LoginUI extends JDialog {
 
     /**
      * TextField for the username
@@ -33,31 +29,31 @@ public class LoginUI {
      */
     String password = "";
 
+    private boolean successfullLogin = false;
+
     /**
      * Char array of the password
      */
     char[] passwordArray;
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        LoginUI ui = new LoginUI();
-
-    }
+    JButton loginBtn;
 
     /**
      * Constructor that initializes the UI
      */
     public LoginUI() {
-        JFrame frame = new JFrame();
+        setModal(true);
+        initComponents();
+    }
+
+    private void initComponents() {
         JPanel panel = new JPanel();
         JLabel usernameLabel = new JLabel("Username: ");
         JLabel passwordLabel = new JLabel("Password: ");
         usernameField = new JTextField(15);
         passwordField = new JPasswordField(15);
 
-        JButton loginBtn = new JButton("Login");
+        loginBtn = new JButton("Login");
         JButton cancelBtn = new JButton("Cancel");
         loginBtn.addActionListener(new BtnListener());
         cancelBtn.addActionListener(new BtnListener());
@@ -69,36 +65,46 @@ public class LoginUI {
         panel.add(loginBtn);
         panel.add(cancelBtn);
 
-        frame.add(panel);
-        frame.setTitle("Login");
-        frame.setResizable(false);
-        frame.setSize(300, 150);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
+        this.add(panel);
+        this.setTitle("Login");
+        this.setResizable(false);
+        this.setSize(300, 150);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        getRootPane().setDefaultButton(loginBtn);
+        this.setVisible(true);
     }
+
 
     /**
      * Method that returns the username
-     * 
+     *
      * @return String username
      */
     public String getUsername() {
-        return username;
+        return usernameField.getText();
+    }
+
+    /**
+     * @return true if the user successfully logged in before dialog closed
+     */
+    public boolean wasLoginSuccessful() {
+        return successfullLogin;
     }
 
     /**
      * Method that returns the password
-     * 
+     *
      * @return String password
      */
     public String getPassword() {
-        return password;
+        passwordArray = passwordField.getPassword();
+        return new String(passwordArray);
+
     }
 
     /**
      * Class that implements the ActionListener interface and has the commands for the buttons
-     * 
+     *
      * @author suckowm
      */
     private class BtnListener implements ActionListener {
@@ -106,13 +112,26 @@ public class LoginUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("Login")) {
-                username = usernameField.getText();
-                passwordArray = passwordField.getPassword();
-                password = new String(passwordArray);
-                // TODO Some sort of login feature
+                String error = "";
+                try {
+                    successfullLogin = DatabaseConnection.getInstance().ValidateUser(getUsername(), getPassword());
+                } catch (IOException e1) {
+                    successfullLogin = false;
+                    error = "Error connecting to database";
+                }
+
+                if (successfullLogin) {
+                    dispose();
+                } else {
+                    if (error.length() == 0) {
+                        error = "Unable to login with given credentials";
+                    }
+
+                    JOptionPane.showMessageDialog(LoginUI.this, error);
+                }
+
             } else {
-                // TODO Should we kill the program is cancel is selected or just go to the version
-                // where you can't do anything but watch?
+                LoginUI.this.dispose();
             }
 
         }

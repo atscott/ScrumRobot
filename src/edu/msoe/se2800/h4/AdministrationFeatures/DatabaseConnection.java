@@ -6,8 +6,7 @@ import com.healthmarketscience.jackcess.Table;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: scottat
@@ -15,11 +14,20 @@ import java.util.Map;
  * Time: 7:49 PM
  */
 public class DatabaseConnection {
+
+    public static enum UserTypes {
+        OBSERVER,
+        ADMIN,
+        PROGRAMMER,
+        OTHER
+    }
+
     private static DatabaseConnection ourInstance = new DatabaseConnection();
 
     public final String DB_NAME = "resources/userDB.mdb";
     public final String TABLE_NAME = "users";
     private Database db;
+    private static String lastSuccessfullyValidatedUser;
 
     public static DatabaseConnection getInstance() {
         return ourInstance;
@@ -30,9 +38,19 @@ public class DatabaseConnection {
     }
 
     /**
-     * Tries to set the database to the
+     * This can be used to get the currently logged in user unless validateUser ever gets called when a user does not
+     * actually log in.
      *
-     * @return
+     * @return the username of the last validated user
+     */
+    public String getLastSuccessfullyValidatedUser() {
+        return lastSuccessfullyValidatedUser;
+    }
+
+    /**
+     * Tries to set the database to the given path.
+     *
+     * @return true if the database was opened successfully
      */
     public boolean tryConnect(String dbName) {
         boolean success = false;
@@ -49,16 +67,23 @@ public class DatabaseConnection {
         return db != null;
     }
 
+    /**
+     * Validates given username, password combination against currently opened table
+     *
+     * @param username
+     * @param password
+     * @return true if username and password match the table
+     * @throws IOException
+     */
     public boolean ValidateUser(String username, String password) throws IOException {
-        if(db==null){
+        if (db == null) {
             throw new IOException("Database not connected");
         }
 
         boolean valid = false;
 
         Table table = db.getTable(TABLE_NAME);
-        Object name = username;
-        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", name));
+        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", (Object) username));
         if (row != null) {
             String actualPassword = (String) row.get("password");
             if (password != null && password.equals(actualPassword)) {
@@ -66,7 +91,39 @@ public class DatabaseConnection {
             }
         }
 
+        if (valid) {
+            lastSuccessfullyValidatedUser = username;
+        }
+
         return valid;
+    }
+
+    /**
+     * given the username of a user, gets the user's access type from the table
+     *
+     * @param username the username for the user
+     * @return the user's access mode
+     */
+    public UserTypes getUserRole(String username) throws IOException {
+        UserTypes permission = UserTypes.OTHER;
+        Table table = db.getTable(TABLE_NAME);
+        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", (Object) username));
+        if (row != null) {
+            String role = (String) row.get("permission");
+            if (role != null) {
+                if (role.equals("administrator")) {
+                    permission = UserTypes.ADMIN;
+                } else if (role.equals("observer")) {
+                    permission = UserTypes.OBSERVER;
+                } else if (role.equals("programmer")) {
+                    permission = UserTypes.PROGRAMMER;
+                }
+
+            }
+
+        }
+
+        return permission;
     }
 
 
