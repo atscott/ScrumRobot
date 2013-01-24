@@ -83,7 +83,7 @@ public class JPlot extends JFrame {
         jMenuAdmin.add(mnuList);
         
         jMenuBar.add(jMenuMode);
-        jMenuBar.add(jMenuAdmin);
+        //jMenuBar.add(jMenuAdmin);
         setJMenuBar(jMenuBar);
         
 		pack();
