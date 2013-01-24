@@ -191,6 +191,9 @@ public class InfoPanel extends JPanel {
                 toSave = FileIO.save();
 
                 // Save the fact that we nowhave a file for future use
+                if(!toSave.getPath().endsWith(".scrumbot")){
+                    toSave = new File(toSave.getPath() + ".scrumbot");
+                }
                 mPathFile = toSave;
             }
 
