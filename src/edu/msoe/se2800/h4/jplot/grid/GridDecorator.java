@@ -30,4 +30,9 @@ public abstract class GridDecorator implements GridInterface {
 	public Component getComponent() {
 		return grid.getComponent();
 	}
+
+    @Override
+    public void redraw() {
+        grid.redraw();
+    }
 }

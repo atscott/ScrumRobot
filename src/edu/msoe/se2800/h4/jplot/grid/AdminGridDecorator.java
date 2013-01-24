@@ -7,9 +7,6 @@ public class AdminGridDecorator extends GridDecorator {
 		super(grid);
 	}
 
-	@Override
-	public void redraw() {
-		grid.redraw();
-	}
+
 
 }

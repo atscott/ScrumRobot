@@ -14,9 +14,4 @@ public class ImmediateGridDecorator extends GridDecorator {
 		infoPanel.disableSubviews();
 	}
 
-	@Override
-	public void redraw() {
-		grid.redraw();
-	}
-
 }
