@@ -6,11 +6,6 @@ public class AdminGridDecorator extends GridDecorator {
 	public AdminGridDecorator(GridInterface grid) {
 		super(grid);
 	}
-	
-	@Override
-	public void initSubviews() {
-		super.initSubviews();
-	}
 
 	@Override
 	public void redraw() {

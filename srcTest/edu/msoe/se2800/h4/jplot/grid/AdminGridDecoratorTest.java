@@ -16,6 +16,9 @@ import static org.testng.Assert.*;
  */
 public class AdminGridDecoratorTest {
 
+    @Test
+    public void testTest(){
 
+    }
 
 }
