@@ -4,13 +4,11 @@ import com.healthmarketscience.jackcess.Cursor;
 import com.healthmarketscience.jackcess.Database;
 import com.healthmarketscience.jackcess.Index;
 import com.healthmarketscience.jackcess.Table;
+import org.apache.commons.lang.NotImplementedException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: scottat
@@ -130,6 +128,10 @@ public class DatabaseConnection {
         return permission;
     }
 
+    /**
+     * @param role The role enum to convert to string
+     * @return the string value that the table uses as the permission
+     */
     private String getRoleAsString(UserTypes role) {
         String roleString;
         switch (role) {
@@ -148,6 +150,11 @@ public class DatabaseConnection {
         return roleString;
     }
 
+    /**
+     * @param role role to search for
+     * @return the list of users with the given role.
+     * @throws IOException thrown if trouble accessing the table
+     */
     public List<String> getUsernamesWithRole(UserTypes role) throws IOException {
         List<String> users = new ArrayList<String>();
         //get the string value of the permission that we're looking for
@@ -157,7 +164,7 @@ public class DatabaseConnection {
             //get the value of the permission in the current row
             String currentRowPermission = (String) row.get((Object) "permission");
             //if the row's permission is what we're looking for
-            if(currentRowPermission != null && currentRowPermission.equals(permissionToLookFor)){
+            if (currentRowPermission != null && currentRowPermission.equals(permissionToLookFor)) {
                 //get the username for the row and add it to the list
                 users.add((String) row.get((Object) "username"));
             }
@@ -165,6 +172,76 @@ public class DatabaseConnection {
         }
 
         return users;
+    }
+
+    /**
+     * @param username    The username of the user to update
+     * @param newPassword the new password for the user
+     * @param newRole     the user's new permission role
+     * @throws IOException              thrown if error accessing table
+     * @throws IllegalArgumentException thrown if trying to change the admin role from something other than admin
+     */
+    public void changeUserInfo(String username, String newPassword, UserTypes newRole) throws IOException, IllegalArgumentException {
+        if (username == null || newPassword == null)
+            throw new NullPointerException("Cannot use null arguments");
+        if (username.equals("admin") && newRole != UserTypes.ADMIN)
+            throw new IllegalArgumentException("Cannot make the admin not an administrator");
+
+        Table table = db.getTable(TABLE_NAME);
+        Cursor cur = Cursor.createCursor(table);
+        //get the row for user
+        Map<String, Object> row = cur.findRow(table, Collections.singletonMap("username", (Object) username));
+        if (row != null) {
+        }
+
+        throw new NotImplementedException("Not implemented yet");
+
+    }
+
+
+    /**
+     * @param username username for user
+     * @param password the user's password
+     * @param role     the role for the user
+     * @throws IllegalArgumentException If there is a user with same username already in the table, this will get thrown
+     */
+    public void addUser(String username, String password, UserTypes role) throws IllegalArgumentException {
+        if (username == null || password == null)
+            throw new NullPointerException("Cannot use null arguments");
+        throw new NotImplementedException("Not implemented yet");
+    }
+
+    /**
+     * deletes user from table
+     *
+     * @param username user to delete
+     * @throws IllegalArgumentException thrown if try to delete administrator. Also thrown if user could not be found.
+     * Also thrown if attempting to delete the last successfully logged in user (the current user)
+     * @throws IOException              thrown if trouble accessing table
+     */
+    public void deleteUser(String username) throws IllegalArgumentException, IOException {
+        if (username == null) {
+            throw new NullPointerException("Cannot use null arguments");
+        }
+
+        if (username.equals("admin")) {
+            throw new IllegalArgumentException("Cannot delete admin");
+        }
+
+        if (username.equals(getLastSuccessfullyValidatedUser())) {
+            throw new IllegalArgumentException("Cannot delete logged in user");
+        }
+
+        Table table = db.getTable(TABLE_NAME);
+        Cursor cur = Cursor.createCursor(table);
+        //get the row for user
+        Map<String, Object> row = cur.findRow(table, Collections.singletonMap("username", (Object) username));
+        if (row == null) {
+            throw new IllegalArgumentException("Could not find user");
+        } else {
+            cur.deleteCurrentRow();
+        }
+
     }
 
 }
