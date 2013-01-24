@@ -81,28 +81,33 @@ public class InfoPanel extends JPanel {
 
         JButton zoomIn = new JButton("Zoom +");
         zoomIn.setFont(font);
+        zoomIn.setName("zoom_in");
         zoomIn.setActionCommand("zoom_in");
         zoomIn.addActionListener(new ZoomListener());
         zoomIn.setMargin(new Insets(0, 0, 0, 0));
 
         JButton zoomOut = new JButton("Zoom -");
         zoomOut.setFont(font);
+        zoomOut.setName("zoom_out");
         zoomOut.setActionCommand("zoom_out");
         zoomOut.addActionListener(new ZoomListener());
         zoomOut.setMargin(new Insets(0, 0, 0, 0));
 
         JButton load = new JButton("Load");
         load.setFont(font);
+        load.setName("load");
         load.setActionCommand("load");
         load.addActionListener(new LoadListener());
 
         JButton save = new JButton("Save");
         save.setFont(font);
+        save.setName("save");
         save.setActionCommand("save");
         save.addActionListener(mSaveListener);
 
         JButton saveAs = new JButton("Save as...");
         saveAs.setFont(font);
+        saveAs.setName("save_as");
         saveAs.setActionCommand("save_as");
         saveAs.addActionListener(mSaveListener);
 
