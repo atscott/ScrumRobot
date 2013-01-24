@@ -191,7 +191,7 @@ public class InfoPanel extends JPanel {
                 toSave = FileIO.save();
 
                 // Save the fact that we nowhave a file for future use
-                if(!toSave.getPath().endsWith(".scrumbot")){
+                if (!toSave.getPath().endsWith(".scrumbot")) {
                     toSave = new File(toSave.getPath() + ".scrumbot");
                 }
                 mPathFile = toSave;
@@ -201,7 +201,8 @@ public class InfoPanel extends JPanel {
             if (toSave != null) {
                 try {
                     JPlotController.getInstance().getPath()
-                            .loadObject(new DataInputStream(new FileInputStream(toSave)));
+                            .dumpObject(new DataOutputStream(new FileOutputStream(toSave)));
+
                     JOptionPane.showMessageDialog(null, "Path saved succesfully!");
                 } catch (FileNotFoundException e1) {
                     // Already handled in the FileIO
@@ -228,15 +229,18 @@ public class InfoPanel extends JPanel {
                 mSaveListener.actionPerformed(new ActionEvent(null, 0, "save"));
             }
 
-            mPathFile = FileIO.open();
-            try {
-                JPlotController.getInstance().getPath()
-                        .dumpObject(new DataOutputStream(new FileOutputStream(mPathFile)));
-            } catch (IOException e1) {
-                JOptionPane.showMessageDialog(null, "Unable to access the file.",
-                        "Uh-oh!", JOptionPane.ERROR_MESSAGE);
+            File tempPathFile = FileIO.open();
+            if (tempPathFile != null) {
+                try {
+                    JPlotController.getInstance().getPath()
+                            .loadObject(new DataInputStream(new FileInputStream(tempPathFile)));
+                    mPathFile = tempPathFile;
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Unable to access the file.",
+                            "Uh-oh!", JOptionPane.ERROR_MESSAGE);
+                }
+                JPlotController.getInstance().getGrid().redraw();
             }
-            JPlotController.getInstance().getGrid().redraw();
         }
     }
 
