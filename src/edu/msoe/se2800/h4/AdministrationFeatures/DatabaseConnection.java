@@ -20,6 +20,7 @@ public class DatabaseConnection {
     public static enum UserTypes {
         OBSERVER,
         ADMIN,
+
         PROGRAMMER,
         OTHER
     }
