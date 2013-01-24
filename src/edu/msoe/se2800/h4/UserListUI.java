@@ -36,7 +36,7 @@ public class UserListUI extends JDialog {
         //leave the controller the responsibility of closing the dialog and updating users
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                UserListUI.this.controller.onClose();
+                UserListUI.this.controller.onClose((DefaultListModel)listObservers.getModel(), (DefaultListModel)listProgrammers.getModel(), (DefaultListModel)listAdministrators.getModel());
                 dispose();
             }
         });

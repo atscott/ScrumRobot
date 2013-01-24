@@ -23,16 +23,14 @@ public class UserListController {
         }
     }
 
-	public void onClose() {
+	public void onClose(DefaultListModel observerModel, DefaultListModel programmerModel, DefaultListModel administratorModel) {
 		//TODO update all users here
-		DefaultListModel observerModel = ui.getObserversListModel();
 		//TODO go through each element in model and make sure they are set to observers in the database
 		
-		DefaultListModel programmerModel = ui.getObserversListModel();
 		//TODO go through each element in model and make sure they are set to observers in the database
 		
-		DefaultListModel administratorModel = ui.getObserversListModel();
 		//TODO go through each element in model and make sure they are set to observers in the database
+		
 		
 	}
 
