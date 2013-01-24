@@ -53,6 +53,13 @@ public class AxisPanelTest {
         assertTrue(g.drawStringCalls.get(TEST_DENSITY)[0].equals(TEST_DENSITY * Constants.STEP_INCREMENT + ""));
     }
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testNegativeDensity(){
+        CustomGraphics g = new CustomGraphics();
+        AxisPanel temp = new AxisPanel(Constants.VERTICAL);
+        temp.drawAxisMarkersHorizontal(-5, g);
+    }
+
     private class CustomGraphics extends DebugGraphics {
         public ArrayList<String[]> drawStringCalls = new ArrayList<String[]>();
 

@@ -37,9 +37,13 @@ public class AxisPanel extends JPanel {
     }
 
     /**
-     * Draws the x axis numbers
+     * Draws the x axis numbers. density must be at least 1 or IllegalArgumentException is thrown
      */
     public void drawAxisMarkersHorizontal(int density, Graphics g) {
+        if(density < 1){
+            throw new IllegalArgumentException("Density must be at least 1");
+        }
+
         g.setColor(Color.BLACK);
         int newWidth = Constants.GRID_WIDTH() + (Constants.GRID_WIDTH() / density);
         int counter = 0;
@@ -50,9 +54,13 @@ public class AxisPanel extends JPanel {
     }
 
     /**
-     * Draws the y axis numbers
+     * Draws the y axis numbers. density must be at least 1 or IllegalArgumentException is thrown
      */
     public void drawAxisMarkersVertical(int density, Graphics g) {
+        if(density < 1){
+            throw new IllegalArgumentException("Density must be at least 1");
+        }
+
         g.setColor(Color.BLACK);
         int newHeight = Constants.GRID_HEIGHT + (Constants.GRID_HEIGHT / density);
         int counter = 0;
