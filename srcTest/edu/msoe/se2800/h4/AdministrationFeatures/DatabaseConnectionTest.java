@@ -70,4 +70,8 @@ public class DatabaseConnectionTest {
         //really, the only thing we know for sure is that the admin user is in the list
         assertTrue(users.contains("admin"));
     }
+
+    //TODO tests for deleteUser
+    //TODO tests for addUser
+    //TODO tests for changeUserInfo
 }
