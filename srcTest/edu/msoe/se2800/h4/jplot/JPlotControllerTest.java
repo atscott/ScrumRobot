@@ -1,4 +1,4 @@
-package edu.msoe.se2800.h4;
+package edu.msoe.se2800.h4.jplot;
 
 import org.testng.annotations.BeforeClass;
 
