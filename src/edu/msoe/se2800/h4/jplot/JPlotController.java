@@ -9,6 +9,7 @@ import javax.swing.UIManager;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
+import edu.msoe.se2800.h4.UserListController;
 import edu.msoe.se2800.h4.UserListUI;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
@@ -39,7 +40,8 @@ public class JPlotController {
 
     private JPlotController() {
         path = new Path();
-        oldList = new ArrayList<Waypoint>();        /*addPoint(new Waypoint(10,20));
+        oldList = new ArrayList<Waypoint>();
+        /*addPoint(new Waypoint(10,20));
 		addPoint(new Waypoint(10,30));
 		addPoint(new Waypoint(10,40));
 		addPoint(new Waypoint(20,20));
@@ -90,7 +92,6 @@ public class JPlotController {
         } else {
             changeMode(GridMode.OBSERVER_MODE);
         }
-
     }
 
     public Path getPath() {
@@ -165,12 +166,10 @@ public class JPlotController {
     }
 
     public void listUsers() {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                //Turn off metal's use of bold fonts
-                UIManager.put("swing.boldMetal", Boolean.FALSE);
-                UserListUI.createAndShowGUI();
+                new UserListController();
             }
         });
-    }
+	}
 }
