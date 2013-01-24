@@ -5,12 +5,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
+import edu.msoe.se2800.h4.AdministrationFeatures.DatabaseConnection;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 import edu.msoe.se2800.h4.UserListController;
-import edu.msoe.se2800.h4.UserListUI;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 import edu.msoe.se2800.h4.jplot.grid.GridInterface;
@@ -86,8 +85,8 @@ public class JPlotController {
         });
     }
 
-    public void changeMode(Constants.UserTypes accessLevel) {
-        if (accessLevel == Constants.UserTypes.ADMIN || accessLevel == Constants.UserTypes.PROGRAMMER) {
+    public void changeMode(DatabaseConnection.UserTypes accessLevel) {
+        if (accessLevel == DatabaseConnection.UserTypes.ADMIN || accessLevel == DatabaseConnection.UserTypes.PROGRAMMER) {
             changeMode(GridMode.ADMINISTRATOR_MODE);
         } else {
             changeMode(GridMode.OBSERVER_MODE);

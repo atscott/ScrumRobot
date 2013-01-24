@@ -1,5 +1,8 @@
 package edu.msoe.se2800.h4;
 
+import edu.msoe.se2800.h4.AdministrationFeatures.DatabaseConnection;
+
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -9,8 +12,16 @@ public class UserListController {
 	private UserListUI ui;
 	
 	public UserListController() {
-		ui = new UserListUI(getMembersWithRole("observer"), getMembersWithRole("programmer"), getMembersWithRole("administrator"), this);
-	}
+        try {
+            ui = new UserListUI(
+                    DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.OBSERVER),
+                    DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.PROGRAMMER),
+                    DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.ADMIN),
+                    this);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
 	
 	//role parameter is either observer, programmer, or administrator
 	//can be changed to whatever the DB has the columns set to

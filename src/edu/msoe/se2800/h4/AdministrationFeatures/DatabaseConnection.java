@@ -3,11 +3,12 @@ package edu.msoe.se2800.h4.AdministrationFeatures;
 import com.healthmarketscience.jackcess.Cursor;
 import com.healthmarketscience.jackcess.Database;
 import com.healthmarketscience.jackcess.Table;
-import edu.msoe.se2800.h4.jplot.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,6 +18,12 @@ import java.util.Map;
  */
 public class DatabaseConnection {
 
+    public static enum UserTypes {
+        OBSERVER,
+        ADMIN,
+        PROGRAMMER,
+        OTHER
+    }
 
     private static DatabaseConnection ourInstance = new DatabaseConnection();
 
@@ -100,19 +107,19 @@ public class DatabaseConnection {
      * @param username the username for the user
      * @return the user's access mode
      */
-    public Constants.UserTypes getUserRole(String username) throws IOException {
-        Constants.UserTypes permission = Constants.UserTypes.OTHER;
+    public UserTypes getUserRole(String username) throws IOException {
+        UserTypes permission = UserTypes.OTHER;
         Table table = db.getTable(TABLE_NAME);
         Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", (Object) username));
         if (row != null) {
             String role = (String) row.get("permission");
             if (role != null) {
                 if (role.equals("administrator")) {
-                    permission = Constants.UserTypes.ADMIN;
+                    permission = UserTypes.ADMIN;
                 } else if (role.equals("observer")) {
-                    permission = Constants.UserTypes.OBSERVER;
+                    permission = UserTypes.OBSERVER;
                 } else if (role.equals("programmer")) {
-                    permission = Constants.UserTypes.PROGRAMMER;
+                    permission = UserTypes.PROGRAMMER;
                 }
 
             }
@@ -121,5 +128,42 @@ public class DatabaseConnection {
 
         return permission;
     }
+
+    private String getRoleAsString(UserTypes role){
+        String roleString;
+        switch (role){
+            case OBSERVER:
+                roleString = "observer";
+                break;
+            case ADMIN:
+                roleString = "administrator";
+                break;
+            case PROGRAMMER:
+                roleString = "programmer";
+                break;
+            default:
+                roleString = "";
+        }
+        return roleString;
+    }
+
+    public List<String> getUsernamesWithRole(UserTypes role) throws IOException {
+
+        List<String> users = new ArrayList<String>();
+        UserTypes permission = UserTypes.OTHER;
+        Table table = db.getTable(TABLE_NAME);
+        //get the rows based on the permission column
+        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("permission", (Object) getRoleAsString(role)));
+        if (row != null) {
+
+            String username = (String) row.get("username");
+            if (role != null) {
+            }
+        }
+
+        return users;
+    }
+
+
 }
 

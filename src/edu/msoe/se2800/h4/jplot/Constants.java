@@ -8,14 +8,7 @@ public class Constants {
 		ADMINISTRATOR_MODE,
 	}
 
-    public static enum UserTypes{
-        OBSERVER,
-        ADMIN,
-        PROGRAMMER,
-        OTHER
-    }
-	
-	/** These are dynamic values.  If anything in this class depends on these values, a getter
+    /** These are dynamic values.  If anything in this class depends on these values, a getter
 	 * should be implemented for thos values.
 	 */
 	public static GridMode CURRENT_MODE = GridMode.OBSERVER_MODE;
