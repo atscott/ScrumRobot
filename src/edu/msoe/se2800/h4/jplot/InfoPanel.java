@@ -60,20 +60,25 @@ public class InfoPanel extends JPanel {
         Font font = new Font("Arial", Font.PLAIN, 12);
         xTextField = new JTextField(3);
         yTextField = new JTextField(3);
+        xTextField.setName("x_textfield");
+        yTextField.setName("y_textfield");
         xTextField.addKeyListener(new EnterListener());
         yTextField.addKeyListener(new EnterListener());
 
         numPoints = new JLabel("Number of points: "
                 + JPlotController.getInstance().getPath().size());
         numPoints.setFont(font);
+        numPoints.setName("number_of_points");
 
         JLabel label = new JLabel("x, y");
+        label.setName("xy");
         label.setFont(font);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 20));
         add(label);
 
         pointsList = new JList();
+        pointsList.setName("points_list");
         pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 350));
         pointsList.setListData(JPlotController.getInstance().getPath().toArray());
         pointsList.addMouseListener(new PointsMouseListener());

@@ -1,5 +1,13 @@
 package edu.msoe.se2800.h4.jplot.grid;
 
+import edu.msoe.se2800.h4.jplot.AxisPanel;
+import edu.msoe.se2800.h4.jplot.Constants;
+import edu.msoe.se2800.h4.jplot.Constants.GridMode;
+import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanel;
+import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelAdminDecorator;
+import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelImmediateDecorator;
+import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelInterface;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -8,14 +16,6 @@ import java.awt.Graphics;
 import java.io.File;
 
 import javax.swing.JPanel;
-
-import edu.msoe.se2800.h4.jplot.AxisPanel;
-import edu.msoe.se2800.h4.jplot.Constants;
-import edu.msoe.se2800.h4.jplot.Constants.GridMode;
-import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanel;
-import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelAdminDecorator;
-import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelImmediateDecorator;
-import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelInterface;
 
 public class Grid extends JPanel implements GridInterface {
 	

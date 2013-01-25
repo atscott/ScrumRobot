@@ -1,7 +1,6 @@
 package edu.msoe.se2800.h4.jplot;
 
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
-import edu.msoe.se2800.h4.jplot.JPlot;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 
 import org.fest.swing.edt.GuiActionRunner;
@@ -50,6 +49,31 @@ public class InfoPanelGUITest extends FestSwingTestngTestCase {
     @Test
     public void saveAsButtonShouldBeAvailable() {
         mWindow.button("save_as").requireVisible().requireEnabled().requireText("Save as...");
+    }
+    
+    @Test
+    public void numberOfPointsLabelShouldBeVisible() {
+        mWindow.label("number_of_points").requireVisible();
+    }
+    
+    @Test
+    public void xYLabelShouldBeVisible() {
+        mWindow.label("xy").requireVisible();
+    }
+    
+    @Test
+    public void xFieldShouldBeAvailable() {
+        mWindow.textBox("x_textfield").requireVisible().requireEnabled();
+    }
+    
+    @Test
+    public void yFieldShouldBeAvailable() {
+        mWindow.textBox("y_textfield").requireVisible().requireEnabled();
+    }
+    
+    @Test
+    public void pointsListShouldBeAvailable() {
+        mWindow.list("points_list").requireVisible().requireEnabled();
     }
 
 }
