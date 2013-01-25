@@ -1,5 +1,5 @@
 
-package edu.msoe.se2800.h4.jplot.plotpanel;
+package edu.msoe.se2800.h4.jplot.plotPanel;
 
 import java.awt.Color;
 import java.awt.Component;

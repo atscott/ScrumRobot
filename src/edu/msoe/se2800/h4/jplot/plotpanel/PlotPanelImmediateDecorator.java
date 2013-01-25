@@ -1,4 +1,4 @@
-package edu.msoe.se2800.h4.jplot.plotpanel;
+package edu.msoe.se2800.h4.jplot.plotPanel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
