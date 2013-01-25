@@ -45,13 +45,13 @@ public class JPlotController {
 		addPoint(new Waypoint(10,40));
 		addPoint(new Waypoint(20,20));
 		addPoint(new Waypoint(40,30));
-		addPoint(new Waypoint(60,5));*/
+		addPoint(new Waypoint(60,5));
         addPoint(new Waypoint(0, 0));
         addPoint(new Waypoint(12, 12));
         addPoint(new Waypoint(24, 24));
         addPoint(new Waypoint(36, 36));
         addPoint(new Waypoint(48, 48));
-        addPoint(new Waypoint(60, 60));
+        addPoint(new Waypoint(60, 60));*/
     }
 
     public void init() {

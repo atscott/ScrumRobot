@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -80,6 +81,8 @@ public class InfoPanel extends JPanel {
         pointsList = new JList();
         pointsList.setName("points_list");
         pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 350));
+        ArrayList<String> points = new ArrayList<String>();
+        for (Object o : JPlotController.getInstance().getPath().toArray()) { points.add(((Waypoint)o).x+", "+((Waypoint)o).y); };
         pointsList.setListData(JPlotController.getInstance().getPath().toArray());
         pointsList.addMouseListener(new PointsMouseListener());
         pointsList.addListSelectionListener(new PointsListListener());
@@ -146,6 +149,8 @@ public class InfoPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        ArrayList<String> points = new ArrayList<String>();
+        for (Object o : JPlotController.getInstance().getPath().toArray()) { points.add(((Waypoint)o).x+", "+((Waypoint)o).y); };
         pointsList.setListData(JPlotController.getInstance().getPath().toArray());
         pointsList.repaint();
     }
