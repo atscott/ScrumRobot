@@ -46,6 +46,16 @@ public class LoginUI extends JDialog {
         initComponents();
     }
 
+    /**
+     * Allows for this to be used as a modal dialog for a parent JFrame
+     * @param parent
+     */
+    public LoginUI(JFrame parent){
+        super(parent);
+        setModal(true);
+        initComponents();
+    }
+
     private void initComponents() {
         JPanel panel = new JPanel();
         JLabel usernameLabel = new JLabel("Username: ");
