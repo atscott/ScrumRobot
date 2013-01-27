@@ -40,6 +40,8 @@ public class GridTest extends FestSwingTestngTestCase{
         thisWindow.show();
     }
 
+    //TODO this needs the @Test annotation
+    //TODO put javadoc in test description. what are normal conditions?
     /**
      * Testing addSubview under normal conditions
      */
@@ -52,6 +54,7 @@ public class GridTest extends FestSwingTestngTestCase{
         thisWindow.background().requireEqualTo(Color.BLACK);
     }
 
+    //TODO put javadoc in description
 	/**
 	 * makes sure the getters and setters for loadedFile work
 	 */
