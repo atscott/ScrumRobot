@@ -35,6 +35,7 @@ public class GridTest extends FestSwingTestngTestCase{
                 return new JPlot(Constants.GridMode.ADMINISTRATOR_MODE, new Grid());
             }
         });
+
         thisWindow = new FrameFixture(robot(), frame);
         thisWindow.show();
     }
