@@ -118,7 +118,7 @@ public class JPlotController {
     public void copyPoints() {
         oldList.clear();
         for (Waypoint j : path) {
-            oldList.add((Waypoint) j);
+            oldList.add(j);
         }
         path.clear();
         grid.redraw();
@@ -156,7 +156,7 @@ public class JPlotController {
         if (indexInPointsArray == -5) {
             this.highlightedPoint = null;
         } else {
-            this.highlightedPoint = (Waypoint) JPlotController.getInstance().getPath().get(indexInPointsArray);
+            this.highlightedPoint = JPlotController.getInstance().getPath().get(indexInPointsArray);
         }
     }
 
