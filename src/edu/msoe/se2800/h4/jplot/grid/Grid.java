@@ -100,7 +100,6 @@ public class Grid extends JPanel implements GridInterface {
 		g.clearRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 	}
 
-	//TODO see how i changed this? this is convention since the use of "this" shows that we are referring to an instance
     /**
      * @return this Grid to be added to the main GUI
      */

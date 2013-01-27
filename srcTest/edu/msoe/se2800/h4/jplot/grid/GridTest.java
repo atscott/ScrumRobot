@@ -2,7 +2,6 @@ package edu.msoe.se2800.h4.jplot.grid;
 
 import edu.msoe.se2800.h4.jplot.Constants;
 import edu.msoe.se2800.h4.jplot.JPlot;
-import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanel;
 import junit.framework.Assert;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
@@ -40,18 +39,9 @@ public class GridTest extends FestSwingTestngTestCase{
         thisWindow.show();
     }
 
-    //TODO this needs the @Test annotation
-    //TODO put javadoc in test description. what are normal conditions?
-    /**
-     * Testing addSubview under normal conditions
-     */
-    public void addSubViewNormalTest(PlotPanel pp, Object con){
-        con = BorderLayout.CENTER;
-    }
-
-    @Test
+    @Test(description = "Test to verify that the background has been painted correctly")
     public void paintComponentTest(){
-        thisWindow.background().requireEqualTo(Color.BLACK);
+        thisWindow.background().requireEqualTo(new Color(238,238,238));
     }
 
 	/**
