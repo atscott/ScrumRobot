@@ -16,17 +16,7 @@ public class GridTest extends FestSwingTestngTestCase{
 	
 	private Grid g = new Grid();
     private FrameFixture thisWindow;
-    //private JFrame jf = new JFrame();
-	/*
-	@BeforeClass
-    public void setupGridTesting() {
 
-        // Ensure that we dont get null pointer exceptions from Grid child views not being initialized
-        g.initSubviews();
-        jf.add(g);
-
-    }
-    */
     @Override
     protected void onSetUp() {
         JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
