@@ -18,6 +18,7 @@ public class InfoPanelTest {
 	
 	@Test
 	public void testDisableSubviews() {
+		infoPanel.disableSubviews();
 		for (Component c : infoPanel.getComponents()) {
 			Assert.assertFalse(c.isEnabled());
 		}
