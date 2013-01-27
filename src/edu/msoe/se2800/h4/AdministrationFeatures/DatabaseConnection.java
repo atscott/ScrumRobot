@@ -1,19 +1,23 @@
+
 package edu.msoe.se2800.h4.AdministrationFeatures;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.healthmarketscience.jackcess.Cursor;
 import com.healthmarketscience.jackcess.Database;
-import com.healthmarketscience.jackcess.Index;
 import com.healthmarketscience.jackcess.Table;
+
 import org.apache.commons.lang.NotImplementedException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
- * User: scottat
- * Date: 1/15/13
- * Time: 7:49 PM
+ * User: scottat Date: 1/15/13 Time: 7:49 PM
  */
 public class DatabaseConnection {
 
@@ -40,9 +44,9 @@ public class DatabaseConnection {
     }
 
     /**
-     * This can be used to get the currently logged in user unless validateUser ever gets called when a user does not
-     * actually log in.
-     *
+     * This can be used to get the currently logged in user unless validateUser ever gets called
+     * when a user does not actually log in.
+     * 
      * @return the username of the last validated user
      */
     public String getLastSuccessfullyValidatedUser() {
@@ -51,7 +55,7 @@ public class DatabaseConnection {
 
     /**
      * Tries to set the database to the given path.
-     *
+     * 
      * @return true if the database was opened successfully
      */
     public boolean tryConnect(String dbName) {
@@ -71,7 +75,7 @@ public class DatabaseConnection {
 
     /**
      * Validates given username, password combination against currently opened table
-     *
+     * 
      * @param username
      * @param password
      * @return true if username and password match the table
@@ -85,7 +89,8 @@ public class DatabaseConnection {
         boolean valid = false;
 
         Table table = db.getTable(TABLE_NAME);
-        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", (Object) username));
+        Map<String, Object> row = Cursor.findRow(table,
+                Collections.singletonMap("username", (Object) username));
         if (row != null) {
             String actualPassword = (String) row.get("password");
             if (password != null && password.equals(actualPassword)) {
@@ -102,14 +107,15 @@ public class DatabaseConnection {
 
     /**
      * given the username of a user, gets the user's access type from the table
-     *
+     * 
      * @param username the username for the user
      * @return the user's access mode
      */
     public UserTypes getUserRole(String username) throws IOException {
         UserTypes permission = UserTypes.OTHER;
         Table table = db.getTable(TABLE_NAME);
-        Map<String, Object> row = Cursor.findRow(table, Collections.singletonMap("username", (Object) username));
+        Map<String, Object> row = Cursor.findRow(table,
+                Collections.singletonMap("username", (Object) username));
         if (row != null) {
             String role = (String) row.get("permission");
             if (role != null) {
@@ -157,16 +163,16 @@ public class DatabaseConnection {
      */
     public List<String> getUsernamesWithRole(UserTypes role) throws IOException {
         List<String> users = new ArrayList<String>();
-        //get the string value of the permission that we're looking for
+        // get the string value of the permission that we're looking for
         String permissionToLookFor = getRoleAsString(role);
         Table table = db.getTable(TABLE_NAME);
         for (Map<String, Object> row : table) {
-            //get the value of the permission in the current row
-            String currentRowPermission = (String) row.get((Object) "permission");
-            //if the row's permission is what we're looking for
+            // get the value of the permission in the current row
+            String currentRowPermission = (String) row.get("permission");
+            // if the row's permission is what we're looking for
             if (currentRowPermission != null && currentRowPermission.equals(permissionToLookFor)) {
-                //get the username for the row and add it to the list
-                users.add((String) row.get((Object) "username"));
+                // get the username for the row and add it to the list
+                users.add((String) row.get("username"));
             }
 
         }
@@ -175,22 +181,24 @@ public class DatabaseConnection {
     }
 
     /**
-     * @param username    The username of the user to update
+     * @param username The username of the user to update
      * @param newPassword the new password for the user
-     * @param newRole     the user's new permission role
-     * @throws IOException              thrown if error accessing table
-     * @throws IllegalArgumentException thrown if trying to change the admin role from something other than admin
+     * @param newRole the user's new permission role
+     * @throws IOException thrown if error accessing table
+     * @throws IllegalArgumentException thrown if trying to change the admin role from something
+     *             other than admin
      */
-    public void changeUserInfo(String username, String newPassword, UserTypes newRole) throws IOException, IllegalArgumentException {
+    public void changeUserInfo(String username, String newPassword, UserTypes newRole)
+            throws IOException, IllegalArgumentException {
         if (username == null || newPassword == null)
             throw new NullPointerException("Cannot use null arguments");
         if (username.equals("admin") && newRole != UserTypes.ADMIN)
             throw new IllegalArgumentException("Cannot make the admin not an administrator");
 
         Table table = db.getTable(TABLE_NAME);
-        Cursor cur = Cursor.createCursor(table);
-        //get the row for user
-        Map<String, Object> row = cur.findRow(table, Collections.singletonMap("username", (Object) username));
+        // get the row for user
+        Map<String, Object> row = Cursor.findRow(table,
+                Collections.singletonMap("username", (Object) username));
         if (row != null) {
         }
 
@@ -198,14 +206,15 @@ public class DatabaseConnection {
 
     }
 
-
     /**
      * @param username username for user
      * @param password the user's password
-     * @param role     the role for the user
-     * @throws IllegalArgumentException If there is a user with same username already in the table, this will get thrown
+     * @param role the role for the user
+     * @throws IllegalArgumentException If there is a user with same username already in the table,
+     *             this will get thrown
      */
-    public void addUser(String username, String password, UserTypes role) throws IllegalArgumentException {
+    public void addUser(String username, String password, UserTypes role)
+            throws IllegalArgumentException {
         if (username == null || password == null)
             throw new NullPointerException("Cannot use null arguments");
         throw new NotImplementedException("Not implemented yet");
@@ -213,16 +222,15 @@ public class DatabaseConnection {
 
     /**
      * deletes user from table
-     *
+     * 
      * @param username user to delete
-     * @throws IllegalArgumentException thrown if try to delete administrator. Also thrown if user could not be found.
-     * Also thrown if attempting to delete the last successfully logged in user (the current user)
-     * @throws IOException              thrown if trouble accessing table
+     * @throws IllegalArgumentException thrown if try to delete administrator. Also thrown if user
+     *             could not be found. Also thrown if attempting to delete the last successfully
+     *             logged in user (the current user)
+     * @throws IOException thrown if trouble accessing table
      */
     public void deleteUser(String username) throws IllegalArgumentException, IOException {
-        if (username == null) {
-            throw new NullPointerException("Cannot use null arguments");
-        }
+        checkNotNull(username, "Cannot use null arguments");
 
         if (username.equals("admin")) {
             throw new IllegalArgumentException("Cannot delete admin");
@@ -234,15 +242,18 @@ public class DatabaseConnection {
 
         Table table = db.getTable(TABLE_NAME);
         Cursor cur = Cursor.createCursor(table);
-        //get the row for user
-        Map<String, Object> row = cur.findRow(table, Collections.singletonMap("username", (Object) username));
-        if (row == null) {
-            throw new IllegalArgumentException("Could not find user");
-        } else {
+        // get the row for user
+        boolean foundUser = cur.findRow(Collections.singletonMap("username", (Object) username));
+        if (foundUser) {
             cur.deleteCurrentRow();
+        } else {
+            throw new IllegalArgumentException("Could not find user");
+
+            // TODO @Andrew: consider returning a boolean on whether the user was successfully
+            // deleted or not instead of an illegal arg exception. This seems cleaner and makes it
+            // usable in the system. Plus it leaves exceptions to truly odd cases.
+            // return foundUser;
+
         }
-
     }
-
 }
-

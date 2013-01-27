@@ -15,16 +15,17 @@ import static org.testng.Assert.*;
 public class AxisPanelTest {
     private final int TEST_DENSITY = 50;
 
+    @SuppressWarnings("unused")
     @Test(description = "This is testing to see that and exception is thrown if illegal orientation is sent",
             expectedExceptions = IllegalArgumentException.class)
     public void illegalOrientationTest() {
-        AxisPanel temp = new AxisPanel(4567);
+        new AxisPanel(4567);
     }
 
     @Test(description = "This is a test to make sure the panel can get initialized with both orientations")
     public void legalOrientationTest() {
         AxisPanel temp = new AxisPanel(Constants.HORIZONTAL);
-        //if the horizontal is intiiated, the panel should have the height of the x axis and the width of the entire grid
+        //if the horizontal is initiated, the panel should have the height of the x axis and the width of the entire grid
         //That is, the panel should span across the entire grid and the height should be what is predefined
         assertEquals((int) temp.getPreferredSize().getHeight(), Constants.X_AXIS_HEIGHT);
         assertEquals((int) temp.getPreferredSize().getWidth(), Constants.GRID_WIDTH());

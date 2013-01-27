@@ -1,15 +1,14 @@
 package edu.msoe.se2800.h4.AdministrationFeatures;
 
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.List;
-
-import static org.testng.Assert.*;
 
 /**
  * User: scottat

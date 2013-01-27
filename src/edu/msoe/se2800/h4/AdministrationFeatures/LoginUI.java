@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class LoginUI extends JDialog {
 
     /**
