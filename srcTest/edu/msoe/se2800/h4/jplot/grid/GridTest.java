@@ -1,79 +1,56 @@
 package edu.msoe.se2800.h4.jplot.grid;
 
-import java.io.File;
-
+import edu.msoe.se2800.h4.jplot.Constants;
+import edu.msoe.se2800.h4.jplot.JPlot;
+import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanel;
 import junit.framework.Assert;
-
-import org.testng.annotations.BeforeClass;
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.testng.testcase.FestSwingTestngTestCase;
 import org.testng.annotations.Test;
 
-import edu.msoe.se2800.h4.jplot.grid.Grid;
+import java.awt.*;
+import java.io.File;
 
-public class GridTest {
+public class GridTest extends FestSwingTestngTestCase{
 	
 	private Grid g = new Grid();
-	
+    private FrameFixture thisWindow;
+    //private JFrame jf = new JFrame();
+	/*
 	@BeforeClass
     public void setupGridTesting() {
 
         // Ensure that we dont get null pointer exceptions from Grid child views not being initialized
         g.initSubviews();
+        jf.add(g);
+
+    }
+    */
+    @Override
+    protected void onSetUp() {
+        JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
+            protected JPlot executeInEDT() {
+                return new JPlot(Constants.GridMode.ADMINISTRATOR_MODE, new Grid());
+            }
+        });
+        thisWindow = new FrameFixture(robot(), frame);
+        thisWindow.show();
     }
 
-	/**
-	 * ensuring that adding a point adds the correct point
-	 */
-	/*@Test(dependsOnMethods = {"testNullPath"})
-	public void testAddPoint() {
-		g.addPoint(new JPoint(1,2));
-		Assert.assertEquals(g.getPathPoints().size(), 1);
-		Assert.assertEquals(g.getPathPoints().get(0).x, 1);
-		Assert.assertEquals(g.getPathPoints().get(0).y, 2);
-	}*///TODO mode to JPlotController test
-	
-	/**
-	 * makes sure getting the list of points does not return null
-	 */
-	/*@Test
-	public void testNullPointsList() {
-		Assert.assertNotNull(g.getPathPoints());
-	}*///TODO mode to JPlotController test
-	
-	/**
-	 * makes sure the getters and setters for GridDensity are working
-	 * and will not let the density go below 1
-	 */
-	/*@Test
-	public void testGridDensity() {
-		g.setGridDensity(5);
-		Assert.assertEquals(g.getGridDensity(), 5);
-		
-		g.setGridDensity(0);
-		Assert.assertEquals(g.getGridDensity(), 1);//Grid should not let density drop below 1
-	}*///TODO mode to JPlotController test
-	
-	/**
-	 * ensures that the zoom in method only zooms in by one step
-	 * will require testGridDensity() to pass
-	 */
-	/*@Test(dependsOnMethods = { "testGridDensity" })
-	public void testZoomIn() {
-		g.setGridDensity(10);
-		g.zoomIn();
-		Assert.assertEquals(g.getGridDensity(), 9);
-	}*///TODO mode to JPlotController test
-	
-	/**
-	 * ensures that the zoom out method only zooms out by one step
-	 * will require testGridDensity() to pass
-	 */
-	/*@Test(dependsOnMethods = { "testGridDensity" })
-	public void testZoomOut() {
-		g.setGridDensity(10);
-		g.zoomOut();
-		Assert.assertEquals(g.getGridDensity(), 11);
-	}*///TODO mode to JPlotController test
-	
+    /**
+     * Testing addSubview under normal conditions
+     */
+    public void addSubViewNormalTest(PlotPanel pp, Object con){
+        con = BorderLayout.CENTER;
+    }
+
+    @Test
+    public void paintComponentTest(){
+        thisWindow.background().requireEqualTo(Color.BLACK);
+    }
+
 	/**
 	 * makes sure the getters and setters for loadedFile work
 	 */
