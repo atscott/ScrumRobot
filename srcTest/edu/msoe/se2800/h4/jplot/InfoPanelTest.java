@@ -1,9 +1,10 @@
 package edu.msoe.se2800.h4.jplot;
 
+import java.awt.Component;
+
+import org.junit.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import edu.msoe.se2800.h4.jplot.InfoPanel;
 
 public class InfoPanelTest {
 	
@@ -12,22 +13,13 @@ public class InfoPanelTest {
 	@BeforeClass
     public void setupGridTesting() {
         infoPanel = new InfoPanel();
+        infoPanel.initSubviews();
     }
 	
 	@Test
-	public void testInitSubviews() {
-		infoPanel.initSubviews();
+	public void testDisableSubviews() {
+		for (Component c : infoPanel.getComponents()) {
+			Assert.assertFalse(c.isEnabled());
+		}
 	}
-
-	/**
-	 * ensuring that adding a point adds the correct point
-	 */
-	/*@Test(dependsOnMethods = {"testNullPath"})
-	public void testAddPoint() {
-		g.addPoint(new JPoint(1,2));
-		Assert.assertEquals(g.getPathPoints().size(), 1);
-		Assert.assertEquals(g.getPathPoints().get(0).x, 1);
-		Assert.assertEquals(g.getPathPoints().get(0).y, 2);
-	}*/
-
 }
