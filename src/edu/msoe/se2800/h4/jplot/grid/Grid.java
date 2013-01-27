@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
+//TODO overall, what does this class do? what funcationality does it provide? how do i use it
 public class Grid extends JPanel implements GridInterface {
 	
 	/**
@@ -36,7 +37,7 @@ public class Grid extends JPanel implements GridInterface {
 	}
 
     /**
-     * Sets the x & y axis panels. Adds the center panel based on mode
+     * Adds the x & y axis. Adds the center panel based on {@link GridMode}
      */
 	@Override
 	public void initSubviews() {
@@ -54,6 +55,7 @@ public class Grid extends JPanel implements GridInterface {
 		add(plotPanel.getComponent(), BorderLayout.CENTER);
 	}
 
+	//TODO what are these params? what are the decorators?
     /**
      * Used to add as a subview for the Decorators
      * @param c
@@ -73,21 +75,20 @@ public class Grid extends JPanel implements GridInterface {
 	}
 
     /**
-     * Returns the Loaded File
-     * @return
+     * @return the loaded file
      */
 	public File getLoadedPathFile() {
 		return loadedFile;
 	}
 
     /**
-     * Sets the Load File Path
-     * @param file
+     * @param file that contains the path to load
      */
 	public void setLoadedPathFile(File file) {
 		this.loadedFile = file;
 	}
 
+	//TODO what is this param?
     /**
      * Sets the background color of the grid and repaints
      * @param g
@@ -99,9 +100,9 @@ public class Grid extends JPanel implements GridInterface {
 		g.clearRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 	}
 
+	//TODO see how i changed this? this is convention since the use of "this" shows that we are referring to an instance
     /**
-     * Returns the grid to be added to the mainGUI
-     * @return
+     * @return this Grid to be added to the main GUI
      */
 	@Override
 	public Component getComponent() {
