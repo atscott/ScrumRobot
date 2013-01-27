@@ -8,14 +8,9 @@ import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelAdminDecorator;
 import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelImmediateDecorator;
 import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelInterface;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
-
-import javax.swing.JPanel;
 
 public class Grid extends JPanel implements GridInterface {
 	
@@ -28,6 +23,9 @@ public class Grid extends JPanel implements GridInterface {
 	private AxisPanel xAxisPanel, yAxisPanel;
 	private File loadedFile;
 
+    /**
+     * Grid constructor, setting layout and size
+     */
 	public Grid() {
 		
 		setLayout(new BorderLayout());
@@ -36,7 +34,10 @@ public class Grid extends JPanel implements GridInterface {
 		
 		redraw();
 	}
-	
+
+    /**
+     * Sets the x & y axis panels. Adds the center panel based on mode
+     */
 	@Override
 	public void initSubviews() {
 		plotPanel = new PlotPanel();
@@ -52,25 +53,45 @@ public class Grid extends JPanel implements GridInterface {
 		add(yAxisPanel, BorderLayout.WEST);
 		add(plotPanel.getComponent(), BorderLayout.CENTER);
 	}
-	
+
+    /**
+     * Used to add as a subview for the Decorators
+     * @param c
+     * @param constraints
+     */
 	@Override
 	public void addSubview(Component c, Object constraints) {
 		add(c, constraints);
 	}
-	
+
+    /**
+     * Repaints the frame
+     */
 	@Override
 	public void redraw() {
 		repaint();
 	}
-	
+
+    /**
+     * Returns the Loaded File
+     * @return
+     */
 	public File getLoadedPathFile() {
 		return loadedFile;
 	}
-	
+
+    /**
+     * Sets the Load File Path
+     * @param file
+     */
 	public void setLoadedPathFile(File file) {
 		this.loadedFile = file;
 	}
-	
+
+    /**
+     * Sets the background color of the grid and repaints
+     * @param g
+     */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -78,6 +99,10 @@ public class Grid extends JPanel implements GridInterface {
 		g.clearRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 	}
 
+    /**
+     * Returns the grid to be added to the mainGUI
+     * @return
+     */
 	@Override
 	public Component getComponent() {
 		return this;

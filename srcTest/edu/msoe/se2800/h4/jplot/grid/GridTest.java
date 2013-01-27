@@ -54,11 +54,10 @@ public class GridTest extends FestSwingTestngTestCase{
         thisWindow.background().requireEqualTo(Color.BLACK);
     }
 
-    //TODO put javadoc in description
 	/**
 	 * makes sure the getters and setters for loadedFile work
 	 */
-	@Test
+	@Test(description =  "Testing getters and setters for loadedFile")
 	public void testLoadedFile() {
 		File f = new File("file.txt");
 		g.setLoadedPathFile(f);
