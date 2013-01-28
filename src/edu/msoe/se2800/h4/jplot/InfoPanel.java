@@ -83,7 +83,7 @@ public class InfoPanel extends JPanel {
         pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 350));
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) { points.add(((Waypoint)o).x+", "+((Waypoint)o).y); };
-        pointsList.setListData(JPlotController.getInstance().getPath().toArray());
+        pointsList.setListData(points.toArray());
         pointsList.addMouseListener(new PointsMouseListener());
         pointsList.addListSelectionListener(new PointsListListener());
 
@@ -151,7 +151,7 @@ public class InfoPanel extends JPanel {
         super.paintComponent(g);
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) { points.add(((Waypoint)o).x+", "+((Waypoint)o).y); };
-        pointsList.setListData(JPlotController.getInstance().getPath().toArray());
+        pointsList.setListData(points.toArray());
         pointsList.repaint();
     }
 
