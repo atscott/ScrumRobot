@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-//TODO overall, what does this class do? what funcationality does it provide? how do i use it
 public class Grid extends JPanel implements GridInterface {
 	
 	/**
@@ -55,7 +54,6 @@ public class Grid extends JPanel implements GridInterface {
 		add(plotPanel.getComponent(), BorderLayout.CENTER);
 	}
 
-	//TODO what are these params? what are the decorators?
     /**
      * Used to add as a subview for the Decorators
      * @param c
@@ -88,7 +86,6 @@ public class Grid extends JPanel implements GridInterface {
 		this.loadedFile = file;
 	}
 
-	//TODO what is this param?
     /**
      * Sets the background color of the grid and repaints
      * @param g
