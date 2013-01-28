@@ -15,7 +15,7 @@
       </packages>
   </test> <!-- Parallel -->
   
-  <test name="Sequential" thread-count="1">
+  <test name="Sequential" thread-count="1" parallel="false">
       <groups>
           <run>
               <include name="requiresSequential" />
