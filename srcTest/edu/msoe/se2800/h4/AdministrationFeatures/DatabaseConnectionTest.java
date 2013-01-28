@@ -15,6 +15,7 @@ import java.util.List;
  * Date: 1/21/13
  * Time: 10:43 AM
  */
+@Test(groups={"requiresSequential"})
 public class DatabaseConnectionTest {
 
     @BeforeMethod
