@@ -224,12 +224,11 @@ public class DatabaseConnection {
      * deletes user from table
      * 
      * @param username user to delete
-     * @throws IllegalArgumentException thrown if try to delete administrator. Also thrown if user
-     *             could not be found. Also thrown if attempting to delete the last successfully
-     *             logged in user (the current user)
+     * @throws IllegalArgumentException thrown if try to delete administrator. Also thrown if
+     *             attempting to delete the last successfully logged in user (the current user)
      * @throws IOException thrown if trouble accessing table
      */
-    public void deleteUser(String username) throws IllegalArgumentException, IOException {
+    public boolean deleteUser(String username) throws IllegalArgumentException, IOException {
         checkNotNull(username, "Cannot use null arguments");
 
         if (username.equals("admin")) {
@@ -246,14 +245,7 @@ public class DatabaseConnection {
         boolean foundUser = cur.findRow(Collections.singletonMap("username", (Object) username));
         if (foundUser) {
             cur.deleteCurrentRow();
-        } else {
-            throw new IllegalArgumentException("Could not find user");
-
-            // TODO @Andrew: consider returning a boolean on whether the user was successfully
-            // deleted or not instead of an illegal arg exception. This seems cleaner and makes it
-            // usable in the system. Plus it leaves exceptions to truly odd cases.
-            // return foundUser;
-
         }
+        return foundUser;
     }
 }

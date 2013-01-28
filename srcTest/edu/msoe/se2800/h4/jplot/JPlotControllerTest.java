@@ -12,6 +12,7 @@ import edu.msoe.se2800.h4.AdministrationFeatures.DatabaseConnection;
  * I found no need to test getters, so those are emitted.
  * @author Josh Ault
  */
+@Test(groups={"requiresSequential"})
 public class JPlotControllerTest {
 	
 	private JPlotController controller = JPlotController.getInstance();
