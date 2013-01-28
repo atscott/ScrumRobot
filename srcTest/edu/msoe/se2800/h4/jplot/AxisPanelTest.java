@@ -12,6 +12,7 @@ import static org.testng.Assert.*;
  * User: scottat
  * Date: 1/24/13
  */
+@Test(groups={"requiresSequential"})
 public class AxisPanelTest {
     private final int TEST_DENSITY = 50;
 

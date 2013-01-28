@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+@Test(groups={"requiresSequential"})
 public class InfoPanelTest {
 	
 	private InfoPanel infoPanel;

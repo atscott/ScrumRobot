@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="ScrumRobot" parallel="classes">
-  <test name="All">
+<suite name="ScrumRobot" parallel="false">
+  <test name="Parallel" parallel="classes">
+      <groups>
+          <run>
+              <exclude name="requiresSequential" />
+          </run>
+      </groups>
       <packages>
           <package name="edu.msoe.se2800.h4" />
+          <package name="edu.msoe.se2800.h4.jplot" />
+          <package name="edu.msoe.se2800.h4.jplot.grid" />
+          <package name="edu.msoe.se2800.h4.jplot.plotPanel" />
       </packages>
-  </test> <!-- All -->
+  </test> <!-- Parallel -->
+  
+  <test name="Sequential" thread-count="1">
+      <groups>
+          <run>
+              <include name="requiresSequential" />
+          </run>
+      </groups>
+      <packages>
+          <package name="edu.msoe.se2800.h4" />
+          <package name="edu.msoe.se2800.h4.jplot" />
+          <package name="edu.msoe.se2800.h4.jplot.grid" />
+          <package name="edu.msoe.se2800.h4.jplot.plotPanel" />
+      </packages>
+  </test> <!-- Sequential -->
 </suite> <!-- ScrumRobot -->

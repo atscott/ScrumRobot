@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import lejos.robotics.navigation.Waypoint;
 
+@Test(groups={"requiresSequential"})
 public class PlotPanelTest {
 
     private PlotPanel mPlot;
@@ -59,7 +60,7 @@ public class PlotPanelTest {
     }
 
     @DataProvider
-    private Object[] roundData() {
+    private Object[][] roundData() {
         return new Object[][] {
                 {
                         Float.valueOf(0), 1, Float.valueOf(0), Float.valueOf(0)
