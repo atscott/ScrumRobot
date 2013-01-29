@@ -10,17 +10,29 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
+
 import lejos.robotics.navigation.Waypoint;
 
-@Test(groups={"requiresSequential"})
+@Test(groups = {
+        "requiresSequential"
+})
 public class PlotPanelTest {
 
     private PlotPanel mPlot;
     private JPlotController mController;
 
     @BeforeClass
-    public void beforeClass() {
-        mPlot = new PlotPanel();
+    public void beforeClass() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(new Runnable() {
+
+            @Override
+            public void run() {
+                mPlot = new PlotPanel();
+            }
+        });
     }
 
     @BeforeMethod
@@ -43,18 +55,18 @@ public class PlotPanelTest {
         float result = mPlot.round(valueToRound);
         assertEquals(result, expected, delta);
     }
-    
-    @Test(enabled=false)
+
+    @Test(enabled = false)
     public void testTranslateToLocation() {
         fail("unimplimented. Not sure what this method should do.");
     }
-    
-    @Test(enabled=false)
+
+    @Test(enabled = false)
     public void testTranslateToNearestPoint() {
         fail("unimplimented. Not sure what this method should do.");
     }
-    
-    @Test(enabled=false)
+
+    @Test(enabled = false)
     public void testGetInterceptedPoint() {
         fail("unimplimented. Not sure what this method should do.");
     }
