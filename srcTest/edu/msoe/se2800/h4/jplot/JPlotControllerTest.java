@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import edu.msoe.se2800.h4.AdministrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 
 /**
  * I found no need to test getters, so those are emitted.

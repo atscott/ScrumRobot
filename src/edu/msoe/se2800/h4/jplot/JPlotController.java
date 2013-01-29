@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import edu.msoe.se2800.h4.AdministrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 import edu.msoe.se2800.h4.UserListController;
