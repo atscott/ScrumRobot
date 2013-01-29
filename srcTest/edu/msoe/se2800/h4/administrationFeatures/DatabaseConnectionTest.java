@@ -77,21 +77,27 @@ public class DatabaseConnectionTest {
     //TODO tests for changeUserInfo
     @Test
     public void changeAdminPasswordTest() throws IOException {
-//        DatabaseConnection db = DatabaseConnection.getInstance();
-//        db.addUser("qazwsxedcrfv", "test", DatabaseConnection.UserTypes.ADMIN);
-//        db.changeUserInfo("qazwsxedcrfv", "ddd", DatabaseConnection.UserTypes.ADMIN);
-//        //verify you can log in with new credentials
-//        boolean retVal = db.ValidateUser("qazwsxedcrfv", "ddd");
-//        assertEquals(retVal, true);
-//        db.deleteUser("qazwsxedcrfv");
         DatabaseConnection db = DatabaseConnection.getInstance();
-        db.changeUserInfo("admin", "ddd", DatabaseConnection.UserTypes.ADMIN);
+        db.addUser("qazwsxedcrfv", "test", DatabaseConnection.UserTypes.ADMIN);
+        db.changeUserInfo("qazwsxedcrfv", "ddd", DatabaseConnection.UserTypes.ADMIN);
         //verify you can log in with new credentials
-        boolean retVal = db.ValidateUser("admin", "ddd");
+        boolean retVal = db.ValidateUser("qazwsxedcrfv", "ddd");
         assertEquals(retVal, true);
-        //change back the password
-        db.changeUserInfo("admin", "admin", DatabaseConnection.UserTypes.ADMIN);
-        retVal = db.ValidateUser("admin", "admin");
-        assertEquals(retVal, true);
+        db.deleteUser("qazwsxedcrfv");
+//        DatabaseConnection db = DatabaseConnection.getInstance();
+//        db.changeUserInfo("admin", "ddd", DatabaseConnection.UserTypes.ADMIN);
+//        //verify you can log in with new credentials
+//        boolean retVal = db.ValidateUser("admin", "ddd");
+//        assertEquals(retVal, true);
+//        //change back the password
+//        db.changeUserInfo("admin", "admin", DatabaseConnection.UserTypes.ADMIN);
+//        retVal = db.ValidateUser("admin", "admin");
+//        assertEquals(retVal, true);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void changeAdminRole() throws IOException {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        db.changeUserInfo("admin", "admin", DatabaseConnection.UserTypes.OBSERVER);
     }
 }
