@@ -1,4 +1,4 @@
-package edu.msoe.se2800.h4.AdministrationFeatures;
+package edu.msoe.se2800.h4.administrationFeatures;
 
 
 import static org.testng.Assert.assertEquals;
@@ -6,6 +6,8 @@ import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 
 import java.io.IOException;
 import java.util.List;

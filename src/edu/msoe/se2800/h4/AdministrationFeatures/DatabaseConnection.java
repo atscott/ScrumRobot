@@ -1,5 +1,5 @@
 
-package edu.msoe.se2800.h4.AdministrationFeatures;
+package edu.msoe.se2800.h4.administrationFeatures;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

@@ -1,5 +1,5 @@
 
-package edu.msoe.se2800.h4.AdministrationFeatures;
+package edu.msoe.se2800.h4.administrationFeatures;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

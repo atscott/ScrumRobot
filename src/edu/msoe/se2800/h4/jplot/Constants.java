@@ -38,7 +38,7 @@ public class Constants {
 	
 	public static final int POINT_RADIUS = 5;
 	
-	public static final boolean SNAP_TO_GRID_CORNERS = true;
+	public static final boolean SNAP_TO_GRID_CORNERS = false;
 
     public static int GRID_WIDTH() {
         int GRID_WIDTH = WINDOW_WIDTH - INFO_PANEL_WIDTH - Y_AXIS_WIDTH;
