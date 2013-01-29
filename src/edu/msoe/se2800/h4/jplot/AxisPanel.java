@@ -39,7 +39,7 @@ public class AxisPanel extends JPanel {
     /**
      * Draws the x axis numbers. density must be at least 1 or IllegalArgumentException is thrown
      */
-    public void drawAxisMarkersHorizontal(int density, Graphics g) {
+    /*public void drawAxisMarkersHorizontal(int density, Graphics g) {
         if(density < 1){
             throw new IllegalArgumentException("Density must be at least 1");
         }
@@ -48,6 +48,23 @@ public class AxisPanel extends JPanel {
         int newWidth = Constants.GRID_WIDTH() + (Constants.GRID_WIDTH() / density);
         int counter = 0;
         for (int i = getHeight() + Constants.GRID_OFFSET; i < newWidth + getHeight(); i += (Constants.GRID_WIDTH() / density)) {
+            g.drawString("" + counter, i - (("" + counter).length() * 4), 30);
+            counter += Constants.STEP_INCREMENT;
+        }
+    }*/
+    public void drawAxisMarkersHorizontal(int density, Graphics g) {
+        if(density < 1){
+            throw new IllegalArgumentException("Density must be at least 1");
+        }
+
+        g.setColor(Color.BLACK);
+        int newWidth = Constants.GRID_WIDTH() + (Constants.GRID_WIDTH() / density);
+        //System.out.println("newWidth+getHeight() = "+(newWidth+getHeight()));
+        //System.out.println("Constants.GRID_WIDTH()/density = "+(Constants.GRID_WIDTH()/density));
+        //int counter = -1*(newWidth+getHeight())/(Constants.GRID_WIDTH()/density)/2;
+        int counter = ( Constants.STEP_INCREMENT * ( (newWidth+getHeight()) / (Constants.GRID_WIDTH()/density) ) )*-1;
+        for (int i = getHeight() + Constants.GRID_OFFSET; i < newWidth + getHeight(); i += (Constants.GRID_WIDTH() / density)) {
+        	//System.out.println("counter = "+counter);
             g.drawString("" + counter, i - (("" + counter).length() * 4), 30);
             counter += Constants.STEP_INCREMENT;
         }
