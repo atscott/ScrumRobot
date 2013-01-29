@@ -39,9 +39,6 @@ public class DatabaseConnection {
     }
 
     /**
-     * This can be used to get the currently logged in user unless validateUser ever gets called
-     * when a user does not actually log in.
-     *
      * @return the username of the last validated user
      */
     public String getLastSuccessfullyValidatedUser() {
@@ -98,6 +95,20 @@ public class DatabaseConnection {
         }
 
         return valid;
+    }
+
+    public String getUserPassword(String username) throws IOException {
+        checkNotNull(username);
+
+        String pass = null;
+        Table table = db.getTable(TABLE_NAME);
+        Map<String, Object> row = Cursor.findRow(table,
+                Collections.singletonMap("username", (Object) username));
+        if (row != null) {
+            pass = (String) row.get("password");
+        }
+
+        return pass;
     }
 
     /**
@@ -181,28 +192,32 @@ public class DatabaseConnection {
      * @param newRole     the user's new permission role
      * @throws IOException              thrown if error accessing table
      * @throws IllegalArgumentException thrown if trying to change the admin role from something
-     *                                  other than admin. also thrown if user does not exist
+     *                                  other than admin.
      */
-    public void changeUserInfo(String username, String newPassword, UserTypes newRole)
+    public ResultInfo changeUserInfo(String username, String newPassword, UserTypes newRole)
             throws IOException, IllegalArgumentException {
         if (username == null || newPassword == null)
             throw new NullPointerException("Cannot use null arguments");
         if (username.equals("admin") && newRole != UserTypes.ADMIN)
             throw new IllegalArgumentException("Cannot make the admin not an administrator");
 
+
+        ResultInfo result;
         Table table = db.getTable(TABLE_NAME);
         // get the row for user
         Cursor cursor = Cursor.createCursor(table);
-       boolean found =  cursor.findFirstRow(
+        boolean found = cursor.findFirstRow(
                 Collections.singletonMap("username", (Object) username));
         if (found) {
             cursor.setCurrentRowValue(table.getColumn("username"), (Object) username);
             cursor.setCurrentRowValue(table.getColumn("password"), (Object) newPassword);
             cursor.setCurrentRowValue(table.getColumn("permission"), (Object) getRoleAsString(newRole));
+            result = new ResultInfo("User modified successfully", true);
         } else {
-            throw new IllegalArgumentException("Could not find user");
+            result = new ResultInfo("Could not find user", false);
         }
 
+        return result;
     }
 
     /**
@@ -212,39 +227,75 @@ public class DatabaseConnection {
      * @throws IllegalArgumentException If there is a user with same username already in the table,
      *                                  this will get thrown
      */
-    public void addUser(String username, String password, UserTypes role)
-            throws IllegalArgumentException {
+    public ResultInfo addUser(String username, String password, UserTypes role)
+            throws IllegalArgumentException, IOException {
         if (username == null || password == null)
             throw new NullPointerException("Cannot use null arguments");
-        throw new NotImplementedException("Not implemented yet");
+
+        ResultInfo result;
+        Table table = db.getTable(TABLE_NAME);
+        // get the row for user
+        Cursor cursor = Cursor.createCursor(table);
+        boolean found = cursor.findFirstRow(
+                Collections.singletonMap("username", (Object) username));
+        if (!found) {
+            Map<String, Object> row = new HashMap<String, Object>();
+            row.put("username", (Object) username);
+            row.put("password", (Object) password);
+            row.put("permission", (Object) getRoleAsString(role));
+            table.addRow(table.asRow(row));
+            result = new ResultInfo("User added successfully.", true);
+        } else {
+            result = new ResultInfo("User already exists", true);
+        }
+
+        return result;
     }
 
     /**
      * deletes user from table
      *
      * @param username user to delete
-     * @throws IllegalArgumentException thrown if try to delete administrator. Also thrown if
-     *                                  attempting to delete the last successfully logged in user (the current user)
+     * @throws IllegalArgumentException thrown if try to delete administrator.
      * @throws IOException              thrown if trouble accessing table
      */
-    public boolean deleteUser(String username) throws IllegalArgumentException, IOException {
+    public ResultInfo deleteUser(String username) throws IllegalArgumentException, IOException {
         checkNotNull(username, "Cannot use null arguments");
 
         if (username.equals("admin")) {
             throw new IllegalArgumentException("Cannot delete admin");
         }
 
-        if (username.equals(getLastSuccessfullyValidatedUser())) {
-            throw new IllegalArgumentException("Cannot delete logged in user");
-        }
-
         Table table = db.getTable(TABLE_NAME);
         Cursor cur = Cursor.createCursor(table);
+        ResultInfo result;
         // get the row for user
         boolean foundUser = cur.findFirstRow(Collections.singletonMap("username", (Object) username));
         if (foundUser) {
             cur.deleteCurrentRow();
+            result = new ResultInfo("User deleted successfully", true);
+        } else {
+            result = new ResultInfo("Could not find user.", false);
         }
-        return foundUser;
+
+        return result;
+    }
+
+    public class ResultInfo {
+        private String message;
+        private boolean success;
+
+        public ResultInfo(String message, boolean success) {
+            this.message = message;
+            this.success = success;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public boolean wasSuccess() {
+            return success;
+        }
     }
 }

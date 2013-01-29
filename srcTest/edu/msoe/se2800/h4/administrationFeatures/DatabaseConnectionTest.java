@@ -71,33 +71,50 @@ public class DatabaseConnectionTest {
         assertTrue(users.contains("admin"));
     }
 
+    //TODO tests for getUserPassword
     //TODO tests for deleteUser
     //TODO tests for addUser
 
-    //TODO tests for changeUserInfo
-    @Test
-    public void changeAdminPasswordTest() throws IOException {
+
+    @Test(description = "This tests to make sure that a failure result is returned if the user does not exist")
+    public void testNonExistantUser() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
+        DatabaseConnection.ResultInfo success = db.changeUserInfo("wertyui", "ertyui", DatabaseConnection.UserTypes.ADMIN);
+        assertEquals(success.wasSuccess(), false);
+    }
+
+    @Test(description = "this tests to make sure you can change the password of a user")
+    public void changePasswordTest() throws IOException {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        //add a dummy user
         db.addUser("qazwsxedcrfv", "test", DatabaseConnection.UserTypes.ADMIN);
-        db.changeUserInfo("qazwsxedcrfv", "ddd", DatabaseConnection.UserTypes.ADMIN);
+        DatabaseConnection.ResultInfo result = db.changeUserInfo("qazwsxedcrfv", "ddd", DatabaseConnection.UserTypes.ADMIN);
+        assertTrue(result.wasSuccess());
         //verify you can log in with new credentials
         boolean retVal = db.ValidateUser("qazwsxedcrfv", "ddd");
         assertEquals(retVal, true);
+        //delete the dummy
         db.deleteUser("qazwsxedcrfv");
-//        DatabaseConnection db = DatabaseConnection.getInstance();
-//        db.changeUserInfo("admin", "ddd", DatabaseConnection.UserTypes.ADMIN);
-//        //verify you can log in with new credentials
-//        boolean retVal = db.ValidateUser("admin", "ddd");
-//        assertEquals(retVal, true);
-//        //change back the password
-//        db.changeUserInfo("admin", "admin", DatabaseConnection.UserTypes.ADMIN);
-//        retVal = db.ValidateUser("admin", "admin");
-//        assertEquals(retVal, true);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(description = "This is testing to see that the role of a user can be changed")
+    public void changeRole() throws IOException{
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        //add a dummy user
+        db.addUser("qazwsxedcrfv", "test", DatabaseConnection.UserTypes.ADMIN);
+        DatabaseConnection.ResultInfo result = db.changeUserInfo("qazwsxedcrfv", "test", DatabaseConnection.UserTypes.OBSERVER);
+        assertTrue(result.wasSuccess());
+        DatabaseConnection.UserTypes type = db.getUserRole("qazwsxedcrfv") ;
+        assertEquals(type, DatabaseConnection.UserTypes.OBSERVER);
+        //delete the dummy
+        db.deleteUser("qazwsxedcrfv");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class, description = "This is testing to see that an exception" +
+            " is thrown if you try to change the admin role to anything other than admin")
     public void changeAdminRole() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
-        db.changeUserInfo("admin", "admin", DatabaseConnection.UserTypes.OBSERVER);
+        DatabaseConnection.ResultInfo result = db.changeUserInfo("admin", db.getUserPassword("admin"), DatabaseConnection.UserTypes.OBSERVER);
+        assertEquals(result.wasSuccess(), false);
     }
 }
