@@ -1,8 +1,8 @@
 package edu.msoe.se2800.h4.jplot;
 
 
-import edu.msoe.se2800.h4.AdministrationFeatures.DatabaseConnection;
-import edu.msoe.se2800.h4.AdministrationFeatures.LoginUI;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
 
 import javax.swing.*;
 import java.io.IOException;

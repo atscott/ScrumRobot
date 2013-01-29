@@ -41,46 +41,83 @@ public class AxisPanelTest {
     }
 
     @Test(description = "This is a test to make sure the panel can get initialized with both orientations")
-    public void legalOrientationTest() {
-        AxisPanel temp = new AxisPanel(Constants.HORIZONTAL);
-        // if the horizontal is initiated, the panel should have the height of the x axis and the
-        // width of the entire grid
-        // That is, the panel should span across the entire grid and the height should be what is
-        // predefined
-        assertEquals((int) temp.getPreferredSize().getHeight(), Constants.X_AXIS_HEIGHT);
-        assertEquals((int) temp.getPreferredSize().getWidth(), Constants.GRID_WIDTH());
-        temp = new AxisPanel(Constants.VERTICAL);
-        assertEquals((int) temp.getPreferredSize().getHeight(), Constants.GRID_HEIGHT);
-        assertEquals((int) temp.getPreferredSize().getWidth(), Constants.Y_AXIS_WIDTH);
+    public void legalOrientationTest() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(new Runnable() {
+
+            @Override
+            public void run() {
+                AxisPanel temp = new AxisPanel(Constants.HORIZONTAL);
+
+                // if the horizontal is initiated, the panel should have the height of the x axis
+                // and the
+                // width of the entire grid
+                // That is, the panel should span across the entire grid and the height should be
+                // what is
+                // predefined
+                assertEquals((int) temp.getPreferredSize().getHeight(), Constants.X_AXIS_HEIGHT);
+                assertEquals((int) temp.getPreferredSize().getWidth(), Constants.GRID_WIDTH());
+                temp = new AxisPanel(Constants.VERTICAL);
+                assertEquals((int) temp.getPreferredSize().getHeight(), Constants.GRID_HEIGHT);
+                assertEquals((int) temp.getPreferredSize().getWidth(), Constants.Y_AXIS_WIDTH);
+            }
+        });
+
     }
 
     @Test(description = "This is a test to make sure the expected number of indicators are drawn based on TEST_DENSITY")
-    public void drawTest() {
-        CustomGraphics g = new CustomGraphics();
-        AxisPanel temp = new AxisPanel(Constants.HORIZONTAL);
-        temp.drawAxisMarkersHorizontal(TEST_DENSITY, g);
-        // add one to the TEST_DENSITY because 0 is always drawn
-        assertTrue(g.drawStringCalls.size() == TEST_DENSITY + 1);
-        assertTrue(g.drawStringCalls.get(TEST_DENSITY)[0].equals(TEST_DENSITY
-                * Constants.STEP_INCREMENT + ""));
+    public void drawTest() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(new Runnable() {
+
+            @Override
+            public void run() {
+                CustomGraphics g = new CustomGraphics();
+                AxisPanel temp = new AxisPanel(Constants.HORIZONTAL);
+                temp.drawAxisMarkersHorizontal(TEST_DENSITY, g);
+                // add one to the TEST_DENSITY because 0 is always drawn
+                assertTrue(g.drawStringCalls.size() == TEST_DENSITY + 1);
+                assertTrue(g.drawStringCalls.get(TEST_DENSITY)[0].equals(TEST_DENSITY
+                        * Constants.STEP_INCREMENT + ""));
+            }
+        });
     }
 
     @Test(description = "This is a test to make sure the expected number of indicators are drawn based on TEST_DENSITY")
-    public void veritcalDrawTest() {
-        CustomGraphics g = new CustomGraphics();
-        AxisPanel temp = new AxisPanel(Constants.VERTICAL);
-        temp.drawAxisMarkersHorizontal(TEST_DENSITY, g);
-        assertTrue(g.drawStringCalls.size() == TEST_DENSITY + 1);
-        // verify that the last call was drawing the number TEST_DENSITY*step_increment
-        assertTrue(g.drawStringCalls.get(TEST_DENSITY)[0].equals(TEST_DENSITY
-                * Constants.STEP_INCREMENT + ""));
+    public void veritcalDrawTest() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(new Runnable() {
+
+            @Override
+            public void run() {
+                CustomGraphics g = new CustomGraphics();
+                AxisPanel temp = new AxisPanel(Constants.VERTICAL);
+                temp.drawAxisMarkersHorizontal(TEST_DENSITY, g);
+                assertTrue(g.drawStringCalls.size() == TEST_DENSITY + 1);
+                // verify that the last call was drawing the number TEST_DENSITY*step_increment
+                assertTrue(g.drawStringCalls.get(TEST_DENSITY)[0].equals(TEST_DENSITY
+                        * Constants.STEP_INCREMENT + ""));
+            }
+        });
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testNegativeDensity() {
-        CustomGraphics g = new CustomGraphics();
-        AxisPanel temp = new AxisPanel(Constants.VERTICAL);
-        temp.drawAxisMarkersHorizontal(-5, g);
+    @Test //TODO @Andrew put a description
+    public void testNegativeDensity() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(new Runnable() {
+
+            @Override
+            public void run() {
+                boolean caughtException = false;
+                try {
+                    CustomGraphics g = new CustomGraphics();
+                    AxisPanel temp = new AxisPanel(Constants.VERTICAL);
+                    temp.drawAxisMarkersHorizontal(-5, g);
+                } catch (IllegalArgumentException e) {
+                    caughtException = true;
+                }
+
+                if (!caughtException) {
+                    fail("Failed to throw an IllegalArgumentException");
+                }
+            }
+        });
     }
 
     private class CustomGraphics extends DebugGraphics {

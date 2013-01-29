@@ -1,9 +1,8 @@
 package edu.msoe.se2800.h4;
 
-import edu.msoe.se2800.h4.AdministrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.swing.DefaultListModel;
 
