@@ -7,7 +7,6 @@ import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.testng.testcase.FestSwingTestngTestCase;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 public class InfoPanelGUITest extends FestSwingTestngTestCase {
