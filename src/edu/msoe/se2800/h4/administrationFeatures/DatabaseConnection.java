@@ -3,18 +3,13 @@ package edu.msoe.se2800.h4.administrationFeatures;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.healthmarketscience.jackcess.Cursor;
-import com.healthmarketscience.jackcess.Database;
-import com.healthmarketscience.jackcess.Table;
+import com.healthmarketscience.jackcess.*;
 
 import org.apache.commons.lang.NotImplementedException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: scottat Date: 1/15/13 Time: 7:49 PM
@@ -198,19 +193,15 @@ public class DatabaseConnection {
         Table table = db.getTable(TABLE_NAME);
         // get the row for user
         Cursor cursor = Cursor.createCursor(table);
-        Map<String, Object> row = cursor.findRow(table,
+       boolean found =  cursor.findFirstRow(
                 Collections.singletonMap("username", (Object) username));
-        if (row != null) {
-            row.clear();
-            row.put("username", (Object) username);
-            row.put("password", (Object) newPassword);
-            row.put("permission", (Object) getRoleAsString(newRole));
-            cursor.updateCurrentRow((Object) row);
+        if (found) {
+            cursor.setCurrentRowValue(table.getColumn("username"), (Object) username);
+            cursor.setCurrentRowValue(table.getColumn("password"), (Object) newPassword);
+            cursor.setCurrentRowValue(table.getColumn("permission"), (Object) getRoleAsString(newRole));
         } else {
             throw new IllegalArgumentException("Could not find user");
         }
-
-        throw new NotImplementedException("Not implemented yet");
 
     }
 
@@ -250,7 +241,7 @@ public class DatabaseConnection {
         Table table = db.getTable(TABLE_NAME);
         Cursor cur = Cursor.createCursor(table);
         // get the row for user
-        boolean foundUser = cur.findRow(Collections.singletonMap("username", (Object) username));
+        boolean foundUser = cur.findFirstRow(Collections.singletonMap("username", (Object) username));
         if (foundUser) {
             cur.deleteCurrentRow();
         }
