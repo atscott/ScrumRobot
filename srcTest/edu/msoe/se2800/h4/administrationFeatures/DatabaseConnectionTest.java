@@ -71,6 +71,16 @@ public class DatabaseConnectionTest {
         assertTrue(users.contains("admin"));
     }
 
+    @Test
+    public void getUserRoleTest() throws IOException {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        //add dummy user
+        DatabaseConnection.ResultInfo result = db.addUser("qazwsdxedfcrfgvtgb", "sdf", DatabaseConnection.UserTypes.OBSERVER);
+        assertEquals(db.getUserRole("qazwsdxedfcrfgvtgb"), DatabaseConnection.UserTypes.OBSERVER);
+        //remove dummy user
+        result = db.deleteUser("qazwsdxedfcrfgvtgb");
+    }
+
     @Test(description = "Tests to make sure that a user can be added and deleted")
     public void testAddAndDeleteUser() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
