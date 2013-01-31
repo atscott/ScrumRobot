@@ -1,12 +1,15 @@
 package edu.msoe.se2800.h4.jplot;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 import edu.msoe.se2800.h4.UserListController;
@@ -25,6 +28,7 @@ public class JPlotController {
     private Path path;
     private List<Waypoint> oldList;
     private Waypoint highlightedPoint;
+    private boolean closingForModeChange = false;
 
     public static JPlotController getInstance() {
         if (instance == null) {
@@ -40,23 +44,12 @@ public class JPlotController {
     private JPlotController() {
         path = new Path();
         oldList = new ArrayList<Waypoint>();
-        /*addPoint(new Waypoint(10,20));
-		addPoint(new Waypoint(10,30));
-		addPoint(new Waypoint(10,40));
-		addPoint(new Waypoint(20,20));
-		addPoint(new Waypoint(40,30));
-		addPoint(new Waypoint(60,5));
-        addPoint(new Waypoint(0, 0));
-        addPoint(new Waypoint(12, 12));
-        addPoint(new Waypoint(24, 24));
-        addPoint(new Waypoint(36, 36));
-        addPoint(new Waypoint(48, 48));
-        addPoint(new Waypoint(60, 60));*/
     }
 
     public void init() {
         grid = new Grid();
         jplot = new JPlot(GridMode.OBSERVER_MODE, grid);
+        jplot.addWindowListener(new JPlotWindowListener());
     }
 
     public GridInterface getGrid() {
@@ -79,8 +72,11 @@ public class JPlotController {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                closingForModeChange = true;
                 jplot.dispose();
                 jplot = new JPlot(Constants.CURRENT_MODE, grid);
+                closingForModeChange = false;
+                jplot.addWindowListener(new JPlotWindowListener());
             }
         });
     }
@@ -165,11 +161,76 @@ public class JPlotController {
     }
 
     public void listUsers() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @SuppressWarnings("unused")
             public void run() {
                 new UserListController();
             }
         });
-	}
+    }
+
+
+    private class JPlotWindowListener implements WindowListener {
+
+        @Override
+        public void windowOpened(WindowEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            if (!closingForModeChange) {
+                JPlotController.this.logOut();
+            }
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+    }
+
+    public void start() {
+        JFrame dummyFrame = new JFrame();
+        dummyFrame.setUndecorated(true);
+        dummyFrame.setVisible(true);
+        LoginUI login = new LoginUI(dummyFrame);
+        dummyFrame.dispose();
+        if (login.wasLoginSuccessful()) {
+            //TODO log to logger
+            this.init();
+            try {
+                this.changeMode(DatabaseConnection.getInstance().getUserRole(login.getUsername()));
+            } catch (IOException e) {
+                System.out.println("Unable to retrieve user role and set grid mode");
+            }
+        }
+    }
+
+    public void logOut() {
+        if (this.jplot != null) {
+            this.jplot.setVisible(false);
+        }
+
+    }
+
 }
