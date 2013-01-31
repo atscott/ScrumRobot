@@ -65,19 +65,37 @@ public class DatabaseConnectionTest {
     }
 
     @Test
-    public void getAdminUsers() throws IOException{
+    public void getAdminUsersTest() throws IOException{
         List<String> users = DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.ADMIN);
         //really, the only thing we know for sure is that the admin user is in the list
         assertTrue(users.contains("admin"));
     }
 
-    //TODO tests for getUserPassword
-    //TODO tests for deleteUser
-    //TODO tests for addUser
+    @Test(description = "Tests to make sure that a user can be added and deleted")
+    public void testAddAndDeleteUser() throws IOException {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        //add dummy user
+        DatabaseConnection.ResultInfo result = db.addUser("qazwsdxedfcrfgvtgb", "sdf", DatabaseConnection.UserTypes.OBSERVER);
+        assertTrue(result.wasSuccess());
+        //remove dummy user
+        result = db.deleteUser("qazwsdxedfcrfgvtgb");
+        assertTrue(result.wasSuccess());
+    }
+
+    @Test(description = "Tests to make sure that you can get the correct password for a user")
+    public void testGetUserPassword() throws IOException {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        //add dummy user
+        DatabaseConnection.ResultInfo result = db.addUser("qazwsdxedfcrfgvtgb", "sdf", DatabaseConnection.UserTypes.OBSERVER);
+        assertEquals(db.getUserPassword("qazwsdxedfcrfgvtgb"), "sdf");
+        //remove dummy user
+        result = db.deleteUser("qazwsdxedfcrfgvtgb");
+    }
+
 
 
     @Test(description = "This tests to make sure that a failure result is returned if the user does not exist")
-    public void testNonExistantUser() throws IOException {
+    public void testChangeNonExistantUser() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
         DatabaseConnection.ResultInfo success = db.changeUserInfo("wertyui", "ertyui", DatabaseConnection.UserTypes.ADMIN);
         assertEquals(success.wasSuccess(), false);
