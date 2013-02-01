@@ -13,10 +13,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -82,7 +80,10 @@ public class InfoPanel extends JPanel {
         pointsList.setName("points_list");
         pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 350));
         ArrayList<String> points = new ArrayList<String>();
-        for (Object o : JPlotController.getInstance().getPath().toArray()) { points.add(((Waypoint)o).x+", "+((Waypoint)o).y); };
+        for (Object o : JPlotController.getInstance().getPath().toArray()) {
+            points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
+        }
+        ;
         pointsList.setListData(points.toArray());
         pointsList.addMouseListener(new PointsMouseListener());
         pointsList.addListSelectionListener(new PointsListListener());
@@ -150,7 +151,10 @@ public class InfoPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         ArrayList<String> points = new ArrayList<String>();
-        for (Object o : JPlotController.getInstance().getPath().toArray()) { points.add(((Waypoint)o).x+", "+((Waypoint)o).y); };
+        for (Object o : JPlotController.getInstance().getPath().toArray()) {
+            points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
+        }
+        ;
         pointsList.setListData(points.toArray());
         pointsList.repaint();
     }
@@ -191,42 +195,11 @@ public class InfoPanel extends JPanel {
     public class SaveListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            String actionCommand = e.getActionCommand();
-
-            // default to save as flow if we don't already have a file chosen
-            if (mPathFile == null) {
-                actionCommand = "save_as";
+            File temp = FileIO.saveTo(mPathFile);
+            if (temp != null) {
+                mPathFile = temp;
             }
 
-            File toSave = mPathFile;
-
-            // If performing save as... show the file chooser
-            if (actionCommand.equalsIgnoreCase("save_as")) {
-                toSave = FileIO.save();
-
-                // Save the fact that we nowhave a file for future use
-                if (!toSave.getPath().endsWith(".scrumbot")) {
-                    toSave = new File(toSave.getPath() + ".scrumbot");
-                }
-                mPathFile = toSave;
-            }
-
-            // If the save was not cancelled, save the path
-            if (toSave != null) {
-                try {
-                    JPlotController.getInstance().getPath()
-                            .dumpObject(new DataOutputStream(new FileOutputStream(toSave)));
-
-                    JOptionPane.showMessageDialog(null, "Path saved succesfully!");
-                } catch (FileNotFoundException e1) {
-                    // Already handled in the FileIO
-                } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(null,
-                            "An unknown error occurred while saving the Path.", "Uh-oh!",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
         }
     }
 
@@ -234,27 +207,9 @@ public class InfoPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            int result = JOptionPane
-                    .showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?",
-                            JOptionPane.YES_NO_OPTION);
-            if (result == JOptionPane.YES_OPTION) {
-
-                // We want to save
-                mSaveListener.actionPerformed(new ActionEvent(null, 0, "save"));
-            }
-
-            File tempPathFile = FileIO.open();
-            if (tempPathFile != null) {
-                try {
-                    JPlotController.getInstance().getPath()
-                            .loadObject(new DataInputStream(new FileInputStream(tempPathFile)));
-                    mPathFile = tempPathFile;
-                } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(null, "Unable to access the file.",
-                            "Uh-oh!", JOptionPane.ERROR_MESSAGE);
-                }
-                JPlotController.getInstance().getGrid().redraw();
+            File temp = FileIO.load(mPathFile);
+            if (temp != null) {
+                mPathFile = temp;
             }
         }
     }
