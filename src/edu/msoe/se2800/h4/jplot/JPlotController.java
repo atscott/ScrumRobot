@@ -200,6 +200,9 @@ public class JPlotController {
             } catch (IOException e) {
                 System.out.println("Unable to retrieve user role and set grid mode");
             }
+        } else {
+            //log in cancelled. stop program execution
+            System.exit(0);
         }
     }
 
@@ -212,7 +215,7 @@ public class JPlotController {
         //TODO log to logger
 
         //TODO Check to make sure current user is not observer (because they can't save the file anyways)
-        if(FileIO.getCurrentPathFile() != null || !JPlotController.this.getPath().isEmpty()){
+        if (FileIO.getCurrentPathFile() != null || !JPlotController.this.getPath().isEmpty()) {
             int result = JOptionPane
                     .showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?",
                             JOptionPane.YES_NO_OPTION);
