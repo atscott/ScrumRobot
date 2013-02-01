@@ -39,7 +39,7 @@ public abstract class FileIO {
 
     }
 
-    public static File getCurrentPathFile(){
+    public static File getCurrentPathFile() {
         return mPathFile;
     }
 
@@ -56,11 +56,27 @@ public abstract class FileIO {
         chooser.setFileFilter(filter);
         chooser.showSaveDialog(directory);
         File file = chooser.getSelectedFile();
-        String text = file.getAbsolutePath();
-        if (text.endsWith(".scrumbot")) {
-            file = new File(text + ".scrumbot");
+        if (file != null) {
+            String text = file.getAbsolutePath();
+            if (text.endsWith(".scrumbot")) {
+                file = new File(text + ".scrumbot");
+            }
         }
         return file;
+    }
+
+    public static void saveAs(){
+        File toSave = FileIO.showSaveDialog();
+
+        if (toSave != null) {
+            // Save the fact that we nowhave a file for future use
+            if (!toSave.getPath().endsWith(".scrumbot")) {
+                toSave = new File(toSave.getPath() + ".scrumbot");
+            }
+        }
+
+        mPathFile = toSave;
+        FileIO.save();
     }
 
     /**
@@ -70,14 +86,7 @@ public abstract class FileIO {
     public static void save() {
         // If performing showSaveDialog as... show the file chooser
         if (mPathFile == null) {
-            File toSave = FileIO.showSaveDialog();
-
-            // Save the fact that we nowhave a file for future use
-            if (!toSave.getPath().endsWith(".scrumbot")) {
-                toSave = new File(toSave.getPath() + ".scrumbot");
-            }
-
-            mPathFile = toSave;
+            FileIO.saveAs();
         } else {
             try {
                 JPlotController.getInstance().getPath()

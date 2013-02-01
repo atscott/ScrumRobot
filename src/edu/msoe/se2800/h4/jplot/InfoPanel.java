@@ -188,7 +188,11 @@ public class InfoPanel extends JPanel {
     public class SaveListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            FileIO.save();
+            if (e.getActionCommand().equals("save_as")) {
+                FileIO.saveAs();
+            } else {
+                FileIO.save();
+            }
         }
     }
 

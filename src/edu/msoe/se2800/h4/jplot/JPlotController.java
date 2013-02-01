@@ -1,5 +1,6 @@
 package edu.msoe.se2800.h4.jplot;
 
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import edu.msoe.se2800.h4.FileIO;
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
 import lejos.robotics.navigation.Waypoint;
@@ -49,6 +51,7 @@ public class JPlotController {
     public void init() {
         grid = new Grid();
         jplot = new JPlot(GridMode.OBSERVER_MODE, grid);
+        jplot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         jplot.addWindowListener(new JPlotWindowListener());
     }
 
@@ -76,6 +79,7 @@ public class JPlotController {
                 jplot.dispose();
                 jplot = new JPlot(Constants.CURRENT_MODE, grid);
                 closingForModeChange = false;
+                jplot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
                 jplot.addWindowListener(new JPlotWindowListener());
             }
         });
@@ -170,42 +174,15 @@ public class JPlotController {
     }
 
 
-    private class JPlotWindowListener implements WindowListener {
-
-        @Override
-        public void windowOpened(WindowEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
-        }
-
+    private class JPlotWindowListener extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
+            //if closing because of mode change, do not want to log out
             if (!closingForModeChange) {
                 JPlotController.this.logOut();
+            } else {
+                jplot.dispose();
             }
-        }
-
-        @Override
-        public void windowClosed(WindowEvent e) {
-        }
-
-        @Override
-        public void windowIconified(WindowEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public void windowDeiconified(WindowEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public void windowActivated(WindowEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public void windowDeactivated(WindowEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
         }
     }
 
@@ -227,10 +204,26 @@ public class JPlotController {
     }
 
     public void logOut() {
-        if (this.jplot != null) {
-            this.jplot.setVisible(false);
+        if (jplot == null) {
+            throw new NullPointerException("Tried to log out when jplot was null");
+        }
+        //TODO check to make sure the robot is not running
+        //if(!robot.isRunning()){
+        //TODO log to logger
+
+        //TODO Check to make sure current user is not observer (because they can't save the file anyways)
+        if(FileIO.getCurrentPathFile() != null || !JPlotController.this.getPath().isEmpty()){
+            int result = JOptionPane
+                    .showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?",
+                            JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                FileIO.save();
+            }
+
         }
 
+
+        this.jplot.dispose();
     }
 
 }
