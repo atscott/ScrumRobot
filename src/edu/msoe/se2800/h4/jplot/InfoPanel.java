@@ -13,17 +13,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -43,11 +38,9 @@ public class InfoPanel extends JPanel {
     private JTextField xTextField, yTextField;
     private JList pointsList;
     private JLabel numPoints;
-    private File mPathFile;
     private SaveListener mSaveListener;
 
     public InfoPanel() {
-        mPathFile = null;
         setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
         setLayout(new FlowLayout(FlowLayout.CENTER));
         setVisible(true);
@@ -195,11 +188,7 @@ public class InfoPanel extends JPanel {
     public class SaveListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            File temp = FileIO.saveTo(mPathFile);
-            if (temp != null) {
-                mPathFile = temp;
-            }
-
+            FileIO.save();
         }
     }
 
@@ -207,10 +196,7 @@ public class InfoPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            File temp = FileIO.load(mPathFile);
-            if (temp != null) {
-                mPathFile = temp;
-            }
+            FileIO.load();
         }
     }
 

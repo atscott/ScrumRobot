@@ -20,6 +20,8 @@ public abstract class FileIO {
      */
     private static FileNameExtensionFilter filter;
 
+    private static File mPathFile = null;
+
     /**
      * Opens a JFileChooser and returns the file to be opened.
      *
@@ -35,6 +37,10 @@ public abstract class FileIO {
         chooser.showOpenDialog(directory);
         return chooser.getSelectedFile();
 
+    }
+
+    public static File getCurrentPathFile(){
+        return mPathFile;
     }
 
     /**
@@ -58,13 +64,12 @@ public abstract class FileIO {
     }
 
     /**
-     * @param path indicates where to showSaveDialog the path to. If null, a showSaveDialog as dialog appears
      * @return indicates where the path was saved to. If null, the showSaveDialog was cancelled. Since the File class
      *         is immutable, the argument cannot simply be changed.
      */
-    public static File saveTo(File path) {
+    public static void save() {
         // If performing showSaveDialog as... show the file chooser
-        if (path == null) {
+        if (mPathFile == null) {
             File toSave = FileIO.showSaveDialog();
 
             // Save the fact that we nowhave a file for future use
@@ -72,11 +77,11 @@ public abstract class FileIO {
                 toSave = new File(toSave.getPath() + ".scrumbot");
             }
 
-            path = toSave;
+            mPathFile = toSave;
         } else {
             try {
                 JPlotController.getInstance().getPath()
-                        .dumpObject(new DataOutputStream(new FileOutputStream(path)));
+                        .dumpObject(new DataOutputStream(new FileOutputStream(mPathFile)));
 
                 JOptionPane.showMessageDialog(null, "Path saved succesfully!");
             } catch (FileNotFoundException e1) {
@@ -88,25 +93,21 @@ public abstract class FileIO {
             }
         }
 
-        return path;
     }
 
     /**
-     *
-     * @param currentlyLoaded The currently loaded path file on the grid. if this is not null then a save prompt has
-     *                        to be made.
      * @return The File that was chosen to load
      */
-    public static File load(File currentlyLoaded) {
+    public static void load() {
         File savedTo = null;
 
         //if currently editing a file or the path on the grid is not empty
-        if (currentlyLoaded != null || !JPlotController.getInstance().getPath().isEmpty()) {
+        if (mPathFile != null || !JPlotController.getInstance().getPath().isEmpty()) {
             int result = JOptionPane
                     .showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?",
                             JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
-                FileIO.saveTo(currentlyLoaded);
+                FileIO.save();
             }
         }
 
@@ -121,8 +122,8 @@ public abstract class FileIO {
                         "Uh-oh!", JOptionPane.ERROR_MESSAGE);
             }
             JPlotController.getInstance().getGrid().redraw();
+            mPathFile = tempPathFile;
         }
 
-        return savedTo;
     }
 }
