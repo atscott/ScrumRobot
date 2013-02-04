@@ -51,7 +51,7 @@ public class JPlot extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (JPlotController.getInstance() != null) {
                     JPlotController.getInstance().logOut();
-                    JPlotController.getInstance().start();
+                    JPlotController.getInstance().start(JPlotController.getInstance().robotController);
                 }else{
                     JPlot.this.dispose();
                 }

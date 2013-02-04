@@ -1,8 +1,12 @@
 package edu.msoe.se2800.h4.jplot;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.eventbus.EventBus;
 
 import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.Logger;
+import edu.msoe.se2800.h4.RobotController;
 import edu.msoe.se2800.h4.StatsTimer;
 import edu.msoe.se2800.h4.UserListController;
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
@@ -38,6 +42,8 @@ public class JPlotController {
     private Waypoint highlightedPoint;
     private boolean closingForModeChange = false;
     private EventBus mEventBus;
+    protected RobotController robotController;
+    private String currentUser = "";
 
     public static JPlotController getInstance() {
         if (instance == null) {
@@ -194,14 +200,19 @@ public class JPlotController {
         }
     }
 
-    public void start() {
+    public void start(RobotController rc) {
+        checkNotNull(rc);
+
+        this.robotController = rc;
         JFrame dummyFrame = new JFrame();
         dummyFrame.setUndecorated(true);
         dummyFrame.setVisible(true);
         LoginUI login = new LoginUI(dummyFrame);
         dummyFrame.dispose();
         if (login.wasLoginSuccessful()) {
-            //TODO log to logger
+            Logger.INSTANCE.log(this.getClass().toString(),
+                    "Logged in as: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
+            this.currentUser = DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser();
             this.init();
             try {
                 this.changeMode(DatabaseConnection.getInstance().getUserRole(login.getUsername()));
@@ -218,23 +229,32 @@ public class JPlotController {
         if (jplot == null) {
             throw new NullPointerException("Tried to log out when jplot was null");
         }
-        //TODO check to make sure the robot is not running
-        //if(!robot.isRunning()){
-        //TODO log to logger
 
-        //TODO Check to make sure current user is not observer (because they can't save the file anyways)
-        if (FileIO.getCurrentPathFile() != null || !JPlotController.this.getPath().isEmpty()) {
-            int result = JOptionPane
-                    .showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?",
-                            JOptionPane.YES_NO_OPTION);
-            if (result == JOptionPane.YES_OPTION) {
-                FileIO.save();
+        if (!this.robotController.isRunning()) {
+            try {
+                if (DatabaseConnection.getInstance().getUserRole(this.currentUser) != DatabaseConnection.UserTypes.OBSERVER) {
+                    if (FileIO.getCurrentPathFile() != null || !JPlotController.this.getPath().isEmpty()) {
+                        int result = JOptionPane
+                                .showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?",
+                                        JOptionPane.YES_NO_OPTION);
+                        if (result == JOptionPane.YES_OPTION) {
+                            FileIO.save();
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
+        } else {
+            JOptionPane.showMessageDialog(null, "Robot is running. Cannot log out.");
         }
 
 
         this.jplot.dispose();
+        this.currentUser = "";
+        Logger.INSTANCE.log(this.getClass().toString(),
+                "Logged out of: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
     }
     
     public EventBus getStatsEventBus() {
