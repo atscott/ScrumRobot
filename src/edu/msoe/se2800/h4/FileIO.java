@@ -108,7 +108,6 @@ public abstract class FileIO {
      * @return The File that was chosen to load
      */
     public static void load() {
-        File savedTo = null;
 
         //if currently editing a file or the path on the grid is not empty
         if (mPathFile != null || !JPlotController.getInstance().getPath().isEmpty()) {
@@ -125,7 +124,6 @@ public abstract class FileIO {
             try {
                 JPlotController.getInstance().getPath()
                         .loadObject(new DataInputStream(new FileInputStream(tempPathFile)));
-                savedTo = tempPathFile;
             } catch (IOException e1) {
                 JOptionPane.showMessageDialog(null, "Unable to access the file.",
                         "Uh-oh!", JOptionPane.ERROR_MESSAGE);

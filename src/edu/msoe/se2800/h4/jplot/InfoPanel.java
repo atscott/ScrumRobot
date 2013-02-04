@@ -1,6 +1,8 @@
 
 package edu.msoe.se2800.h4.jplot;
 
+import edu.msoe.se2800.h4.FileIO;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -13,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -26,7 +27,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import lejos.robotics.navigation.Waypoint;
-import edu.msoe.se2800.h4.FileIO;
 
 public class InfoPanel extends JPanel {
 

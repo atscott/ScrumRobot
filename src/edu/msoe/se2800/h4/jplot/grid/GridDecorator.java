@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 
 import edu.msoe.se2800.h4.jplot.InfoPanel;
+import edu.msoe.se2800.h4.jplot.StatsPanel;
 
 public abstract class GridDecorator implements GridInterface {
 	
 	protected GridInterface grid;
 	protected InfoPanel infoPanel;
+	protected StatsPanel statsPanel;
 	
 	public GridDecorator(GridInterface grid) {
 		this.grid = grid;
@@ -19,6 +21,9 @@ public abstract class GridDecorator implements GridInterface {
 		infoPanel = new InfoPanel();
 		infoPanel.initSubviews();
 		addSubview(infoPanel, BorderLayout.EAST);
+		statsPanel = new StatsPanel();
+		statsPanel.initSubviews();
+		addSubview(statsPanel, BorderLayout.NORTH);
 	}
 	
 	@Override

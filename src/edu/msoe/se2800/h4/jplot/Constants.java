@@ -44,5 +44,7 @@ public class Constants {
         int GRID_WIDTH = WINDOW_WIDTH - INFO_PANEL_WIDTH - Y_AXIS_WIDTH;
 		return GRID_WIDTH;
 	}
+    
+    public static final int STATS_HEIGHT = 20;
 
 }
