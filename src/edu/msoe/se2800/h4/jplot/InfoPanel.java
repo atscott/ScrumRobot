@@ -2,31 +2,14 @@
 package edu.msoe.se2800.h4.jplot;
 
 import edu.msoe.se2800.h4.FileIO;
+import lejos.robotics.navigation.Waypoint;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import lejos.robotics.navigation.Waypoint;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 public class InfoPanel extends JPanel {
 
@@ -71,7 +54,7 @@ public class InfoPanel extends JPanel {
 
         pointsList = new JList();
         pointsList.setName("points_list");
-        pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 350));
+        pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 200));
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) {
             points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
@@ -113,6 +96,71 @@ public class InfoPanel extends JPanel {
         saveAs.setActionCommand("save_as");
         saveAs.addActionListener(mSaveListener);
 
+ //Robot Control Panel
+        JPanel robotControlPanel = new JPanel();
+        robotControlPanel.setLayout(new GridBagLayout());
+        GridBagConstraints rcpConstraints = new GridBagConstraints();
+        rcpConstraints.fill = GridBagConstraints.HORIZONTAL;
+
+        //RobotControl Label & Properties
+        JLabel robotControlLabel = new JLabel();
+        Font f = robotControlLabel.getFont();
+        f.isBold();
+        robotControlLabel.setText("ROBOT CONTROLS");
+        rcpConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        rcpConstraints.gridy = 0;
+        robotControlPanel.add(robotControlLabel,rcpConstraints);
+
+        //Forward and Reverse Buttons
+        ButtonGroup bg = new ButtonGroup();
+        JRadioButton forward = new JRadioButton("Forward", true);
+        JRadioButton reverse = new JRadioButton("Reverse");
+        bg.add(forward);
+        bg.add(reverse);
+        rcpConstraints.gridx = 0;
+        rcpConstraints.gridy = 1;
+        robotControlPanel.add(forward,rcpConstraints);
+        rcpConstraints.gridx = 0;
+        rcpConstraints.gridy = 2;
+        robotControlPanel.add(reverse,rcpConstraints);
+
+        //Go button and its properties
+        JButton go = new JButton("Go");
+        go.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+        rcpConstraints.gridx = GridBagConstraints.REMAINDER;
+        rcpConstraints.gridy = 3;
+        robotControlPanel.add(go,rcpConstraints);
+
+        //Stop button and its properties
+        JButton stop = new JButton("Stop");
+        stop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+        rcpConstraints.gridx = GridBagConstraints.REMAINDER;
+        rcpConstraints.gridy = 4;
+        robotControlPanel.add(stop,rcpConstraints);
+
+        //Single Step button and its properties
+        JButton singleStep = new JButton("Single Step");
+        singleStep.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+        rcpConstraints.gridx = GridBagConstraints.REMAINDER;
+        rcpConstraints.gridy = 5;
+        robotControlPanel.add(singleStep,rcpConstraints);
+
+        //Zoom buttons & their properties
         zoomIn.setPreferredSize(new Dimension(70, 30));
         zoomOut.setPreferredSize(new Dimension(70, 30));
         load.setPreferredSize(new Dimension(70, 30));
@@ -128,6 +176,7 @@ public class InfoPanel extends JPanel {
         add(load);
         add(save);
         add(saveAs);
+		add(robotControlPanel);
     }
 
     public void disableSubviews() {
