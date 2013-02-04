@@ -5,8 +5,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        JPlotController jpc = JPlotController.getInstance();
-        jpc.start();
+        JPlotController.getInstance().start();
     }
 
 
