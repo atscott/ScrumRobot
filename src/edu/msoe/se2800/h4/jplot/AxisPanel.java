@@ -58,12 +58,12 @@ public class AxisPanel extends JPanel {
         }
 
         g.setColor(Color.BLACK);
-        int newWidth = Constants.GRID_WIDTH() + (Constants.GRID_WIDTH() / density);
+        //int newWidth = ;// + (Constants.GRID_WIDTH() / density);
         //System.out.println("newWidth+getHeight() = "+(newWidth+getHeight()));
         //System.out.println("Constants.GRID_WIDTH()/density = "+(Constants.GRID_WIDTH()/density));
         //int counter = -1*(newWidth+getHeight())/(Constants.GRID_WIDTH()/density)/2;
-        int counter = ( Constants.STEP_INCREMENT * ( (newWidth+getHeight()) / (Constants.GRID_WIDTH()/density) ) )*-1;
-        for (int i = getHeight() + Constants.GRID_OFFSET; i < newWidth + getHeight(); i += (Constants.GRID_WIDTH() / density)) {
+        int counter = ( Constants.STEP_INCREMENT * ( (Constants.GRID_WIDTH()+getHeight()) / (Constants.GRID_WIDTH()/density) ) )*-1;
+        for (int i = getHeight() + Constants.GRID_OFFSET; i < Constants.GRID_WIDTH() + getHeight(); i += (Constants.GRID_WIDTH() / density)) {
         	//System.out.println("counter = "+counter);
             g.drawString("" + counter, i - (("" + counter).length() * 4), 30);
             counter += Constants.STEP_INCREMENT;
