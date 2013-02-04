@@ -1,4 +1,3 @@
-
 package edu.msoe.se2800.h4.jplot;
 
 import edu.msoe.se2800.h4.FileIO;
@@ -54,7 +53,7 @@ public class InfoPanel extends JPanel {
 
         pointsList = new JList();
         pointsList.setName("points_list");
-        pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 200));
+        pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 175));
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) {
             points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
