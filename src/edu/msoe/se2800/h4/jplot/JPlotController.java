@@ -1,23 +1,29 @@
 package edu.msoe.se2800.h4.jplot;
 
+import com.google.common.eventbus.EventBus;
+
+import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.StatsTimer;
+import edu.msoe.se2800.h4.UserListController;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
+import edu.msoe.se2800.h4.jplot.Constants.GridMode;
+import edu.msoe.se2800.h4.jplot.grid.Grid;
+import edu.msoe.se2800.h4.jplot.grid.GridInterface;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
-import edu.msoe.se2800.h4.FileIO;
-import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
-import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
-import edu.msoe.se2800.h4.UserListController;
-import edu.msoe.se2800.h4.jplot.Constants.GridMode;
-import edu.msoe.se2800.h4.jplot.grid.Grid;
-import edu.msoe.se2800.h4.jplot.grid.GridInterface;
 
 public class JPlotController {
 
@@ -31,6 +37,7 @@ public class JPlotController {
     private List<Waypoint> oldList;
     private Waypoint highlightedPoint;
     private boolean closingForModeChange = false;
+    private EventBus mEventBus;
 
     public static JPlotController getInstance() {
         if (instance == null) {
@@ -53,6 +60,7 @@ public class JPlotController {
         jplot = new JPlot(GridMode.OBSERVER_MODE, grid);
         jplot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         jplot.addWindowListener(new JPlotWindowListener());
+        StatsTimer.startTimerDaemon();
     }
 
     public GridInterface getGrid() {
@@ -227,6 +235,15 @@ public class JPlotController {
 
 
         this.jplot.dispose();
+    }
+    
+    public EventBus getStatsEventBus() {
+        if (mEventBus == null) {
+            synchronized (this) {
+                mEventBus = new EventBus();
+            }
+        }
+        return mEventBus;
     }
 
 }

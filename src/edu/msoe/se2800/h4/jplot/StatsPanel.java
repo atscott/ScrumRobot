@@ -1,5 +1,9 @@
 package edu.msoe.se2800.h4.jplot;
 
+import com.google.common.eventbus.Subscribe;
+
+import edu.msoe.se2800.h4.StatsUpdateEvent;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
@@ -32,12 +36,19 @@ public class StatsPanel extends JPanel {
         setBattery(100);
     }
     
+    @Subscribe
+    public void recordStatsChange(StatsUpdateEvent e) {
+        setBattery(e.milliVolts);
+        setSpeed(e.velocity);
+        repaint();
+    }
+    
     public void setSpeed(int speed) {
         mSpeed.setText(Integer.toString(speed) + sSpeedText);
     }
     
-    public void setBattery(int level) {
-        mBattery.setText(Integer.toString(level) + sBatteryText);
+    public void setBattery(int milliVolts) {
+        mBattery.setText(Integer.toString(milliVolts) + sBatteryText);
     }
 
 }
