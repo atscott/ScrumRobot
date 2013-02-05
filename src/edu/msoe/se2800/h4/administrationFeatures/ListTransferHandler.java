@@ -1,4 +1,4 @@
-package edu.msoe.se2800.h4;
+package edu.msoe.se2800.h4.administrationFeatures;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;

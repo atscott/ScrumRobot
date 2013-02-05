@@ -4,15 +4,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.eventbus.EventBus;
 
-import dagger.ObjectGraph;
-
 import edu.msoe.se2800.h4.FileIO;
 import edu.msoe.se2800.h4.IRobotController;
 import edu.msoe.se2800.h4.Logger;
 import edu.msoe.se2800.h4.StatsTimerDaemon;
-import edu.msoe.se2800.h4.UserListController;
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
+import edu.msoe.se2800.h4.administrationFeatures.UserListController;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 import edu.msoe.se2800.h4.jplot.grid.GridInterface;
@@ -31,6 +29,7 @@ import javax.swing.WindowConstants;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
+//github.com/atscott/ScrumRobot.git
 
 @Singleton
 public class JPlotController {
