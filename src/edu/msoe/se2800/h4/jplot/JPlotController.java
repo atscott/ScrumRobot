@@ -4,10 +4,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.eventbus.EventBus;
 
+import dagger.ObjectGraph;
+
 import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.IRobotController;
 import edu.msoe.se2800.h4.Logger;
-import edu.msoe.se2800.h4.RobotController;
-import edu.msoe.se2800.h4.StatsTimer;
+import edu.msoe.se2800.h4.StatsTimerDaemon;
 import edu.msoe.se2800.h4.UserListController;
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Singleton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -29,6 +32,7 @@ import javax.swing.WindowConstants;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 
+@Singleton
 public class JPlotController {
 
     private static JPlotController instance = null;
@@ -42,7 +46,7 @@ public class JPlotController {
     private Waypoint highlightedPoint;
     private boolean closingForModeChange = false;
     private EventBus mEventBus;
-    protected RobotController robotController;
+    protected IRobotController robotController;
     private String currentUser = "";
 
     public static JPlotController getInstance() {
@@ -55,18 +59,25 @@ public class JPlotController {
         }
         return instance;
     }
-
-    private JPlotController() {
+    
+    public JPlotController() {
         path = new Path();
         oldList = new ArrayList<Waypoint>();
+        //start(robotController);
     }
+
+//    private JPlotController() {
+//        path = new Path();
+//        oldList = new ArrayList<Waypoint>();
+//        instance = this;
+//    }
 
     public void init() {
         grid = new Grid();
         jplot = new JPlot(GridMode.OBSERVER_MODE, grid);
         jplot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         jplot.addWindowListener(new JPlotWindowListener());
-        StatsTimer.startTimerDaemon();
+        StatsTimerDaemon.start();
     }
 
     public GridInterface getGrid() {
@@ -200,7 +211,7 @@ public class JPlotController {
         }
     }
 
-    public void start(RobotController rc) {
+    public void start(IRobotController rc) {
         checkNotNull(rc);
 
         this.robotController = rc;
@@ -266,7 +277,7 @@ public class JPlotController {
         return mEventBus;
     }
     
-    public RobotController getRobotController() {
+    public IRobotController getRobotController() {
         return robotController;
     }
 
