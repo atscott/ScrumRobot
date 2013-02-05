@@ -163,10 +163,19 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
                 (int) translated2.y + 10);
     }
 
+    /**
+     * This method takes in a Waypoint that has coordinates relative to the grid and translates
+     * them to a spot on the screen in coordinates the JVM uses. For example, passing in the Waypoint
+     * with coordinates (20,30) may be returned as (130,256).
+     * @param p
+     * @return
+     */
     public Waypoint translateToLocation(Waypoint p) {
 
         float x = p.x;
+        System.out.println("x(1-1) = "+x);
         float y = p.y;
+        System.out.println("y(1-1) = "+y);
 
         if (Constants.SNAP_TO_GRID_CORNERS) {
             x = round(x);
@@ -180,38 +189,65 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
             p.y = y;
         }
 
-        x = (int) Math.floor(0.5 + ((Constants.GRID_WIDTH() / JPlotController.getInstance()
+        //this next calculation assigns x to the distance from the 0 point it should be
+        x = (float)Math.floor(0.5 + ((Constants.GRID_WIDTH() / JPlotController.getInstance()
                 .getGridDensity()) * (x / Constants.STEP_INCREMENT)));
-        y = (int) Math.floor(0.5 + ((Constants.GRID_HEIGHT / JPlotController.getInstance()
+        System.out.println("x(1-2) = "+x);
+        x = ( Constants.GRID_OFFSET + ( JPlotController.getInstance().getGridDensity() / 2.0f * ( Constants.GRID_WIDTH() * 1.0f / ( JPlotController.getInstance().getGridDensity() * 1.0f ) ) ) ) + x;
+        System.out.println("x(1-3) = "+x);
+        //x = x - (Constants.POINT_RADIUS*2);
+        y = (float)Math.floor(0.5 + ((Constants.GRID_HEIGHT / JPlotController.getInstance()
                 .getGridDensity()) * (y / Constants.STEP_INCREMENT)));
+        System.out.println("y(1-2) = "+y);
+        y = (Constants.GRID_OFFSET+(JPlotController.getInstance().getGridDensity()/2*(Constants.GRID_HEIGHT/JPlotController.getInstance().getGridDensity()))) + y;
+        System.out.println("y(1-3) = "+y);
         y = Constants.GRID_HEIGHT - Constants.GRID_OFFSET - y;
-        x += Constants.GRID_OFFSET;
-        y -= Constants.GRID_OFFSET;
+        System.out.println("y(1-4) = "+y);
+        //y = y + (Constants.POINT_RADIUS*2);
+        //x += Constants.GRID_OFFSET;
+        System.out.println("final x(1-4) = "+x);
+        //y -= Constants.GRID_OFFSET;
+        System.out.println("final y(1-5) = "+y);
 
         return new Waypoint(x, y);
     }
 
+    /**
+     * This method takes in a Waypoint with the coordinates of a mouse click and translates them into 
+     * coordinates on the Grid.  For example, if the user clicked at coordinates (250, 370), this may
+     * translate into the point (-30, 70) on the Grid.
+     */
     @Override
     public Waypoint translateToNearestPoint(Waypoint p) {
 
         float x = p.x;
+        System.out.println("x(1) = "+x);
         float y = p.y;
+        System.out.println("y(1) = "+y);
 
         x -= Constants.GRID_OFFSET;
+        System.out.println("x(2) = "+x);
         y += Constants.GRID_OFFSET;
+        System.out.println("y(2) = "+y);
         y = Constants.GRID_HEIGHT - Constants.GRID_OFFSET - y;
+        System.out.println("y(3) = "+y);
         x = (int) Math
                 .floor(0.5 + ((x * Constants.STEP_INCREMENT) / (Constants.GRID_WIDTH() / JPlotController
                         .getInstance().getGridDensity())));
+        System.out.println("x(3) = "+x);
         y = (int) Math
                 .floor(0.5 + ((y * Constants.STEP_INCREMENT) / (Constants.GRID_HEIGHT / JPlotController
                         .getInstance().getGridDensity())));
+        System.out.println("y(4) = "+y);
 
+        x-=Constants.STEP_INCREMENT*JPlotController.getInstance().getGridDensity()/2;
+        y-=Constants.STEP_INCREMENT*JPlotController.getInstance().getGridDensity()/2;
         if (Constants.SNAP_TO_GRID_CORNERS) {
             x = round(x);
             y = round(y);
         }
-
+        System.out.println("final x = "+x);
+        System.out.println("final y = "+y);
         return new Waypoint(x, y);
     }
 
