@@ -1,3 +1,4 @@
+
 package edu.msoe.se2800.h4;
 
 import lejos.nxt.Motor;
@@ -13,7 +14,7 @@ public class RobotController {
 
     private static final double DEGREES_PER_INCH = 360 / (WHEEL_DIAMETER * Math.PI);
 
-    private static final double SECONDS_PER_MINUTE = 60;
+    public static final int SECONDS_PER_MINUTE = 60;
     /**
      * // the motor driving the left wheel of the robot
      */
@@ -28,7 +29,6 @@ public class RobotController {
     private int velocity = 0;
 
     private int motorSpeed = 0;
-
 
     public void driveForward() {
 
@@ -52,13 +52,20 @@ public class RobotController {
         }
     }
 
+    /**
+     * @return the currently velocity in inches/minute
+     */
+    public int getVelocity() {
+        return velocity;
+    }
+
     public void stopRobotMotion() {
         LEFTMOTOR.stop();
         RIGHTMOTOR.stop();
     }
 
     public void driveRobotBackward() {
-        int motorSpeed = (int) (velocity /*INCHES_PER_MINUTE*/ * DEGREES_PER_INCH / SECONDS_PER_MINUTE);
+        int motorSpeed = (int) (velocity /* INCHES_PER_MINUTE */* DEGREES_PER_INCH / SECONDS_PER_MINUTE);
 
         LEFTMOTOR.setSpeed(motorSpeed);
         RIGHTMOTOR.setSpeed(motorSpeed);
@@ -67,12 +74,11 @@ public class RobotController {
         RIGHTMOTOR.backward();
     }
 
-
     /**
      * @return Indicates whether the robot is running or not
      */
-    public boolean isRunning(){
-        //TODO return the correct value
+    public boolean isRunning() {
+        // TODO return the correct value
         return false;
     }
 }

@@ -29,6 +29,9 @@ public class StatsPanel extends JPanel {
         mSpeed = new JLabel();
         mBattery = new JLabel();
         
+        mSpeed.setName("velocity_display");
+        mBattery.setName("battery_display");
+        
         add(mSpeed);
         add(mBattery);
         
@@ -43,8 +46,8 @@ public class StatsPanel extends JPanel {
         repaint();
     }
     
-    public void setSpeed(int speed) {
-        mSpeed.setText(Integer.toString(speed) + sSpeedText);
+    public void setSpeed(double speed) {
+        mSpeed.setText(Double.toString(speed) + sSpeedText);
     }
     
     public void setBattery(int milliVolts) {

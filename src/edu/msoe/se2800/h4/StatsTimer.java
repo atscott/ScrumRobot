@@ -8,6 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class StatsTimer {
+    
+    private static final double sMetersPerInch = .0254;
 
     private StatsTimer() {
 
@@ -24,6 +26,9 @@ public class StatsTimer {
                 event.milliVolts = random.nextInt();
                 event.velocity = random.nextInt();
                 // event.milliVolts = Battery.getVoltageMilliVolt();
+                double velocity = JPlotController.getInstance().getRobotController().getVelocity();
+                velocity = velocity * sMetersPerInch / RobotController.SECONDS_PER_MINUTE;
+                //event.velocity = velocity;
                 JPlotController.getInstance().getStatsEventBus().post(event);
             }
 

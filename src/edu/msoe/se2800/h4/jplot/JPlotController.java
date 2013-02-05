@@ -210,7 +210,7 @@ public class JPlotController {
         LoginUI login = new LoginUI(dummyFrame);
         dummyFrame.dispose();
         if (login.wasLoginSuccessful()) {
-            Logger.INSTANCE.log(this.getClass().toString(),
+            Logger.INSTANCE.log(this.getClass().getSimpleName(),
                     "Logged in as: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
             this.currentUser = DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser();
             this.init();
@@ -264,6 +264,10 @@ public class JPlotController {
             }
         }
         return mEventBus;
+    }
+    
+    public RobotController getRobotController() {
+        return robotController;
     }
 
 }
