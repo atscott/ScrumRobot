@@ -10,6 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.WindowConstants;
 
+import edu.msoe.se2800.h4.administrationFeatures.CreateUserUI;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.grid.AdminGridDecorator;
 import edu.msoe.se2800.h4.jplot.grid.GridInterface;
@@ -120,7 +121,8 @@ public class JPlot extends JFrame {
                 System.out.println("you chose administrator mode");
                 JPlotController.getInstance().changeMode(GridMode.ADMINISTRATOR_MODE);
             } else if (e.getActionCommand().equals("create_user")) {
-                //TODO @andrew show the create user gui
+                CreateUserUI createUserUI = new CreateUserUI(JPlotController.getInstance());
+                createUserUI.setVisible(true);
             	//TODO @andrew get the username, password, and role from the gui
             	//TODO @andrew pass them to the controller JPlotController.getInstance().createUser(user, pass, role);
             	//TODO also you need to change the createUser method in JPlotController to accept the parameters
