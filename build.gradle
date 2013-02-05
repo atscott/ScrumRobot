@@ -2,11 +2,12 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 version = '1.0'
 jar {
     manifest {
-        attributes 'Implementation-Title': 'ScrumRobot', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'ScrumRobot', 'Implementation-Version': 2
     }
 }
 
@@ -16,13 +17,15 @@ repositories {
 
 dependencies {
     compile 'com.google.guava:guava:14.0-rc2'
-    compile 'com.google.inject:guice:3.0'
+    compile 'com.squareup:dagger:0.9.1'
+    compile 'com.squareup:dagger-compiler:0.9.1'
     compile 'com.healthmarketscience.jackcess:jackcess:1.2.9'
 	compile fileTree(dir: 'libs', include: '*.jar')
-    testCompile 'com.google.guava:guava:14.0-rc2'
+	
+	// This hack is required since the fest-swing-testng libraries from MavenCentral force a JDK of 1.5 and our builds break
+	testCompile fileTree(dir: 'libs/test', include: '*.jar')
     testCompile 'org.testng:testng:6.8'
-    testCompile 'jackcess:jackcess:1.1.10'
-    testCompile 'org.easytesting:fest-swing-testng:1.2.1'
+    //testCompile 'org.easytesting:fest-swing-testng:1.2.1'
 }
 
 test {
