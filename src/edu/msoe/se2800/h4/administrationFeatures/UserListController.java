@@ -68,5 +68,9 @@ public class UserListController {
 	public void showChangePassword(String username) {
 		passChange = new PasswordChangeUI(this, username);
 	}
+	
+	public void onPasswordChangeSave() {
+		
+	}
 
 }
