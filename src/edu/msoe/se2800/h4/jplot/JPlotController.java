@@ -8,7 +8,7 @@ import edu.msoe.se2800.h4.FileIO;
 import edu.msoe.se2800.h4.Logger;
 import edu.msoe.se2800.h4.RobotController;
 import edu.msoe.se2800.h4.StatsTimer;
-import edu.msoe.se2800.h4.UserListController;
+import edu.msoe.se2800.h4.administrationFeatures.UserListController;
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
 import edu.msoe.se2800.h4.jplot.Constants.GridMode;

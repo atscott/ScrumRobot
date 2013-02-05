@@ -1,4 +1,4 @@
-package edu.msoe.se2800.h4;
+package edu.msoe.se2800.h4.administrationFeatures;
 
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 
@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 public class UserListController {
 	
 	private UserListUI ui;
+	private PasswordChangeUI passChange;
 	
 	public UserListController() {
         try {
@@ -62,6 +63,10 @@ public class UserListController {
 		if (errors) {
 			JOptionPane.showMessageDialog(null, "An error occured editing the users.  Some of the changes may not persist.");
 		}
+	}
+	
+	public void showChangePassword(String username) {
+		passChange = new PasswordChangeUI(this, username);
 	}
 
 }
