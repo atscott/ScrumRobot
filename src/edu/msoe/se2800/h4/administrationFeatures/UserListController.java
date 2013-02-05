@@ -9,12 +9,11 @@ import javax.swing.JOptionPane;
 
 public class UserListController {
 	
-	private UserListUI ui;
 	private PasswordChangeUI passChange;
 	
 	public UserListController() {
         try {
-            ui = new UserListUI(
+            new UserListUI(
                     DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.OBSERVER),
                     DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.PROGRAMMER),
                     DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.ADMIN),
@@ -69,8 +68,21 @@ public class UserListController {
 		passChange = new PasswordChangeUI(this, username);
 	}
 	
-	public void onPasswordChangeSave() {
-		
+	public boolean onPasswordChangeSave(String username, String password) {
+		boolean success = false;
+		try {
+			ResultInfo ri = DatabaseConnection.getInstance().changeUserInfo(username, password, DatabaseConnection.getInstance().getUserRole(username));
+			if (!ri.wasSuccess()) {
+				JOptionPane.showMessageDialog(null, ri.getMessage());
+			} else {
+				success = true;
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return success;
 	}
 
 }

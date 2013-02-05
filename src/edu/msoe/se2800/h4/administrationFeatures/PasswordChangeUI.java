@@ -53,27 +53,29 @@ public class PasswordChangeUI extends JDialog {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(usernameLabel);
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        panel.add(usernameLabel, gbc);
         gbc.gridx = 1;
-        panel.add(txtUsername);
+        panel.add(txtUsername, gbc);
         
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(passwordLabel);
+        panel.add(passwordLabel, gbc);
         gbc.gridx = 1;
-        panel.add(txtPassword);
+        panel.add(txtPassword, gbc);
         
         gbc.gridx = 0;
         gbc.gridy = 2;
-        panel.add(passwordRetypeLabel);
+        panel.add(passwordRetypeLabel, gbc);
         gbc.gridx = 1;
-        panel.add(txtPasswordRetype);
+        panel.add(txtPasswordRetype, gbc);
         
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(saveBtn);
+        panel.add(saveBtn, gbc);
         gbc.gridx = 1;
-        panel.add(cancelBtn);
+        panel.add(cancelBtn, gbc);
 
         this.add(panel);
         this.setTitle("Change Password");
@@ -89,8 +91,9 @@ public class PasswordChangeUI extends JDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equalsIgnoreCase("save")) {
-                controller.onPasswordChangeSave();
-
+                if (controller.onPasswordChangeSave(username, txtPassword.getText())) {
+                	dispose();
+                }
             } else if (e.getActionCommand().equalsIgnoreCase("cancel")) {
                 dispose();
             }
