@@ -98,6 +98,8 @@ public class InfoPanel extends JPanel {
  //Robot Control Panel
         JPanel robotControlPanel = new JPanel();
         robotControlPanel.setLayout(new GridBagLayout());
+        robotControlPanel.setEnabled(false);
+
         GridBagConstraints rcpConstraints = new GridBagConstraints();
         rcpConstraints.fill = GridBagConstraints.HORIZONTAL;
 
@@ -175,11 +177,16 @@ public class InfoPanel extends JPanel {
         add(load);
         add(save);
         add(saveAs);
-		add(robotControlPanel);
+        add(robotControlPanel);
+
     }
 
     public void disableSubviews() {
         for (Component c : this.getComponents()) {
+            if(c instanceof JPanel){
+                for(Component d: ((JPanel) c).getComponents())
+                    d.setEnabled(false);
+            }
             c.setEnabled(false);
         }
     }
