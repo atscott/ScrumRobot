@@ -30,7 +30,7 @@ public class StatsTimerDaemon {
                 double velocity = sRobotController.getVelocity();
                 velocity = velocity * sMetersPerInch / 60;
                 event.velocity = velocity;
-                JPlotController.getInstance().getStatsEventBus().post(event);
+                JPlotController.getInstance().getEventBus().post(event);
             }
 
         }, 0, 1000);

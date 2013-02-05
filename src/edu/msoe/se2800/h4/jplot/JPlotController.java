@@ -29,7 +29,6 @@ import javax.swing.WindowConstants;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
-//github.com/atscott/ScrumRobot.git
 
 @Singleton
 public class JPlotController {
@@ -62,14 +61,8 @@ public class JPlotController {
     public JPlotController() {
         path = new Path();
         oldList = new ArrayList<Waypoint>();
-        //start(robotController);
+        instance = this;
     }
-
-//    private JPlotController() {
-//        path = new Path();
-//        oldList = new ArrayList<Waypoint>();
-//        instance = this;
-//    }
 
     public void init() {
         grid = new Grid();
@@ -267,7 +260,7 @@ public class JPlotController {
                 "Logged out of: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
     }
     
-    public EventBus getStatsEventBus() {
+    public EventBus getEventBus() {
         if (mEventBus == null) {
             synchronized (this) {
                 mEventBus = new EventBus();
