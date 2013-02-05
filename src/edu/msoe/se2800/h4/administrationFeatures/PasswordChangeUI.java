@@ -54,12 +54,25 @@ public class PasswordChangeUI extends JDialog {
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(usernameLabel);
+        gbc.gridx = 1;
         panel.add(txtUsername);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         panel.add(passwordLabel);
+        gbc.gridx = 1;
         panel.add(txtPassword);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         panel.add(passwordRetypeLabel);
+        gbc.gridx = 1;
         panel.add(txtPasswordRetype);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panel.add(saveBtn);
+        gbc.gridx = 1;
         panel.add(cancelBtn);
 
         this.add(panel);
