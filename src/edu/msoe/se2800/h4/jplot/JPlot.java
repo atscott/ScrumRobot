@@ -120,7 +120,10 @@ public class JPlot extends JFrame {
                 System.out.println("you chose administrator mode");
                 JPlotController.getInstance().changeMode(GridMode.ADMINISTRATOR_MODE);
             } else if (e.getActionCommand().equals("create_user")) {
-                JPlotController.getInstance().createUser();
+                //TODO @andrew show the create user gui
+            	//TODO @andrew get the username, password, and role from the gui
+            	//TODO @andrew pass them to the controller JPlotController.getInstance().createUser(user, pass, role);
+            	//TODO also you need to change the createUser method in JPlotController to accept the parameters
             } else if (e.getActionCommand().equals("list_user")) {
                 JPlotController.getInstance().listUsers();
             }
