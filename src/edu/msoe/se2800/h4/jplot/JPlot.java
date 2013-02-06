@@ -11,7 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.WindowConstants;
 
 import edu.msoe.se2800.h4.administrationFeatures.CreateUserUI;
-import edu.msoe.se2800.h4.jplot.Constants.GridMode;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.jplot.grid.AdminGridDecorator;
 import edu.msoe.se2800.h4.jplot.grid.GridInterface;
 import edu.msoe.se2800.h4.jplot.grid.ImmediateGridDecorator;
@@ -23,17 +23,17 @@ public class JPlot extends JFrame {
      */
     private static final long serialVersionUID = -8344597455042452839L;
 
-    public JPlot(GridMode mode, GridInterface grid) {
+    public JPlot(DatabaseConnection.UserTypes mode, GridInterface grid) {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setTitle("JPlot - " + mode);
         getContentPane().setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
 
-        if (mode != GridMode.OBSERVER_MODE) {
+        if (mode != DatabaseConnection.UserTypes.OBSERVER) {
             Constants.INFO_PANEL_WIDTH = 150;
-            if (mode == GridMode.ADMINISTRATOR_MODE) {
+            if (mode == DatabaseConnection.UserTypes.ADMIN) {
                 grid = new AdminGridDecorator(grid);
-            } else if (mode == GridMode.IMMEDIATE_MODE) {
+            } else if (mode == DatabaseConnection.UserTypes.OTHER) {//TODO used to be immediate
                 grid = new ImmediateGridDecorator(grid);
             }
         }
@@ -47,6 +47,7 @@ public class JPlot extends JFrame {
 
         JMenu fileMenu = new JMenu("File");
         JMenuItem logoutItem = new JMenuItem("Log out");
+        logoutItem.setName("logout");
         logoutItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,16 +67,19 @@ public class JPlot extends JFrame {
         JMenuItem mnuObserver = new JMenuItem();
         mnuObserver.setText("Observer Mode");
         mnuObserver.setActionCommand("observer");
+        mnuObserver.setName("observer_mode");
         mnuObserver.addActionListener(new MenuActionListener());
 
         JMenuItem mnuImmediate = new JMenuItem();
         mnuImmediate.setText("Immediate Mode");
         mnuImmediate.setActionCommand("immediate");
+        mnuImmediate.setName("immediate_mode");
         mnuImmediate.addActionListener(new MenuActionListener());
 
         JMenuItem mnuAdministrator = new JMenuItem();
         mnuAdministrator.setText("Administrator Mode");
         mnuAdministrator.setActionCommand("administrator");
+        mnuAdministrator.setName("administrator_mode");
         mnuAdministrator.addActionListener(new MenuActionListener());
 
         jMenuMode.add(mnuObserver);
@@ -89,11 +93,13 @@ public class JPlot extends JFrame {
         JMenuItem mnuCreateNew = new JMenuItem();
         mnuCreateNew.setText("Create User");
         mnuCreateNew.setActionCommand("create_user");
+        mnuCreateNew.setName("create_user");
         mnuCreateNew.addActionListener(new MenuActionListener());
 
         JMenuItem mnuList = new JMenuItem();
         mnuList.setText("List Users");
         mnuList.setActionCommand("list_user");
+        mnuList.setName("list_user");
         mnuList.addActionListener(new MenuActionListener());
 
         jMenuAdmin.add(mnuCreateNew);
@@ -113,13 +119,13 @@ public class JPlot extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equalsIgnoreCase("observer")) {
                 System.out.println("you chose observer mode");
-                JPlotController.getInstance().changeMode(GridMode.OBSERVER_MODE);
+                JPlotController.getInstance().changeMode(DatabaseConnection.UserTypes.OBSERVER);
             } else if (e.getActionCommand().equalsIgnoreCase("immediate")) {
                 System.out.println("you chose immediate mode");
-                JPlotController.getInstance().changeMode(GridMode.IMMEDIATE_MODE);
+                JPlotController.getInstance().changeMode(DatabaseConnection.UserTypes.OTHER);
             } else if (e.getActionCommand().equalsIgnoreCase("administrator")) {
                 System.out.println("you chose administrator mode");
-                JPlotController.getInstance().changeMode(GridMode.ADMINISTRATOR_MODE);
+                JPlotController.getInstance().changeMode(DatabaseConnection.UserTypes.ADMIN);
             } else if (e.getActionCommand().equals("create_user")) {
                 CreateUserUI createUserUI = new CreateUserUI(JPlotController.getInstance());
                 createUserUI.setVisible(true);

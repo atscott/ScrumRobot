@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 
-public class JPlotTest extends FestSwingTestngTestCase {
+public class JPlotObserverTest extends FestSwingTestngTestCase {
 	
 	private FrameFixture mWindow;
 
@@ -17,7 +17,7 @@ public class JPlotTest extends FestSwingTestngTestCase {
     protected void onSetUp() {
     	JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
             protected JPlot executeInEDT() {
-              return new JPlot(DatabaseConnection.UserTypes.ADMIN, new Grid());  
+              return new JPlot(DatabaseConnection.UserTypes.OBSERVER, new Grid());  
             }
         });
         // IMPORTANT: note the call to 'robot()'
@@ -27,27 +27,28 @@ public class JPlotTest extends FestSwingTestngTestCase {
     }
     
     @Test
-    public void aMenuItemLogoutShouldBeAvailable() {
+    public void oMenuItemLogoutShouldBeAvailable() {
         mWindow.menuItem("logout").requireVisible().requireEnabled();
     }
     
     @Test
-    public void aMenuItemImmediateModeShouldBeAvailable() {
-        mWindow.menuItem("immediate_mode").requireVisible().requireEnabled();
+    public void oMenuItemImmediateModeShouldNotBeAvailable() {
+        mWindow.menuItem("immediate_mode").requireNotVisible();
     }
     
     @Test
-    public void aMenuItemAdministratorModeShouldBeAvailable() {
-        mWindow.menuItem("administrator_mode").requireVisible().requireEnabled();
+    public void oMenuItemAdministratorModeShouldNotBeAvailable() {
+        mWindow.menuItem("administrator_mode").requireNotVisible();
     }
     
     @Test
-    public void aMenuItemCreateUserShouldBeAvailable() {
-        mWindow.menuItem("create_user").requireVisible().requireEnabled();
+    public void oMenuItemCreateUserShouldNotBeAvailable() {
+        mWindow.menuItem("create_user").requireNotVisible();
     }
     
     @Test
-    public void aMenuItemListUserShouldBeAvailable() {
-        mWindow.menuItem("list_user").requireVisible().requireEnabled();
+    public void oMenuItemListUserShouldNotBeAvailable() {
+        mWindow.menuItem("list_user").requireNotVisible();
     }
+
 }

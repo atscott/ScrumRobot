@@ -1,13 +1,13 @@
 package edu.msoe.se2800.h4.jplot;
 
-import edu.msoe.se2800.h4.jplot.Constants.GridMode;
-import edu.msoe.se2800.h4.jplot.grid.Grid;
-
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.testng.testcase.FestSwingTestngTestCase;
 import org.testng.annotations.Test;
+
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.jplot.grid.Grid;
 
 public class InfoPanelGUITest extends FestSwingTestngTestCase {
     
@@ -17,7 +17,7 @@ public class InfoPanelGUITest extends FestSwingTestngTestCase {
     protected void onSetUp() {
         JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
             protected JPlot executeInEDT() {
-              return new JPlot(GridMode.ADMINISTRATOR_MODE, new Grid());  
+              return new JPlot(DatabaseConnection.UserTypes.ADMIN, new Grid());  
             }
         });
         // IMPORTANT: note the call to 'robot()'

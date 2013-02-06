@@ -1,16 +1,21 @@
 package edu.msoe.se2800.h4.jplot.grid;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.io.File;
+
+import javax.swing.JPanel;
+
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.jplot.AxisPanel;
 import edu.msoe.se2800.h4.jplot.Constants;
-import edu.msoe.se2800.h4.jplot.Constants.GridMode;
 import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanel;
 import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelAdminDecorator;
 import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelImmediateDecorator;
 import edu.msoe.se2800.h4.jplot.plotPanel.PlotPanelInterface;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
 
 public class Grid extends JPanel implements GridInterface {
 	
@@ -41,9 +46,9 @@ public class Grid extends JPanel implements GridInterface {
 	@Override
 	public void initSubviews() {
 		plotPanel = new PlotPanel();
-		if (Constants.CURRENT_MODE == GridMode.ADMINISTRATOR_MODE) {
+		if (Constants.CURRENT_MODE == DatabaseConnection.UserTypes.ADMIN) {
 			plotPanel = new PlotPanelAdminDecorator(plotPanel);
-		} else if (Constants.CURRENT_MODE == GridMode.IMMEDIATE_MODE) {
+		} else if (Constants.CURRENT_MODE == DatabaseConnection.UserTypes.OTHER) {
 			plotPanel = new PlotPanelImmediateDecorator(plotPanel);
 		}
 		xAxisPanel = new AxisPanel(Constants.HORIZONTAL);

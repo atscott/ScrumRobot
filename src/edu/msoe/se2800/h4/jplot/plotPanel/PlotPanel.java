@@ -177,18 +177,6 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         float y = p.y;
         System.out.println("y(1-1) = "+y);
 
-        if (Constants.SNAP_TO_GRID_CORNERS) {
-            x = round(x);
-            y = round(y);
-
-            // need this to update the points in the Grid class after rounding, a reference is
-            // passed in so we can just update
-            // the reference, which still resides in the Grid class so setting the x and y of the
-            // passed in point is ok
-            p.x = x;
-            p.y = y;
-        }
-
         //this next calculation assigns x to the distance from the 0 point it should be
         x = (float)Math.floor(0.5 + ((Constants.GRID_WIDTH() / JPlotController.getInstance()
                 .getGridDensity()) * (x / Constants.STEP_INCREMENT)));
@@ -242,10 +230,7 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
 
         x-=Constants.STEP_INCREMENT*JPlotController.getInstance().getGridDensity()/2;
         y-=Constants.STEP_INCREMENT*JPlotController.getInstance().getGridDensity()/2;
-        if (Constants.SNAP_TO_GRID_CORNERS) {
-            x = round(x);
-            y = round(y);
-        }
+        
         System.out.println("final x = "+x);
         System.out.println("final y = "+y);
         return new Waypoint(x, y);

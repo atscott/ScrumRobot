@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 
-public class JPlotTest extends FestSwingTestngTestCase {
+public class JPlotProgrammerTest extends FestSwingTestngTestCase {
 	
 	private FrameFixture mWindow;
 
@@ -27,27 +27,28 @@ public class JPlotTest extends FestSwingTestngTestCase {
     }
     
     @Test
-    public void aMenuItemLogoutShouldBeAvailable() {
+    public void pMenuItemLogoutShouldBeAvailable() {
         mWindow.menuItem("logout").requireVisible().requireEnabled();
     }
     
     @Test
-    public void aMenuItemImmediateModeShouldBeAvailable() {
+    public void pMenuItemImmediateModeShouldBeAvailable() {
         mWindow.menuItem("immediate_mode").requireVisible().requireEnabled();
     }
     
     @Test
-    public void aMenuItemAdministratorModeShouldBeAvailable() {
+    public void pMenuItemAdministratorModeShouldBeAvailable() {
         mWindow.menuItem("administrator_mode").requireVisible().requireEnabled();
     }
     
     @Test
-    public void aMenuItemCreateUserShouldBeAvailable() {
-        mWindow.menuItem("create_user").requireVisible().requireEnabled();
+    public void pMenuItemCreateUserShouldNotBeAvailable() {
+        mWindow.menuItem("create_user").requireNotVisible();
     }
     
     @Test
-    public void aMenuItemListUserShouldBeAvailable() {
-        mWindow.menuItem("list_user").requireVisible().requireEnabled();
+    public void pMenuItemListUserShouldNotBeAvailable() {
+        mWindow.menuItem("list_user").requireNotVisible();
     }
+
 }

@@ -2,19 +2,6 @@ package edu.msoe.se2800.h4.jplot;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.eventbus.EventBus;
-
-import edu.msoe.se2800.h4.FileIO;
-import edu.msoe.se2800.h4.IRobotController;
-import edu.msoe.se2800.h4.Logger;
-import edu.msoe.se2800.h4.StatsTimerDaemon;
-import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
-import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
-import edu.msoe.se2800.h4.administrationFeatures.UserListController;
-import edu.msoe.se2800.h4.jplot.Constants.GridMode;
-import edu.msoe.se2800.h4.jplot.grid.Grid;
-import edu.msoe.se2800.h4.jplot.grid.GridInterface;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -29,6 +16,19 @@ import javax.swing.WindowConstants;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
+
+import com.google.common.eventbus.EventBus;
+
+import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.IRobotController;
+import edu.msoe.se2800.h4.Logger;
+import edu.msoe.se2800.h4.StatsTimerDaemon;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
+import edu.msoe.se2800.h4.administrationFeatures.ResultInfo;
+import edu.msoe.se2800.h4.administrationFeatures.UserListController;
+import edu.msoe.se2800.h4.jplot.grid.Grid;
+import edu.msoe.se2800.h4.jplot.grid.GridInterface;
 
 @Singleton
 public class JPlotController {
@@ -66,7 +66,7 @@ public class JPlotController {
 
     public void init() {
         grid = new Grid();
-        jplot = new JPlot(GridMode.OBSERVER_MODE, grid);
+        jplot = new JPlot(DatabaseConnection.UserTypes.OBSERVER, grid);
         jplot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         jplot.addWindowListener(new JPlotWindowListener());
         StatsTimerDaemon.start();
@@ -76,16 +76,22 @@ public class JPlotController {
         return grid;
     }
 
-    public void changeMode(GridMode mode) {
+    public void changeMode(DatabaseConnection.UserTypes accessLevel) {
+    	DatabaseConnection.UserTypes mode;
+    	if (accessLevel == DatabaseConnection.UserTypes.ADMIN || accessLevel == DatabaseConnection.UserTypes.PROGRAMMER) {
+            mode = DatabaseConnection.UserTypes.ADMIN;
+        } else {
+        	mode = DatabaseConnection.UserTypes.OBSERVER;
+        }
         grid = new Grid();
-        if (Constants.CURRENT_MODE == GridMode.IMMEDIATE_MODE) {
+        if (Constants.CURRENT_MODE == DatabaseConnection.UserTypes.OTHER) {
             path.clear();
             for (Waypoint p : oldList) {
                 path.add(p);
             }
         }
         Constants.CURRENT_MODE = mode;
-        if (mode == GridMode.IMMEDIATE_MODE) {
+        if (mode == DatabaseConnection.UserTypes.OTHER) {
             copyPoints();
             path.clear();
         }
@@ -100,14 +106,6 @@ public class JPlotController {
                 jplot.addWindowListener(new JPlotWindowListener());
             }
         });
-    }
-
-    public void changeMode(DatabaseConnection.UserTypes accessLevel) {
-        if (accessLevel == DatabaseConnection.UserTypes.ADMIN || accessLevel == DatabaseConnection.UserTypes.PROGRAMMER) {
-            changeMode(GridMode.ADMINISTRATOR_MODE);
-        } else {
-            changeMode(GridMode.OBSERVER_MODE);
-        }
     }
 
     public Path getPath() {
@@ -177,8 +175,8 @@ public class JPlotController {
         }
     }
 
-    public void createUser() {
-        JOptionPane.showMessageDialog(null, "Someone implement creating a user.  This is in the createUser() in JPlotController.java", "TEAM .SCRUMBOT", JOptionPane.ERROR_MESSAGE);
+    public ResultInfo createUser(String username, String password, DatabaseConnection.UserTypes role) {
+        return new ResultInfo("Please Implement the createUser method inside of JPlotController", false);
     }
 
     public void listUsers() {
