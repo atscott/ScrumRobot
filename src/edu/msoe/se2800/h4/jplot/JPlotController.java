@@ -263,7 +263,7 @@ public class JPlotController {
 
         this.jplot.getFrame().dispose();
         this.currentUser = "";
-        Logger.INSTANCE.log(this.getClass().toString(),
+        Logger.INSTANCE.log(this.getClass().getSimpleName(),
                 "Logged out of: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
     }
     
