@@ -2,6 +2,7 @@ package edu.msoe.se2800.h4.jplot;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.testng.testcase.FestSwingTestngTestCase;
 import org.testng.annotations.Test;
@@ -13,16 +14,18 @@ public class JPlotObserverTest extends FestSwingTestngTestCase {
 	
 	private FrameFixture mWindow;
 
-    @Override
+	@Override
     protected void onSetUp() {
-    	JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
-            protected JPlot executeInEDT() {
-              return new JPlot(DatabaseConnection.UserTypes.OBSERVER, new Grid());  
+    	JPlotInterface frame = GuiActionRunner.execute(new GuiQuery<JPlotInterface>() {
+            protected JPlotInterface executeInEDT() {
+            	JPlotInterface jplotInterface= new JPlot(DatabaseConnection.UserTypes.OBSERVER, new Grid());
+            	jplotInterface.initSubviews();
+            	return jplotInterface;
             }
         });
         // IMPORTANT: note the call to 'robot()'
         // we must use the Robot from FestSwingTestngTestCase        
-        mWindow = new FrameFixture(robot(), frame);
+        mWindow = new FrameFixture(robot(), frame.getFrame());
         mWindow.show(); // shows the frame to test
     }
     
@@ -31,22 +34,22 @@ public class JPlotObserverTest extends FestSwingTestngTestCase {
         mWindow.menuItem("logout").requireVisible().requireEnabled();
     }
     
-    @Test
+    @Test(expectedExceptions = ComponentLookupException.class)
     public void oMenuItemImmediateModeShouldNotBeAvailable() {
         mWindow.menuItem("immediate_mode").requireNotVisible();
     }
     
-    @Test
+    @Test(expectedExceptions = ComponentLookupException.class)
     public void oMenuItemAdministratorModeShouldNotBeAvailable() {
         mWindow.menuItem("administrator_mode").requireNotVisible();
     }
     
-    @Test
+    @Test(expectedExceptions = ComponentLookupException.class)
     public void oMenuItemCreateUserShouldNotBeAvailable() {
         mWindow.menuItem("create_user").requireNotVisible();
     }
     
-    @Test
+    @Test(expectedExceptions = ComponentLookupException.class)
     public void oMenuItemListUserShouldNotBeAvailable() {
         mWindow.menuItem("list_user").requireNotVisible();
     }

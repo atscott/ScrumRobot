@@ -76,7 +76,7 @@ public class JPlotControllerTest {
             }
         });
 
-        Assert.assertEquals(Constants.CURRENT_MODE, DatabaseConnection.UserTypes.ADMIN);
+        Assert.assertEquals(Constants.CURRENT_MODE, DatabaseConnection.UserTypes.PROGRAMMER);
     }
 
     @Test

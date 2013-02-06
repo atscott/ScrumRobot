@@ -2,6 +2,7 @@ package edu.msoe.se2800.h4.jplot;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.testng.testcase.FestSwingTestngTestCase;
 import org.testng.annotations.Test;
@@ -13,16 +14,18 @@ public class JPlotProgrammerTest extends FestSwingTestngTestCase {
 	
 	private FrameFixture mWindow;
 
-    @Override
+	@Override
     protected void onSetUp() {
-    	JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
-            protected JPlot executeInEDT() {
-              return new JPlot(DatabaseConnection.UserTypes.ADMIN, new Grid());  
+    	JPlotInterface frame = GuiActionRunner.execute(new GuiQuery<JPlotInterface>() {
+            protected JPlotInterface executeInEDT() {
+            	JPlotInterface jplotInterface= new JPlotProgrammerDecorator(new JPlot(DatabaseConnection.UserTypes.PROGRAMMER, new Grid()));
+            	jplotInterface.initSubviews();
+            	return jplotInterface;
             }
         });
         // IMPORTANT: note the call to 'robot()'
         // we must use the Robot from FestSwingTestngTestCase        
-        mWindow = new FrameFixture(robot(), frame);
+        mWindow = new FrameFixture(robot(), frame.getFrame());
         mWindow.show(); // shows the frame to test
     }
     
@@ -41,12 +44,12 @@ public class JPlotProgrammerTest extends FestSwingTestngTestCase {
         mWindow.menuItem("administrator_mode").requireVisible().requireEnabled();
     }
     
-    @Test
+    @Test(expectedExceptions = ComponentLookupException.class)
     public void pMenuItemCreateUserShouldNotBeAvailable() {
         mWindow.menuItem("create_user").requireNotVisible();
     }
     
-    @Test
+    @Test(expectedExceptions = ComponentLookupException.class)
     public void pMenuItemListUserShouldNotBeAvailable() {
         mWindow.menuItem("list_user").requireNotVisible();
     }

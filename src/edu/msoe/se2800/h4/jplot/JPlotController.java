@@ -12,7 +12,6 @@ import javax.inject.Singleton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
@@ -37,7 +36,7 @@ public class JPlotController {
 
     private int gridDensity = Constants.DEFAULT_GRID_DENSITY;
 
-    private JPlot jplot;
+    private JPlotInterface jplot;
     private GridInterface grid;
     private Path path;
     private List<Waypoint> oldList;
@@ -67,8 +66,8 @@ public class JPlotController {
     public void init() {
         grid = new Grid();
         jplot = new JPlot(DatabaseConnection.UserTypes.OBSERVER, grid);
-        jplot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        jplot.addWindowListener(new JPlotWindowListener());
+        jplot.initSubviews();
+        jplot.getFrame().addWindowListener(new JPlotWindowListener());
         StatsTimerDaemon.start();
     }
 
@@ -77,12 +76,16 @@ public class JPlotController {
     }
 
     public void changeMode(DatabaseConnection.UserTypes accessLevel) {
-    	DatabaseConnection.UserTypes mode;
-    	if (accessLevel == DatabaseConnection.UserTypes.ADMIN || accessLevel == DatabaseConnection.UserTypes.PROGRAMMER) {
+    	DatabaseConnection.UserTypes mode = accessLevel;
+    	/*if (accessLevel == DatabaseConnection.UserTypes.ADMIN) {
             mode = DatabaseConnection.UserTypes.ADMIN;
+        } else if (accessLevel == DatabaseConnection.UserTypes.PROGRAMMER) {
+        	mode = DatabaseConnection.UserTypes.PROGRAMMER;
+        } else if (accessLevel == DatabaseConnection.UserTypes.OTHER) {
+        	mode = DatabaseConnection.UserTypes.OTHER;
         } else {
         	mode = DatabaseConnection.UserTypes.OBSERVER;
-        }
+        }*/
         grid = new Grid();
         if (Constants.CURRENT_MODE == DatabaseConnection.UserTypes.OTHER) {
             path.clear();
@@ -99,11 +102,17 @@ public class JPlotController {
             @Override
             public void run() {
                 closingForModeChange = true;
-                jplot.dispose();
+                jplot.getFrame().dispose();
                 jplot = new JPlot(Constants.CURRENT_MODE, grid);
+                if (Constants.CURRENT_MODE != DatabaseConnection.UserTypes.OBSERVER) {
+                	jplot = new JPlotProgrammerDecorator(jplot);
+                	if (Constants.CURRENT_MODE == DatabaseConnection.UserTypes.ADMIN) {
+                		jplot = new JPlotAdminDecorator(jplot);
+                	}
+                }
+                jplot.initSubviews();
                 closingForModeChange = false;
-                jplot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                jplot.addWindowListener(new JPlotWindowListener());
+                jplot.getFrame().addWindowListener(new JPlotWindowListener());
             }
         });
     }
@@ -121,13 +130,13 @@ public class JPlotController {
     public void addPoint(Waypoint point) {
         path.add(point);
         if (jplot != null) {
-            jplot.repaint();
+            jplot.getFrame().repaint();
         }
     }
 
     public void removePoint(int indexOfPoint) {
         path.remove(indexOfPoint);
-        jplot.repaint();
+        jplot.getFrame().repaint();
     }
 
     public void copyPoints() {
@@ -196,7 +205,7 @@ public class JPlotController {
             if (!closingForModeChange) {
                 JPlotController.this.logOut();
             } else {
-                jplot.dispose();
+                jplot.getFrame().dispose();
             }
         }
     }
@@ -252,7 +261,7 @@ public class JPlotController {
         }
 
 
-        this.jplot.dispose();
+        this.jplot.getFrame().dispose();
         this.currentUser = "";
         Logger.INSTANCE.log(this.getClass().toString(),
                 "Logged out of: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
