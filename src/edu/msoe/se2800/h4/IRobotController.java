@@ -1,17 +1,22 @@
 package edu.msoe.se2800.h4;
 
+import lejos.robotics.navigation.Waypoint;
+
 public interface IRobotController {
     
-    public void driveForward();
+    public void setPath();
     
-    public void setVelocity(int velocity);
+    public void setVelocity(double velocity);
     
-    public int getVelocity();
+    public double getVelocity();
     
-    public void stopRobotMotion();
-    
-    public void driveRobotBackward();
-    
+    public void travelPath();
+        
     public boolean isRunning();
 
+    public void goToWaypoint(Waypoint wp);//Single step
+    
+    public void setReverse();
+    
+    public void stop();
 }
