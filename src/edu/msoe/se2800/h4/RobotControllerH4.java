@@ -2,42 +2,74 @@
 package edu.msoe.se2800.h4;
 
 
+import lejos.robotics.navigation.Waypoint;
+import lejos.robotics.pathfinding.Path;
+
 public class RobotControllerH4 implements IRobotController {
 
+
     @Override
-    public void driveForward() {
-        // TODO Auto-generated method stub
-        
+    public void setPath(Path aPath) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public void setVelocity(int velocity) {
-        // TODO Auto-generated method stub
-        
+    public void addWaypoint(Waypoint aWaypoint) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public int getVelocity() {
-        // TODO Auto-generated method stub
-        return 0;
+    public void followRoute() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public void stopRobotMotion() {
-        // TODO Auto-generated method stub
-        
+    public void goToImmediate(Waypoint destination) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public void driveRobotBackward() {
-        // TODO Auto-generated method stub
-        
+    public void stop() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public boolean isRunning() {
-        // TODO Auto-generated method stub
-        return false;
+    public void stopImmediate() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
-    
+
+    @Override
+    public boolean isMoving() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void singleStep(boolean setting) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Waypoint getLocation() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public double getOrientation() {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setVelocity(double velocity) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public double getVelocity() {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setReverse(boolean isReverse) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
