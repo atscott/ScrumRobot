@@ -112,8 +112,8 @@ public class InfoPanel extends JPanel {
 
         //Forward and Reverse Buttons
         ButtonGroup bg = new ButtonGroup();
-        JRadioButton forward = new JRadioButton("Forward", true);
-        JRadioButton reverse = new JRadioButton("Reverse");
+        JToggleButton forward = new JToggleButton("Forward", true);
+        JToggleButton reverse = new JToggleButton("Reverse");
         bg.add(forward);
         bg.add(reverse);
         rcpConstraints.gridx = 0;
