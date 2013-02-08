@@ -77,6 +77,7 @@ public class DatabaseConnection {
         if (db == null) {
             throw new IOException("Database not connected");
         }
+        username = username.toUpperCase();
 
         boolean valid = false;
 
@@ -99,6 +100,7 @@ public class DatabaseConnection {
 
     public String getUserPassword(String username) throws IOException {
         checkNotNull(username);
+        username = username.toUpperCase();
 
         String pass = null;
         Table table = db.getTable(TABLE_NAME);
@@ -118,6 +120,7 @@ public class DatabaseConnection {
      * @return the user's access mode
      */
     public UserTypes getUserRole(String username) throws IOException {
+        username = username.toUpperCase();
         UserTypes permission = UserTypes.OTHER;
         Table table = db.getTable(TABLE_NAME);
         Map<String, Object> row = Cursor.findRow(table,
@@ -198,7 +201,8 @@ public class DatabaseConnection {
             throws IOException, IllegalArgumentException {
         if (username == null || newPassword == null)
             throw new NullPointerException("Cannot use null arguments");
-        if (username.equals("admin") && newRole != UserTypes.ADMIN)
+        username = username.toUpperCase();
+        if (username.equals("ADMIN") && newRole != UserTypes.ADMIN)
             throw new IllegalArgumentException("Cannot make the admin not an administrator");
 
 
@@ -228,10 +232,10 @@ public class DatabaseConnection {
      *                                  this will get thrown
      */
     public ResultInfo addUser(String username, String password, UserTypes role)
-            throws IllegalArgumentException, IOException {
+            throws IOException {
         if (username == null || password == null)
             throw new NullPointerException("Cannot use null arguments");
-
+        username = username.toUpperCase();
         ResultInfo result;
         Table table = db.getTable(TABLE_NAME);
         // get the row for user
@@ -246,7 +250,7 @@ public class DatabaseConnection {
             table.addRow(table.asRow(row));
             result = new ResultInfo("User added successfully.", true);
         } else {
-            result = new ResultInfo("User already exists", true);
+            result = new ResultInfo("User already exists", false);
         }
 
         return result;
@@ -262,7 +266,8 @@ public class DatabaseConnection {
     public ResultInfo deleteUser(String username) throws IllegalArgumentException, IOException {
         checkNotNull(username, "Cannot use null arguments");
 
-        if (username.equals("admin")) {
+        username = username.toUpperCase();
+        if (username.equals("ADMIN")) {
             throw new IllegalArgumentException("Cannot delete admin");
         }
 
@@ -281,21 +286,5 @@ public class DatabaseConnection {
         return result;
     }
 
-    public class ResultInfo {
-        private String message;
-        private boolean success;
 
-        public ResultInfo(String message, boolean success) {
-            this.message = message;
-            this.success = success;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public boolean wasSuccess() {
-            return success;
-        }
-    }
 }

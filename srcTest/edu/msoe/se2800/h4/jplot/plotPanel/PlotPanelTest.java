@@ -2,19 +2,20 @@
 package edu.msoe.se2800.h4.jplot.plotPanel;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.fail;
-import edu.msoe.se2800.h4.jplot.JPlotController;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
+import junit.framework.Assert;
 import lejos.robotics.navigation.Waypoint;
+
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import edu.msoe.se2800.h4.jplot.Constants;
+import edu.msoe.se2800.h4.jplot.JPlotController;
 
 @Test(groups = {
         "requiresSequential"
@@ -48,62 +49,35 @@ public class PlotPanelTest {
         mController.addPoint(new Waypoint(70, 70));
     }
 
-    @Test(description = "Tests the float method for accuracy on a variety of floats.", dataProvider = "roundData")
-    public void testRound(Float valueToRound, Integer stepSize, Float delta, Float expected) {
-
-        // TODO test for alternate step sizes. Right now, assume 10 is constant
-        float result = mPlot.round(valueToRound);
-        assertEquals(result, expected, delta);
-    }
-
     @Test(enabled = false)
     public void testTranslateToLocation() {
-        fail("unimplimented. Not sure what this method should do.");
+    	float spaceBetweenGridLines = (Constants.GRID_WIDTH()-Constants.GRID_OFFSET)/(JPlotController.getInstance().getGridDensity()*1.0f);
+    	float x = (float)Constants.GRID_OFFSET+Constants.Y_AXIS_WIDTH+(0.5f*JPlotController.getInstance().getGridDensity()*spaceBetweenGridLines);
+    	float y = (float)(Constants.WINDOW_HEIGHT - (Constants.GRID_OFFSET+Constants.X_AXIS_HEIGHT+(0.5f*JPlotController.getInstance().getGridDensity()*spaceBetweenGridLines)));
+    	Waypoint p = mPlot.translateToLocation(new Waypoint(0,0));
+    	assertEquals(p.x, x);
+    	assertEquals(p.y, y);
     }
 
     @Test(enabled = false)
     public void testTranslateToNearestPoint() {
-        fail("unimplimented. Not sure what this method should do.");
+        float spaceBetweenGridLines = (Constants.GRID_WIDTH()-Constants.GRID_OFFSET)/(JPlotController.getInstance().getGridDensity()*1.0f);
+    	float x = (float)Constants.GRID_OFFSET+Constants.Y_AXIS_WIDTH+(0.5f*JPlotController.getInstance().getGridDensity()*spaceBetweenGridLines);
+    	float y = (float)(Constants.WINDOW_HEIGHT - (Constants.GRID_OFFSET+Constants.X_AXIS_HEIGHT+(0.5f*JPlotController.getInstance().getGridDensity()*spaceBetweenGridLines)));
+    	Waypoint p = mPlot.translateToNearestPoint(new Waypoint(x,y));
+    	assertEquals(p.x, 0);
+    	assertEquals(p.y, 0);
     }
 
     @Test(enabled = false)
     public void testGetInterceptedPoint() {
-        fail("unimplimented. Not sure what this method should do.");
-    }
-
-    @DataProvider
-    private Object[][] roundData() {
-        return new Object[][] {
-                {
-                        Float.valueOf(0), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf(1), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf(-1), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) 0.0), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) 1.0), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) -1.0), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) .1), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) -.1), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) 1.1), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) -1.1), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) 5.0), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) -5.0), 10, Float.valueOf(0), Float.valueOf(-10)
-                }, {
-                        Float.valueOf((float) .5), 10, Float.valueOf(0), Float.valueOf(0)
-                }, {
-                        Float.valueOf((float) -.5), 10, Float.valueOf(0), Float.valueOf(0)
-                }
-        };
+    	float spaceBetweenGridLines = (Constants.GRID_WIDTH()-Constants.GRID_OFFSET)/(JPlotController.getInstance().getGridDensity()*1.0f);
+    	float x = (float)Constants.GRID_OFFSET+Constants.Y_AXIS_WIDTH+(0.5f*JPlotController.getInstance().getGridDensity()*spaceBetweenGridLines);
+    	float y = (float)(Constants.WINDOW_HEIGHT - (Constants.GRID_OFFSET+Constants.X_AXIS_HEIGHT+(0.5f*JPlotController.getInstance().getGridDensity()*spaceBetweenGridLines)));
+    	Waypoint p = mPlot.translateToNearestPoint(new Waypoint(x,y));
+    	Assert.assertNotNull(p);
+    	assertEquals(p.x, 0);
+    	assertEquals(p.y, 0);
     }
 
 }

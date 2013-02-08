@@ -25,7 +25,7 @@ public abstract class GridDecorator implements GridInterface {
 		statsPanel = new StatsPanel();
 		statsPanel.initSubviews();
 		addSubview(statsPanel, BorderLayout.NORTH);
-		JPlotController.getInstance().getStatsEventBus().register(statsPanel);
+		JPlotController.getInstance().getEventBus().register(statsPanel);
 	}
 	
 	@Override

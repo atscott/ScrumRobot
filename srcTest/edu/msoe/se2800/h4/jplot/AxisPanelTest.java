@@ -74,9 +74,11 @@ public class AxisPanelTest {
                 AxisPanel temp = new AxisPanel(Constants.HORIZONTAL);
                 temp.drawAxisMarkersHorizontal(TEST_DENSITY, g);
                 // add one to the TEST_DENSITY because 0 is always drawn
-                assertTrue(g.drawStringCalls.size() == TEST_DENSITY + 1);
-                assertTrue(g.drawStringCalls.get(TEST_DENSITY)[0].equals(TEST_DENSITY
-                        * Constants.STEP_INCREMENT + ""));
+                assertEquals(g.drawStringCalls.size(),TEST_DENSITY);
+                //we must substract the STEP_INCREMENT value because it always draws the right/top side
+                //as 10 less than the left/bottom side
+                assertTrue(g.drawStringCalls.get(TEST_DENSITY-1)[0].equals(TEST_DENSITY/2
+                        * Constants.STEP_INCREMENT - Constants.STEP_INCREMENT + ""));
             }
         });
     }
@@ -90,10 +92,12 @@ public class AxisPanelTest {
                 CustomGraphics g = new CustomGraphics();
                 AxisPanel temp = new AxisPanel(Constants.VERTICAL);
                 temp.drawAxisMarkersHorizontal(TEST_DENSITY, g);
-                assertTrue(g.drawStringCalls.size() == TEST_DENSITY + 1);
+                assertEquals(g.drawStringCalls.size(),TEST_DENSITY);
                 // verify that the last call was drawing the number TEST_DENSITY*step_increment
-                assertTrue(g.drawStringCalls.get(TEST_DENSITY)[0].equals(TEST_DENSITY
-                        * Constants.STEP_INCREMENT + ""));
+                //we must substract the STEP_INCREMENT value because it always draws the right/top side
+                //as 10 less than the left/bottom side
+                assertTrue(g.drawStringCalls.get(TEST_DENSITY-1)[0].equals(TEST_DENSITY/2
+                        * Constants.STEP_INCREMENT - Constants.STEP_INCREMENT + ""));
             }
         });
     }

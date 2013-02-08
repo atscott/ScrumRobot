@@ -1,4 +1,4 @@
-package edu.msoe.se2800.h4;
+package edu.msoe.se2800.h4.administrationFeatures;
 
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 
@@ -9,11 +9,11 @@ import javax.swing.JOptionPane;
 
 public class UserListController {
 	
-	private UserListUI ui;
+	private PasswordChangeUI passChange;
 	
 	public UserListController() {
         try {
-            ui = new UserListUI(
+            new UserListUI(
                     DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.OBSERVER),
                     DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.PROGRAMMER),
                     DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.ADMIN),
@@ -62,6 +62,27 @@ public class UserListController {
 		if (errors) {
 			JOptionPane.showMessageDialog(null, "An error occured editing the users.  Some of the changes may not persist.");
 		}
+	}
+	
+	public void showChangePassword(String username) {
+		passChange = new PasswordChangeUI(this, username);
+	}
+	
+	public boolean onPasswordChangeSave(String username, String password) {
+		boolean success = false;
+		try {
+			ResultInfo ri = DatabaseConnection.getInstance().changeUserInfo(username, password, DatabaseConnection.getInstance().getUserRole(username));
+			if (!ri.wasSuccess()) {
+				JOptionPane.showMessageDialog(null, ri.getMessage());
+			} else {
+				success = true;
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return success;
 	}
 
 }

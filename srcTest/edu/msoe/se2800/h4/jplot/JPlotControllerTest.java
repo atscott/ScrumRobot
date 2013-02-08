@@ -58,7 +58,7 @@ public class JPlotControllerTest {
                 controller.changeMode(DatabaseConnection.UserTypes.OBSERVER);
             }
         });
-        Assert.assertEquals(Constants.CURRENT_MODE, Constants.GridMode.OBSERVER_MODE);
+        Assert.assertEquals(Constants.CURRENT_MODE, DatabaseConnection.UserTypes.OBSERVER);
 
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
@@ -67,7 +67,7 @@ public class JPlotControllerTest {
             }
         });
 
-        Assert.assertEquals(Constants.CURRENT_MODE, Constants.GridMode.ADMINISTRATOR_MODE);
+        Assert.assertEquals(Constants.CURRENT_MODE, DatabaseConnection.UserTypes.ADMIN);
 
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
@@ -76,7 +76,7 @@ public class JPlotControllerTest {
             }
         });
 
-        Assert.assertEquals(Constants.CURRENT_MODE, Constants.GridMode.ADMINISTRATOR_MODE);
+        Assert.assertEquals(Constants.CURRENT_MODE, DatabaseConnection.UserTypes.PROGRAMMER);
     }
 
     @Test

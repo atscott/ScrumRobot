@@ -2,47 +2,48 @@ package edu.msoe.se2800.h4.jplot;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.eventbus.EventBus;
-
-import edu.msoe.se2800.h4.FileIO;
-import edu.msoe.se2800.h4.Logger;
-import edu.msoe.se2800.h4.RobotController;
-import edu.msoe.se2800.h4.StatsTimer;
-import edu.msoe.se2800.h4.UserListController;
-import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
-import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
-import edu.msoe.se2800.h4.jplot.Constants.GridMode;
-import edu.msoe.se2800.h4.jplot.grid.Grid;
-import edu.msoe.se2800.h4.jplot.grid.GridInterface;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Singleton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 
+import com.google.common.eventbus.EventBus;
+
+import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.IRobotController;
+import edu.msoe.se2800.h4.Logger;
+import edu.msoe.se2800.h4.StatsTimerDaemon;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.administrationFeatures.LoginUI;
+import edu.msoe.se2800.h4.administrationFeatures.ResultInfo;
+import edu.msoe.se2800.h4.administrationFeatures.UserListController;
+import edu.msoe.se2800.h4.jplot.grid.Grid;
+import edu.msoe.se2800.h4.jplot.grid.GridInterface;
+
+@Singleton
 public class JPlotController {
 
     private static JPlotController instance = null;
 
     private int gridDensity = Constants.DEFAULT_GRID_DENSITY;
 
-    private JPlot jplot;
+    private JPlotInterface jplot;
     private GridInterface grid;
     private Path path;
     private List<Waypoint> oldList;
     private Waypoint highlightedPoint;
     private boolean closingForModeChange = false;
     private EventBus mEventBus;
-    protected RobotController robotController;
+    protected IRobotController robotController;
     private String currentUser = "";
 
     public static JPlotController getInstance() {
@@ -55,34 +56,45 @@ public class JPlotController {
         }
         return instance;
     }
-
-    private JPlotController() {
+    
+    public JPlotController() {
         path = new Path();
         oldList = new ArrayList<Waypoint>();
+        instance = this;
     }
 
     public void init() {
         grid = new Grid();
-        jplot = new JPlot(GridMode.OBSERVER_MODE, grid);
-        jplot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        jplot.addWindowListener(new JPlotWindowListener());
-        StatsTimer.startTimerDaemon();
+        jplot = new JPlot(DatabaseConnection.UserTypes.OBSERVER, grid);
+        jplot.initSubviews();
+        jplot.getFrame().addWindowListener(new JPlotWindowListener());
+        StatsTimerDaemon.start();
     }
 
     public GridInterface getGrid() {
         return grid;
     }
 
-    public void changeMode(GridMode mode) {
+    public void changeMode(DatabaseConnection.UserTypes accessLevel) {
+    	DatabaseConnection.UserTypes mode = accessLevel;
+    	/*if (accessLevel == DatabaseConnection.UserTypes.ADMIN) {
+            mode = DatabaseConnection.UserTypes.ADMIN;
+        } else if (accessLevel == DatabaseConnection.UserTypes.PROGRAMMER) {
+        	mode = DatabaseConnection.UserTypes.PROGRAMMER;
+        } else if (accessLevel == DatabaseConnection.UserTypes.OTHER) {
+        	mode = DatabaseConnection.UserTypes.OTHER;
+        } else {
+        	mode = DatabaseConnection.UserTypes.OBSERVER;
+        }*/
         grid = new Grid();
-        if (Constants.CURRENT_MODE == GridMode.IMMEDIATE_MODE) {
+        if (Constants.CURRENT_MODE == DatabaseConnection.UserTypes.OTHER) {
             path.clear();
             for (Waypoint p : oldList) {
                 path.add(p);
             }
         }
         Constants.CURRENT_MODE = mode;
-        if (mode == GridMode.IMMEDIATE_MODE) {
+        if (mode == DatabaseConnection.UserTypes.OTHER) {
             copyPoints();
             path.clear();
         }
@@ -90,21 +102,19 @@ public class JPlotController {
             @Override
             public void run() {
                 closingForModeChange = true;
-                jplot.dispose();
+                jplot.getFrame().dispose();
                 jplot = new JPlot(Constants.CURRENT_MODE, grid);
+                if (Constants.CURRENT_MODE != DatabaseConnection.UserTypes.OBSERVER) {
+                	jplot = new JPlotProgrammerDecorator(jplot);
+                	if (Constants.CURRENT_MODE == DatabaseConnection.UserTypes.ADMIN) {
+                		jplot = new JPlotAdminDecorator(jplot);
+                	}
+                }
+                jplot.initSubviews();
                 closingForModeChange = false;
-                jplot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                jplot.addWindowListener(new JPlotWindowListener());
+                jplot.getFrame().addWindowListener(new JPlotWindowListener());
             }
         });
-    }
-
-    public void changeMode(DatabaseConnection.UserTypes accessLevel) {
-        if (accessLevel == DatabaseConnection.UserTypes.ADMIN || accessLevel == DatabaseConnection.UserTypes.PROGRAMMER) {
-            changeMode(GridMode.ADMINISTRATOR_MODE);
-        } else {
-            changeMode(GridMode.OBSERVER_MODE);
-        }
     }
 
     public Path getPath() {
@@ -120,13 +130,13 @@ public class JPlotController {
     public void addPoint(Waypoint point) {
         path.add(point);
         if (jplot != null) {
-            jplot.repaint();
+            jplot.getFrame().repaint();
         }
     }
 
     public void removePoint(int indexOfPoint) {
         path.remove(indexOfPoint);
-        jplot.repaint();
+        jplot.getFrame().repaint();
     }
 
     public void copyPoints() {
@@ -174,8 +184,8 @@ public class JPlotController {
         }
     }
 
-    public void createUser() {
-        JOptionPane.showMessageDialog(null, "Someone implement creating a user.  This is in the createUser() in JPlotController.java", "TEAM .SCRUMBOT", JOptionPane.ERROR_MESSAGE);
+    public ResultInfo createUser(String username, String password, DatabaseConnection.UserTypes role) {
+        return new ResultInfo("Please Implement the createUser method inside of JPlotController", false);
     }
 
     public void listUsers() {
@@ -195,12 +205,12 @@ public class JPlotController {
             if (!closingForModeChange) {
                 JPlotController.this.logOut();
             } else {
-                jplot.dispose();
+                jplot.getFrame().dispose();
             }
         }
     }
 
-    public void start(RobotController rc) {
+    public void start(IRobotController rc) {
         checkNotNull(rc);
 
         this.robotController = rc;
@@ -251,13 +261,13 @@ public class JPlotController {
         }
 
 
-        this.jplot.dispose();
+        this.jplot.getFrame().dispose();
         this.currentUser = "";
-        Logger.INSTANCE.log(this.getClass().toString(),
+        Logger.INSTANCE.log(this.getClass().getSimpleName(),
                 "Logged out of: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
     }
     
-    public EventBus getStatsEventBus() {
+    public EventBus getEventBus() {
         if (mEventBus == null) {
             synchronized (this) {
                 mEventBus = new EventBus();
@@ -266,7 +276,7 @@ public class JPlotController {
         return mEventBus;
     }
     
-    public RobotController getRobotController() {
+    public IRobotController getRobotController() {
         return robotController;
     }
 

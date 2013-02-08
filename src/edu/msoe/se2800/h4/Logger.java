@@ -74,7 +74,7 @@ public enum Logger {
         synchronized (this) {
             OutputStreamWriter writer = null;
             try {
-                writer = new OutputStreamWriter(new FileOutputStream(FILE_NAME));
+                writer = new OutputStreamWriter(new FileOutputStream(FILE_NAME, true));
                 DateFormat format = DateFormat.getInstance();
 
                 // Print the date/timestamp

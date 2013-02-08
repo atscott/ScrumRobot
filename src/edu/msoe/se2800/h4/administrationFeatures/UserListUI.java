@@ -1,7 +1,9 @@
-package edu.msoe.se2800.h4;
+package edu.msoe.se2800.h4.administrationFeatures;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -75,6 +77,15 @@ public class UserListUI extends JDialog {
         listObservers.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listObservers.setTransferHandler(new ListTransferHandler(listObservers));
         leftPanel.add(createPanelForComponent(listObservers, "Observers"));
+        listObservers.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2 || evt.getClickCount() == 3) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    UserListUI.this.controller.showChangePassword(listObservers.getModel().getElementAt(index).toString());
+                }
+            }
+        });
         
         //CENTER COLUMN
         listProgrammers = new JList(lmProgrammers);
@@ -84,6 +95,15 @@ public class UserListUI extends JDialog {
         listProgrammers.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listProgrammers.setTransferHandler(new ListTransferHandler(listProgrammers));
         centerPanel.add(createPanelForComponent(listProgrammers, "Programmers"));
+        listProgrammers.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2 || evt.getClickCount() == 3) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    UserListUI.this.controller.showChangePassword(listProgrammers.getModel().getElementAt(index).toString());
+                }
+            }
+        });
         
         //RIGHT COLUMN
         listAdministrators = new JList(lmAdministrators);
@@ -93,6 +113,15 @@ public class UserListUI extends JDialog {
         listAdministrators.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listAdministrators.setTransferHandler(new ListTransferHandler(listAdministrators));
         rightPanel.add(createPanelForComponent(listAdministrators, "Administrators"));
+        listAdministrators.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2 || evt.getClickCount() == 3) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    UserListUI.this.controller.showChangePassword(listAdministrators.getModel().getElementAt(index).toString());
+                }
+            }
+        });
         
         contentPane.add(leftPanel, BorderLayout.WEST);
         contentPane.add(centerPanel, BorderLayout.CENTER);

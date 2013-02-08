@@ -1,16 +1,18 @@
 package edu.msoe.se2800.h4.jplot.grid;
 
-import edu.msoe.se2800.h4.jplot.Constants;
-import edu.msoe.se2800.h4.jplot.JPlot;
+import java.awt.Color;
+import java.io.File;
+
 import junit.framework.Assert;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.testng.testcase.FestSwingTestngTestCase;
 import org.testng.annotations.Test;
 
-import java.awt.*;
-import java.io.File;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.jplot.JPlot;
 
 public class GridTest extends FestSwingTestngTestCase{
 	
@@ -21,7 +23,7 @@ public class GridTest extends FestSwingTestngTestCase{
     protected void onSetUp() {
         JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
             protected JPlot executeInEDT() {
-                return new JPlot(Constants.GridMode.ADMINISTRATOR_MODE, new Grid());
+                return new JPlot(DatabaseConnection.UserTypes.ADMIN, new Grid());
             }
         });
 

@@ -45,6 +45,13 @@ public class DatabaseConnectionTest {
     }
 
     @Test
+    public void testCreateAlreadyExistingUser() throws IOException{
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        ResultInfo retVal = db.addUser("admin", "admin", DatabaseConnection.UserTypes.ADMIN);
+        assertEquals(retVal.wasSuccess(), false);
+    }
+
+    @Test
     public void testInvalidUser() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
         boolean retVal = db.ValidateUser("lksjdflkjwelrkj", "kwjerlkjwerlkjwer");
@@ -68,14 +75,14 @@ public class DatabaseConnectionTest {
     public void getAdminUsersTest() throws IOException{
         List<String> users = DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.ADMIN);
         //really, the only thing we know for sure is that the admin user is in the list
-        assertTrue(users.contains("admin"));
+        assertTrue(users.contains("ADMIN"));
     }
 
     @Test
     public void getUserRoleTest() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
         //add dummy user
-        DatabaseConnection.ResultInfo result = db.addUser("qazwsdxedfcrfgvtgb", "sdf", DatabaseConnection.UserTypes.OBSERVER);
+        ResultInfo result = db.addUser("qazwsdxedfcrfgvtgb", "sdf", DatabaseConnection.UserTypes.OBSERVER);
         assertEquals(db.getUserRole("qazwsdxedfcrfgvtgb"), DatabaseConnection.UserTypes.OBSERVER);
         //remove dummy user
         result = db.deleteUser("qazwsdxedfcrfgvtgb");
@@ -85,7 +92,7 @@ public class DatabaseConnectionTest {
     public void testAddAndDeleteUser() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
         //add dummy user
-        DatabaseConnection.ResultInfo result = db.addUser("qazwsdxedfcrfgvtgb", "sdf", DatabaseConnection.UserTypes.OBSERVER);
+        ResultInfo result = db.addUser("qazwsdxedfcrfgvtgb", "sdf", DatabaseConnection.UserTypes.OBSERVER);
         assertTrue(result.wasSuccess());
         //remove dummy user
         result = db.deleteUser("qazwsdxedfcrfgvtgb");
@@ -96,7 +103,7 @@ public class DatabaseConnectionTest {
     public void testGetUserPassword() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
         //add dummy user
-        DatabaseConnection.ResultInfo result = db.addUser("qazwsdxedfcrfgvtgb", "sdf", DatabaseConnection.UserTypes.OBSERVER);
+        ResultInfo result = db.addUser("qazwsdxedfcrfgvtgb", "sdf", DatabaseConnection.UserTypes.OBSERVER);
         assertEquals(db.getUserPassword("qazwsdxedfcrfgvtgb"), "sdf");
         //remove dummy user
         result = db.deleteUser("qazwsdxedfcrfgvtgb");
@@ -107,7 +114,7 @@ public class DatabaseConnectionTest {
     @Test(description = "This tests to make sure that a failure result is returned if the user does not exist")
     public void testChangeNonExistantUser() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
-        DatabaseConnection.ResultInfo success = db.changeUserInfo("wertyui", "ertyui", DatabaseConnection.UserTypes.ADMIN);
+        ResultInfo success = db.changeUserInfo("wertyui", "ertyui", DatabaseConnection.UserTypes.ADMIN);
         assertEquals(success.wasSuccess(), false);
     }
 
@@ -116,7 +123,7 @@ public class DatabaseConnectionTest {
         DatabaseConnection db = DatabaseConnection.getInstance();
         //add a dummy user
         db.addUser("qazwsxedcrfv", "test", DatabaseConnection.UserTypes.ADMIN);
-        DatabaseConnection.ResultInfo result = db.changeUserInfo("qazwsxedcrfv", "ddd", DatabaseConnection.UserTypes.ADMIN);
+        ResultInfo result = db.changeUserInfo("qazwsxedcrfv", "ddd", DatabaseConnection.UserTypes.ADMIN);
         assertTrue(result.wasSuccess());
         //verify you can log in with new credentials
         boolean retVal = db.ValidateUser("qazwsxedcrfv", "ddd");
@@ -130,7 +137,7 @@ public class DatabaseConnectionTest {
         DatabaseConnection db = DatabaseConnection.getInstance();
         //add a dummy user
         db.addUser("qazwsxedcrfv", "test", DatabaseConnection.UserTypes.ADMIN);
-        DatabaseConnection.ResultInfo result = db.changeUserInfo("qazwsxedcrfv", "test", DatabaseConnection.UserTypes.OBSERVER);
+        ResultInfo result = db.changeUserInfo("qazwsxedcrfv", "test", DatabaseConnection.UserTypes.OBSERVER);
         assertTrue(result.wasSuccess());
         DatabaseConnection.UserTypes type = db.getUserRole("qazwsxedcrfv") ;
         assertEquals(type, DatabaseConnection.UserTypes.OBSERVER);
@@ -142,7 +149,7 @@ public class DatabaseConnectionTest {
             " is thrown if you try to change the admin role to anything other than admin")
     public void changeAdminRole() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
-        DatabaseConnection.ResultInfo result = db.changeUserInfo("admin", db.getUserPassword("admin"), DatabaseConnection.UserTypes.OBSERVER);
+        ResultInfo result = db.changeUserInfo("admin", db.getUserPassword("admin"), DatabaseConnection.UserTypes.OBSERVER);
         assertEquals(result.wasSuccess(), false);
     }
 }

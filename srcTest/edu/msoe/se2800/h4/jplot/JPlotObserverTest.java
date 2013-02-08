@@ -2,6 +2,7 @@ package edu.msoe.se2800.h4.jplot;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.testng.testcase.FestSwingTestngTestCase;
 import org.testng.annotations.Test;
@@ -9,7 +10,7 @@ import org.testng.annotations.Test;
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 import edu.msoe.se2800.h4.jplot.grid.Grid;
 
-public class JPlotTest extends FestSwingTestngTestCase {
+public class JPlotObserverTest extends FestSwingTestngTestCase {
 	
 	private FrameFixture mWindow;
 
@@ -17,7 +18,7 @@ public class JPlotTest extends FestSwingTestngTestCase {
     protected void onSetUp() {
     	JPlotInterface frame = GuiActionRunner.execute(new GuiQuery<JPlotInterface>() {
             protected JPlotInterface executeInEDT() {
-            	JPlotInterface jplotInterface= new JPlotAdminDecorator(new JPlotProgrammerDecorator(new JPlot(DatabaseConnection.UserTypes.ADMIN, new Grid())));
+            	JPlotInterface jplotInterface= new JPlot(DatabaseConnection.UserTypes.OBSERVER, new Grid());
             	jplotInterface.initSubviews();
             	return jplotInterface;
             }
@@ -29,27 +30,28 @@ public class JPlotTest extends FestSwingTestngTestCase {
     }
     
     @Test
-    public void aMenuItemLogoutShouldBeAvailable() {
+    public void oMenuItemLogoutShouldBeAvailable() {
         mWindow.menuItem("logout").requireVisible().requireEnabled();
     }
     
-    @Test
-    public void aMenuItemImmediateModeShouldBeAvailable() {
-        mWindow.menuItem("immediate_mode").requireVisible().requireEnabled();
+    @Test(expectedExceptions = ComponentLookupException.class)
+    public void oMenuItemImmediateModeShouldNotBeAvailable() {
+        mWindow.menuItem("immediate_mode").requireNotVisible();
     }
     
-    @Test
-    public void aMenuItemAdministratorModeShouldBeAvailable() {
-        mWindow.menuItem("administrator_mode").requireVisible().requireEnabled();
+    @Test(expectedExceptions = ComponentLookupException.class)
+    public void oMenuItemAdministratorModeShouldNotBeAvailable() {
+        mWindow.menuItem("administrator_mode").requireNotVisible();
     }
     
-    @Test
-    public void aMenuItemCreateUserShouldBeAvailable() {
-        mWindow.menuItem("create_user").requireVisible().requireEnabled();
+    @Test(expectedExceptions = ComponentLookupException.class)
+    public void oMenuItemCreateUserShouldNotBeAvailable() {
+        mWindow.menuItem("create_user").requireNotVisible();
     }
     
-    @Test
-    public void aMenuItemListUserShouldBeAvailable() {
-        mWindow.menuItem("list_user").requireVisible().requireEnabled();
+    @Test(expectedExceptions = ComponentLookupException.class)
+    public void oMenuItemListUserShouldNotBeAvailable() {
+        mWindow.menuItem("list_user").requireNotVisible();
     }
+
 }
