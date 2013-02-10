@@ -73,10 +73,11 @@ public abstract class FileIO {
             if (!toSave.getPath().endsWith(".scrumbot")) {
                 toSave = new File(toSave.getPath() + ".scrumbot");
             }
+            mPathFile = toSave;
+            FileIO.save();
         }
 
-        mPathFile = toSave;
-        FileIO.save();
+
     }
 
     /**
