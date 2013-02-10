@@ -240,7 +240,7 @@ public class JPlotController {
             throw new NullPointerException("Tried to log out when jplot was null");
         }
 
-        if (!this.robotController.isRunning()) {
+        if (!this.robotController.isMoving()) {
             try {
                 if (DatabaseConnection.getInstance().getUserRole(this.currentUser) != DatabaseConnection.UserTypes.OBSERVER) {
                     if (FileIO.getCurrentPathFile() != null || !JPlotController.this.getPath().isEmpty()) {
