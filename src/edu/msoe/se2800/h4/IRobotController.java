@@ -53,11 +53,6 @@ public interface IRobotController {
      */
     public Waypoint getLocation();
 
-    /**
-     * Use the CompassPilot here.
-     * @return The current robot orientation
-     */
-    public double getOrientation();
 
     /**
      * @param velocity The velocity for the robot
