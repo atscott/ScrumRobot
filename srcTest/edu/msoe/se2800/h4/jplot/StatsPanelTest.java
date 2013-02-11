@@ -35,7 +35,7 @@ public class StatsPanelTest extends FestSwingTestngTestCase {
     
     @Test(description = "Verify battery display is shown")
     public void batteryDisplayShouldBeAvailable() {
-        mWindow.label("bettery_display").requireVisible();
+        mWindow.label("battery_display").requireVisible();
     }
 
 }
