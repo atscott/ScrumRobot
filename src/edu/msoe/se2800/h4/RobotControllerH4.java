@@ -54,11 +54,6 @@ public class RobotControllerH4 implements IRobotController {
     }
 
     @Override
-    public double getOrientation() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public void setVelocity(double velocity) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
