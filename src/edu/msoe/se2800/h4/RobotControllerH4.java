@@ -1,6 +1,6 @@
 
 package edu.msoe.se2800.h4;
-
+import lejos.*;
 
 public class RobotControllerH4 implements IRobotController {
 
