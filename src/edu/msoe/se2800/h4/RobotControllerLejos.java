@@ -28,14 +28,10 @@ public class RobotControllerLejos implements IRobotController {
 	 */
 	private static Navigator nav;
 	/**
-	 * The path to be followed by the robot.
-	 */
-	private static Path path;
-	/**
 	 * The constructor instantiates the pilot and navigator. Single step is false.
 	 */
 	public RobotControllerLejos(){
-		path = new Path();
+
 		pilot = new DifferentialPilot(2,7,Motor.A,Motor.B);
 		nav  = new Navigator(pilot);
 		nav.singleStep(false);	
@@ -45,7 +41,6 @@ public class RobotControllerLejos implements IRobotController {
 	 */
 	@Override
 	public void setPath(Path path){
-		this.path = path;
 		nav.setPath(path);
 	}
 	/**
@@ -60,7 +55,7 @@ public class RobotControllerLejos implements IRobotController {
 	}
 	@Override
 	public void addWaypoint(Waypoint wp){
-		path.add(wp);
+		nav.addWaypoint(wp);
 	}
 
     @Override
@@ -74,20 +69,20 @@ public class RobotControllerLejos implements IRobotController {
 	}
 
 	public static void reverse(){
-		for(int i = path.size()-2; i>-1; i--){
-			nav.goTo(path.get(i));
+		for(int i = nav.getPath().size()-2; i>-1; i--){
+			nav.goTo(nav.getPath().get(i));
 			
 		}
 		nav.goTo(0, 0);
 	}
 	@Override
 	public void goToImmediate(Waypoint wp){
-		if(path != null){
-			path.clear();
+		if(nav.getPath() != null){
+			nav.getPath().clear();
 		}
 		nav.goTo(wp);
 		nav.waitForStop();
-		path.clear();
+		nav.getPath().clear();
 	}
 	@Override
 	public void singleStep(boolean setting){
