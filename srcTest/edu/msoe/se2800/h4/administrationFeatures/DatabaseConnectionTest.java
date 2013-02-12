@@ -23,55 +23,52 @@ public class DatabaseConnectionTest {
         DatabaseConnection.getInstance().tryConnect(DatabaseConnection.getInstance().DB_NAME);
     }
 
-    @Test
+    @Test(description = "This tests to see that trying to connect to a database that does not exist returns false")
     public void testBadDB() {
         DatabaseConnection db = DatabaseConnection.getInstance();
         assertEquals(db.tryConnect("lkwjerlksj.slekjr"), false);
     }
 
-    @Test
+    @Test(description = "Tests to see that we can connect to the database")
     public void testValidDB(){
         assertTrue(DatabaseConnection.getInstance().tryConnect(DatabaseConnection.getInstance().DB_NAME));
     }
 
-    /**
-     *
-     */
-    @Test
+    @Test(description = "tests to make sure you can log in with valid credentials")
     public void testValidUser() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
         boolean retVal = db.ValidateUser("admin", "admin");
         assertEquals(retVal, true);
     }
 
-    @Test
+    @Test(description = "Tests to make sure you cannot create a user that already exists")
     public void testCreateAlreadyExistingUser() throws IOException{
         DatabaseConnection db = DatabaseConnection.getInstance();
         ResultInfo retVal = db.addUser("admin", "admin", DatabaseConnection.UserTypes.ADMIN);
         assertEquals(retVal.wasSuccess(), false);
     }
 
-    @Test
+    @Test(description = "Tests to make sure you cannot log in with a user that does not exist")
     public void testInvalidUser() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
         boolean retVal = db.ValidateUser("lksjdflkjwelrkj", "kwjerlkjwerlkjwer");
         assertEquals(retVal, false);
     }
 
-    @Test
+    @Test(description = "Tests to make sure you cannot log in with the wrong password ")
     public void testValidUserBadPass() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
         boolean retVal = db.ValidateUser("admin", "kwjerlkjwerlkjwer");
         assertEquals(retVal, false);
     }
 
-    @Test
+    @Test(description = "Check to make sure no user has the role of other. This is just how our program should work")
     public void getOtherUsersWhichIsEmpty() throws IOException {
         List<String> users = DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.OTHER);
         assertTrue(users.size() == 0);
     }
 
-    @Test
+    @Test(description = "Because ")
     public void getAdminUsersTest() throws IOException{
         List<String> users = DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.ADMIN);
         //really, the only thing we know for sure is that the admin user is in the list
