@@ -3,7 +3,6 @@ package edu.msoe.se2800.h4.jplot;
 import edu.msoe.se2800.h4.FileIO;
 import edu.msoe.se2800.h4.IRobotController;
 import lejos.robotics.navigation.Waypoint;
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -24,6 +23,9 @@ public class InfoPanel extends JPanel {
     private SaveListener mSaveListener;
     private IRobotController IRobotC;
 
+    /**
+     * InfoPanel Contructor
+     */
     public InfoPanel() {
         setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
         setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -31,9 +33,12 @@ public class InfoPanel extends JPanel {
         IRobotC = JPlotController.getInstance().getRobotController();
     }
 
+    /**
+     * Initializes the Components to the main GUI Frame
+     */
     public void initSubviews() {
+        //X,Y coordinate boxes & their properties
         mSaveListener = new SaveListener();
-
         Font font = new Font("Arial", Font.PLAIN, 12);
         xTextField = new JTextField(3);
         yTextField = new JTextField(3);
@@ -54,6 +59,7 @@ public class InfoPanel extends JPanel {
         label.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 20));
         add(label);
 
+        //Points List display & its properties
         pointsList = new JList();
         pointsList.setName("points_list");
         pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 150));
@@ -66,6 +72,7 @@ public class InfoPanel extends JPanel {
         pointsList.addMouseListener(new PointsMouseListener());
         pointsList.addListSelectionListener(new PointsListListener());
 
+        //Zoom in button & its properties
         JButton zoomIn = new JButton("Zoom +");
         zoomIn.setFont(font);
         zoomIn.setName("zoom_in");
@@ -73,6 +80,7 @@ public class InfoPanel extends JPanel {
         zoomIn.addActionListener(new ZoomListener());
         zoomIn.setMargin(new Insets(0, 0, 0, 0));
 
+        //Zoom out button & its properties
         JButton zoomOut = new JButton("Zoom -");
         zoomOut.setFont(font);
         zoomOut.setName("zoom_out");
@@ -80,29 +88,31 @@ public class InfoPanel extends JPanel {
         zoomOut.addActionListener(new ZoomListener());
         zoomOut.setMargin(new Insets(0, 0, 0, 0));
 
+        //Load button & its properties
         JButton load = new JButton("Load");
         load.setFont(font);
         load.setName("load");
         load.setActionCommand("load");
         load.addActionListener(new LoadListener());
 
+        //Save button & its properties
         JButton save = new JButton("Save");
         save.setFont(font);
         save.setName("save");
         save.setActionCommand("save");
         save.addActionListener(mSaveListener);
 
+        //Save as... button & its properties
         JButton saveAs = new JButton("Save as...");
         saveAs.setFont(font);
         saveAs.setName("save_as");
         saveAs.setActionCommand("save_as");
         saveAs.addActionListener(mSaveListener);
 
- //Robot Control Panel
+        //Robot Control Panel & Its layout properties
         JPanel robotControlPanel = new JPanel();
         robotControlPanel.setLayout(new GridBagLayout());
         robotControlPanel.setEnabled(false);
-
         GridBagConstraints rcpConstraints = new GridBagConstraints();
         rcpConstraints.fill = GridBagConstraints.HORIZONTAL;
 
@@ -124,7 +134,6 @@ public class InfoPanel extends JPanel {
                 IRobotC.setReverse(false);
             }
         });
-
         JToggleButton reverse = new JToggleButton("Reverse");
         reverse.addActionListener(new ActionListener() {
             @Override
@@ -196,6 +205,7 @@ public class InfoPanel extends JPanel {
         save.setPreferredSize(new Dimension(70, 30));
         saveAs.setPreferredSize(new Dimension(100, 30));
 
+        //Adding all the components into the Frame
         add(xTextField);
         add(yTextField);
         add(pointsList);
@@ -209,6 +219,9 @@ public class InfoPanel extends JPanel {
 
     }
 
+    /**
+     * Disables the components in the Infopanel
+     */
     public void disableSubviews() {
         for (Component c : this.getComponents()) {
             if(c instanceof JPanel){
@@ -219,18 +232,25 @@ public class InfoPanel extends JPanel {
         }
     }
 
+    /**
+     * Sets the number of Points in the Points Label
+     * @param num
+     */
     public void setPointsLabel(int num) {
         numPoints.setText("Number of points: " + num);
     }
 
+    /**
+     * Paints the
+     * @param g
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) {
             points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
-        }
-        ;
+        };
         pointsList.setListData(points.toArray());
         pointsList.repaint();
     }
