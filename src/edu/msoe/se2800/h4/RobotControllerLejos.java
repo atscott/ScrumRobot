@@ -1,6 +1,8 @@
 
 package edu.msoe.se2800.h4;
 
+import java.awt.Point;
+
 import lejos.nxt.Motor;
 import lejos.nxt.remote.RemoteMotor;
 import lejos.robotics.localization.PoseProvider;
@@ -28,8 +30,8 @@ public class RobotControllerLejos implements IRobotController {
 	}
 	@Override
 	public void followRoute(){
-		forward();
 		reverse();
+		forward();
 		nav.waitForStop();
 	}
 	@Override
@@ -48,11 +50,12 @@ public class RobotControllerLejos implements IRobotController {
 	}
 
 	public static void reverse(){
-		for(int i = path.size()-2; i>-1; i--){
-			nav.goTo(path.get(i));
+		int size = path.size();
+		for(int i = size-2; i>-1; i--){
+			path.add(path.get(i));
 			
 		}
-		nav.goTo(0, 0);
+		path.add(new Waypoint(0, 0));
 	}
 	@Override
 	public void goToImmediate(Waypoint wp){
@@ -91,11 +94,14 @@ public class RobotControllerLejos implements IRobotController {
 	
 	@Override
 	public void stop(){
-		nav.stop();
+		Waypoint wp = nav.getWaypoint();
+		path.indexOf(wp);
+		
+
 	}
 	@Override
 	public void stopImmediate() {
-		// TODO Auto-generated method stub
+		nav.stop();
 		
 	}
 	@Override

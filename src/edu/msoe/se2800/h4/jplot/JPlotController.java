@@ -291,22 +291,4 @@ public class JPlotController {
 		return robotController;
 	}
 
-	public boolean havePermission(DefaultListModel lmObservers){
-		boolean permission = false;
-			if(Constants.CURRENT_MODE == DatabaseConnection.UserTypes.ADMIN){
-				for(int i = 0; i < lmObservers.size(); i++){
-					System.out.println(lmObservers + " " + this.currentUser + " " + username + " " + Constants.CURRENT_MODE);
-					if(!lmObservers.get(i).equals(username)){
-						permission = true;
-					}
-				}
-			} else if(Constants.CURRENT_MODE == DatabaseConnection.UserTypes.PROGRAMMER){
-				permission = false;
-			} else if(Constants.CURRENT_MODE == DatabaseConnection.UserTypes.OBSERVER){
-				permission = false;
-			}
-		
-		return permission;
-	}
-
 }
