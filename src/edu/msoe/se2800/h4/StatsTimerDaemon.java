@@ -42,8 +42,7 @@ public class StatsTimerDaemon {
                 StatsUpdateEvent event = new StatsUpdateEvent();
 
                 // Convert the battery amount to a percentage
-                System.out.println(sBattery.getVoltageMilliVolt());
-                event.milliVoltsPercent = sBattery.getVoltageMilliVolt() / sMaxBattery;
+                event.milliVoltsPercent = sBattery.getVoltageMilliVolt() * 100 / sMaxBattery;
 
                 // Calculate the velocity in meters per second
                 double velocity = sRobotController.getVelocity();

@@ -4,6 +4,11 @@ package edu.msoe.se2800.h4;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 
+/**
+ * Offline implementation of the RobotController
+ * @author marius
+ *
+ */
 public class RobotControllerH4 implements IRobotController {
 	
 	Path p = new Path();
