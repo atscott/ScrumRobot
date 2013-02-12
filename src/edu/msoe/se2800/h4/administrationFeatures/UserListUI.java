@@ -18,6 +18,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
+import edu.msoe.se2800.h4.jplot.JPlotController;
+
 public class UserListUI extends JDialog {
 
 	/** Generated serialVersionUID */
@@ -27,6 +29,7 @@ public class UserListUI extends JDialog {
 	
 	private JPanel contentPane;
     private JList listObservers, listProgrammers, listAdministrators;
+    private JPlotController plotController = new JPlotController();
     
     public UserListUI(List<String> observers, List<String> programmers, List<String> administrators, UserListController controller) {
     	this.controller = controller;
@@ -68,9 +71,13 @@ public class UserListUI extends JDialog {
         for (String s : administrators) {
         	lmAdministrators.addElement(s);
         }
+        
+        listObservers = new JList(lmObservers);
+        listProgrammers = new JList(lmProgrammers);
+        listAdministrators = new JList(lmAdministrators);
 
         //LEFT COLUMN
-        listObservers = new JList(lmObservers);
+        
         listObservers.setDragEnabled(true);
         listObservers.setPreferredSize(new Dimension(300,500));
         listObservers.setDropMode(DropMode.INSERT);
@@ -88,7 +95,7 @@ public class UserListUI extends JDialog {
         });
         
         //CENTER COLUMN
-        listProgrammers = new JList(lmProgrammers);
+        
         listProgrammers.setDragEnabled(true);
         listProgrammers.setPreferredSize(new Dimension(300,500));
         listProgrammers.setDropMode(DropMode.INSERT);
@@ -106,7 +113,7 @@ public class UserListUI extends JDialog {
         });
         
         //RIGHT COLUMN
-        listAdministrators = new JList(lmAdministrators);
+
         listAdministrators.setDragEnabled(true);
         listAdministrators.setPreferredSize(new Dimension(300,500));
         listAdministrators.setDropMode(DropMode.INSERT);

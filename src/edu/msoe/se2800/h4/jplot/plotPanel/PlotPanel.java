@@ -73,14 +73,22 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         int drawingHeight = (Constants.GRID_HEIGHT / density) + Constants.GRID_HEIGHT;
 
         g.setColor(Color.DARK_GRAY);
-
-        /** Draws the vertical lines */
-        for (int i = Constants.GRID_OFFSET; i <= drawingWidth; i += (Constants.GRID_WIDTH() / density))
-            g.drawLine(i, 0, i, drawingHeight);
-
-        /** Draws the horizontal lines */
-        for (int i = (Constants.GRID_HEIGHT - Constants.GRID_OFFSET); i >= (Constants.GRID_HEIGHT - drawingHeight); i -= (Constants.GRID_HEIGHT / density))
-            g.drawLine(0, i, drawingWidth, i);
+        
+        /**
+         * We start drawing 0,0 and then draw off to the right, and then go back and draw off to the left from 0,0
+         */
+        
+        for (int i = Constants.GRID_WIDTH()/2; i <= Constants.GRID_WIDTH() + (Constants.GRID_WIDTH() / density); i += (Constants.GRID_WIDTH() / density))
+        	g.drawLine(i, 0, i, drawingHeight);
+        
+        for (int i = Constants.GRID_WIDTH()/2; i >= 0; i -= (Constants.GRID_WIDTH() / density))
+        	g.drawLine(i, 0, i, drawingHeight);
+        
+        for (int i = Constants.GRID_HEIGHT/2; i <= Constants.GRID_HEIGHT + (Constants.GRID_HEIGHT / density); i += (Constants.GRID_HEIGHT / density))
+        	g.drawLine(0, i, drawingWidth, i);
+        
+        for (int i = Constants.GRID_HEIGHT/2; i >= 0; i -= (Constants.GRID_HEIGHT / density))
+        	g.drawLine(0, i, drawingWidth, i);
     }
 
     /**

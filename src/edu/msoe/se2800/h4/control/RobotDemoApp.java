@@ -3,6 +3,8 @@ package edu.msoe.se2800.h4.control;
 
 import java.util.List;
 
+import edu.msoe.se2800.h4.RobotControllerLejos;
+
 //import edu.msoe.se2800.h4.Path;
 import lejos.nxt.Motor;
 import lejos.nxt.Sound;
@@ -20,34 +22,13 @@ import lejos.robotics.pathfinding.Path;
  *
  */
 public class RobotDemoApp {
-//	
-//	static int x;
-//	static int y;
-//	static double length;
-//	static double angle;
-//	
-	//private static DifferentialPilot pilot = new DifferentialPilot(2.215, 2.125, Motor.B, Motor.C, false);
 	
-	//private List<JPoint> points;
-	
-	/**
-	 * @param args not used
-	 */
-	public static void main(String[] args) {
-		Robot kevin = new Robot();
+	static RobotControllerLejos test = new RobotControllerLejos();
+	public static void main(String[] args){
 		Path path = new Path();
-		path.add(new Waypoint(-2,-2));
-		//path.add(new Waypoint(5,5));
-		path.add(new Waypoint(-1,1));
-		kevin.setPoints(path);
-		kevin.travelPath();
+		path.add(new Waypoint(6,-6));
+		test.setPath(path);
+		test.followRoute();
 	}
-	/*
-	public void setPoints(Path path){
-		points = path.getPoints();
-	}
-	*/
-	
-	
 	
 }

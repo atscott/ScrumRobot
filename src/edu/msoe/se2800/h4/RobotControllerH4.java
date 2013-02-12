@@ -1,5 +1,6 @@
 
 package edu.msoe.se2800.h4;
+
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 
@@ -50,7 +51,6 @@ public class RobotControllerH4 implements IRobotController {
     public Waypoint getLocation() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     @Override
     public void setVelocity(double velocity) {
