@@ -185,7 +185,11 @@ public class JPlotController {
     }
 
     public ResultInfo createUser(String username, String password, DatabaseConnection.UserTypes role) {
-        return new ResultInfo("Please Implement the createUser method inside of JPlotController", false);
+        try {
+            return DatabaseConnection.getInstance().addUser(username, password, role);
+        } catch (IOException e) {
+            return new ResultInfo("Error contacting the database.", false);
+        }
     }
 
     public void listUsers() {

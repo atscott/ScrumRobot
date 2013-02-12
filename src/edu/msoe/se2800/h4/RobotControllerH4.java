@@ -1,6 +1,5 @@
 
 package edu.msoe.se2800.h4;
-import lejos.*;
 
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
