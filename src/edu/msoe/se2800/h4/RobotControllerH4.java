@@ -5,14 +5,13 @@ import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 
 /**
- * Offline implementation of the RobotController
- * @author marius
- *
+ * Offline implementation of the RobotController. Does not interact with the robot.
+ * 
+ * @author scotta
  */
 public class RobotControllerH4 implements IRobotController {
-	
-	Path p = new Path();
 
+    Path p = new Path();
 
     @Override
     public void setPath(Path aPath) {
@@ -26,56 +25,56 @@ public class RobotControllerH4 implements IRobotController {
 
     @Override
     public Path getPath() {
-        return p;  //To change body of implemented methods use File | Settings | File Templates.
+        return p; // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void followRoute() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void goToImmediate(Waypoint destination) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void stop() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void stopImmediate() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public boolean isMoving() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false; // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void singleStep(boolean setting) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public Waypoint getLocation() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void setVelocity(double velocity) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public double getVelocity() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void setReverse(boolean isReverse) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 }
