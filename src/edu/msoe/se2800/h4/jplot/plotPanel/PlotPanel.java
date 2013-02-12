@@ -178,7 +178,7 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
      * @param p
      * @return
      */
-    public Waypoint translateToLocation(Waypoint p) {
+    /*public Waypoint translateToLocation(Waypoint p) {
 
         float x = p.x;
         System.out.println("x(1-1) = "+x);
@@ -204,6 +204,16 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         System.out.println("final x(1-4) = "+x);
         //y -= Constants.GRID_OFFSET;
         System.out.println("final y(1-5) = "+y);
+
+        return new Waypoint(x, y);
+    }*/
+    public Waypoint translateToLocation(Waypoint p) {
+
+        float x = p.x;
+        x = Constants.GRID_WIDTH()/2 + Constants.Y_AXIS_WIDTH + (x*Constants.STEP_INCREMENT);
+        
+        float y = p.y;
+        y = Constants.GRID_HEIGHT/2  + Constants.X_AXIS_HEIGHT + (y*Constants.STEP_INCREMENT);
 
         return new Waypoint(x, y);
     }
