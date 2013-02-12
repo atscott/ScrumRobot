@@ -41,7 +41,7 @@ public class StatsPanel extends JPanel {
     
     @Subscribe
     public void recordStatsChange(StatsUpdateEvent e) {
-        setBattery(e.milliVolts);
+        setBattery(e.milliVoltsPercent);
         setSpeed(e.velocity);
         repaint();
     }

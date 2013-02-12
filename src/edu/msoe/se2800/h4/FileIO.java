@@ -9,9 +9,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * Temporary class for saving and writing path files
- *
- * @author koenigj
+ * Provides utilities for saving and writing path files
+ * 
+ * @author Team .scrumbot
  */
 public abstract class FileIO {
 
@@ -20,13 +20,13 @@ public abstract class FileIO {
      */
     private static FileNameExtensionFilter filter;
 
-    private static File mPathFile = null;
+    private static File sPathFile = null;
 
     /**
      * Opens a JFileChooser and returns the file to be opened.
-     *
-     * @return file, null if cancel is pressed
+     * 
      * @author koenigj
+     * @return file, null if cancel is pressed
      */
     public static File showOpenDialog() {
 
@@ -39,15 +39,20 @@ public abstract class FileIO {
 
     }
 
+    /**
+     * @author marius
+     * @return File representing the current Path file
+     */
     public static File getCurrentPathFile() {
-        return mPathFile;
+        return sPathFile;
     }
 
     /**
-     * Returns the file to be saved.
-     *
-     * @return file, null if cancel is pressed
-     * @throws FileNotFoundException
+     * Displays a JFileChooser from which the user can select a location at which to save a Path.
+     * The saved file is standardized to have a .scrumbot extension.
+     * 
+     * @author koenigj
+     * @return File standardized to have a .scrumbot extension. null if cancel is selected
      */
     public static File showSaveDialog() {
         JFrame directory = new JFrame();
@@ -56,6 +61,8 @@ public abstract class FileIO {
         chooser.setFileFilter(filter);
         chooser.showSaveDialog(directory);
         File file = chooser.getSelectedFile();
+
+        // Append the .scrumbot extension
         if (file != null) {
             String text = file.getAbsolutePath();
             if (text.endsWith(".scrumbot")) {
@@ -65,53 +72,62 @@ public abstract class FileIO {
         return file;
     }
 
-    public static void saveAs(){
+    /**
+     * Convenience method to provide the ability to select where to save the file before writing to
+     * disk.
+     * 
+     * @author marius
+     */
+    public static void saveAs() {
         File toSave = FileIO.showSaveDialog();
 
         if (toSave != null) {
-            // Save the fact that we nowhave a file for future use
-            if (!toSave.getPath().endsWith(".scrumbot")) {
-                toSave = new File(toSave.getPath() + ".scrumbot");
-            }
-            mPathFile = toSave;
+
+            // Save the fact that we now have a file for future use
+            sPathFile = toSave;
             FileIO.save();
         }
-
 
     }
 
     /**
-     * @return indicates where the path was saved to. If null, the showSaveDialog was cancelled. Since the File class
-     *         is immutable, the argument cannot simply be changed.
+     * Makes a best-effort attempt at writing the Path to disk. Provides feedback to the user on the
+     * state of the write.
+     * 
+     * @author marius
      */
     public static void save() {
-        // If performing showSaveDialog as... show the file chooser
-        if (mPathFile == null) {
+
+        // If we don't yet have a File, force a save as...
+        if (sPathFile == null) {
             FileIO.saveAs();
         } else {
             try {
                 JPlotController.getInstance().getPath()
-                        .dumpObject(new DataOutputStream(new FileOutputStream(mPathFile)));
+                        .dumpObject(new DataOutputStream(new FileOutputStream(sPathFile)));
 
                 JOptionPane.showMessageDialog(null, "Path saved succesfully!");
             } catch (FileNotFoundException e1) {
-                // Already handled in the FileIO
+                JOptionPane.showMessageDialog(null,
+                        "An unknown error occurred while saving the Path.", "Uh-oh!",
+                        JOptionPane.ERROR_MESSAGE);
             } catch (IOException e1) {
                 JOptionPane.showMessageDialog(null,
                         "An unknown error occurred while saving the Path.", "Uh-oh!",
                         JOptionPane.ERROR_MESSAGE);
             }
         }
-
     }
 
     /**
-     * @return The File that was chosen to load
+     * Reads a Path from disk and loads it into the Grid
+     * 
+     * @author marius
      */
     public static void load() {
 
-        //if currently editing a file or the path on the grid is not empty
-        if (mPathFile != null || !JPlotController.getInstance().getPath().isEmpty()) {
+        // if currently editing a file or the path on the grid is not empty
+        if (sPathFile != null || !JPlotController.getInstance().getPath().isEmpty()) {
             int result = JOptionPane
                     .showConfirmDialog(null, "Do you wish to save your current Path?", "Save...?",
                             JOptionPane.YES_NO_OPTION);
@@ -130,7 +146,7 @@ public abstract class FileIO {
                         "Uh-oh!", JOptionPane.ERROR_MESSAGE);
             }
             JPlotController.getInstance().getGrid().redraw();
-            mPathFile = tempPathFile;
+            sPathFile = tempPathFile;
         }
 
     }

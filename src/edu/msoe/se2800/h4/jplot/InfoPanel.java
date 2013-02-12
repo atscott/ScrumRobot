@@ -56,7 +56,7 @@ public class InfoPanel extends JPanel {
 
         pointsList = new JList();
         pointsList.setName("points_list");
-        pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 175));
+        pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 150));
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) {
             points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
@@ -165,6 +165,18 @@ public class InfoPanel extends JPanel {
         rcpConstraints.gridy = 4;
         robotControlPanel.add(stop,rcpConstraints);
 
+        //Stop Immediate Button & its properties
+        JButton stopNow = new JButton("Stop Now");
+        stopNow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IRobotC.stopImmediate();
+            }
+        });
+        rcpConstraints.gridx = GridBagConstraints.REMAINDER;
+        rcpConstraints.gridy = 5;
+        robotControlPanel.add(stopNow,rcpConstraints);
+
         //Single Step button and its properties
         final JCheckBox singleStep = new JCheckBox("Single Step");
         singleStep.addActionListener(new ActionListener() {
@@ -174,7 +186,7 @@ public class InfoPanel extends JPanel {
             }
         });
         rcpConstraints.gridx = GridBagConstraints.REMAINDER;
-        rcpConstraints.gridy = 5;
+        rcpConstraints.gridy = 6;
         robotControlPanel.add(singleStep,rcpConstraints);
 
         //Zoom buttons & their properties

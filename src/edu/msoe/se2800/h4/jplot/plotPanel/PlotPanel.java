@@ -178,7 +178,7 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
      * @param p
      * @return
      */
-    public Waypoint translateToLocation(Waypoint p) {
+    /*public Waypoint translateToLocation(Waypoint p) {
 
         float x = p.x;
         System.out.println("x(1-1) = "+x);
@@ -206,6 +206,17 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         System.out.println("final y(1-5) = "+y);
 
         return new Waypoint(x, y);
+    }*/
+    public Waypoint translateToLocation(Waypoint p) {
+
+        float x = p.x;
+        x = Constants.Y_AXIS_WIDTH + Constants.GRID_WIDTH()/2 + (x/Constants.STEP_INCREMENT * Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity());
+        //x = (x - Constants.Y_AXIS_WIDTH - (Constants.GRID_WIDTH()/2))/Constants.STEP_INCREMENT;
+        
+        float y = p.y;
+        y = Constants.GRID_HEIGHT/2  - Constants.STATS_HEIGHT + (y*Constants.STEP_INCREMENT);
+
+        return new Waypoint(x, y);
     }
 
     /**
@@ -214,7 +225,7 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
      * translate into the point (-30, 70) on the Grid.
      */
     @Override
-    public Waypoint translateToNearestPoint(Waypoint p) {
+    /*public Waypoint translateToNearestPoint(Waypoint p) {
 
         float x = p.x;
         System.out.println("x(1) = "+x);
@@ -241,6 +252,17 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         
         System.out.println("final x = "+x);
         System.out.println("final y = "+y);
+        return new Waypoint(x, y);
+    }*/
+    public Waypoint translateToNearestPoint(Waypoint p) {
+
+        float x = p.x;
+        float y = p.y;
+        
+        x = (x - Constants.Y_AXIS_WIDTH - (Constants.GRID_WIDTH()/2))/Constants.STEP_INCREMENT;
+        y = (y - (Constants.GRID_HEIGHT/2))/Constants.STEP_INCREMENT;
+        //y = (Constants.GRID_HEIGHT/2 - y)/Constants.STEP_INCREMENT;
+        
         return new Waypoint(x, y);
     }
 

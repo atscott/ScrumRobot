@@ -77,7 +77,6 @@ public class UserListUI extends JDialog {
         listAdministrators = new JList(lmAdministrators);
 
         //LEFT COLUMN
-        
         listObservers.setDragEnabled(true);
         listObservers.setPreferredSize(new Dimension(300,500));
         listObservers.setDropMode(DropMode.INSERT);
@@ -95,7 +94,6 @@ public class UserListUI extends JDialog {
         });
         
         //CENTER COLUMN
-        
         listProgrammers.setDragEnabled(true);
         listProgrammers.setPreferredSize(new Dimension(300,500));
         listProgrammers.setDropMode(DropMode.INSERT);
@@ -113,7 +111,6 @@ public class UserListUI extends JDialog {
         });
         
         //RIGHT COLUMN
-
         listAdministrators.setDragEnabled(true);
         listAdministrators.setPreferredSize(new Dimension(300,500));
         listAdministrators.setDropMode(DropMode.INSERT);

@@ -13,6 +13,7 @@ import java.util.*;
 
 /**
  * User: scottat Date: 1/15/13 Time: 7:49 PM
+ * This class allows for accessing the database file for user administration.
  */
 public class DatabaseConnection {
 
@@ -98,6 +99,12 @@ public class DatabaseConnection {
         return valid;
     }
 
+    /**
+     * Returns the password for the username provided
+     * @param username the username of the user to get password of
+     * @return the password of the user
+     * @throws IOException If there was an error accessing the database
+     */
     public String getUserPassword(String username) throws IOException {
         checkNotNull(username);
         username = username.toUpperCase();

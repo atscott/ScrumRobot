@@ -9,6 +9,11 @@ import edu.msoe.se2800.h4.jplot.Main;
 
 import javax.inject.Singleton;
 
+/**
+ * Dagger injection module used for offline testing and development
+ * @author marius
+ *
+ */
 @Module(entryPoints = Main.class, staticInjections = StatsTimerDaemon.class)
 public class H4Module {
     

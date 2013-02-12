@@ -17,6 +17,8 @@ public interface IRobotController {
      */
     public void addWaypoint(Waypoint aWaypoint);
 
+    public Path getPath();
+
     /**
      * tells the robot to follow the route. If single step is true then it will move a single step
      */

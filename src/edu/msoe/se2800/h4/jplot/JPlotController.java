@@ -41,7 +41,6 @@ public class JPlotController {
 
 	private JPlotInterface jplot;
 	private GridInterface grid;
-	private Path path;
 	private List<Waypoint> oldList;
 	private Waypoint highlightedPoint;
 	private boolean closingForModeChange = false;
@@ -63,7 +62,6 @@ public class JPlotController {
 	}
 
 	public JPlotController() {
-		path = new Path();
 		oldList = new ArrayList<Waypoint>();
 		instance = this;
 	}
@@ -82,26 +80,17 @@ public class JPlotController {
 
 	public void changeMode(DatabaseConnection.UserTypes accessLevel) {
 		DatabaseConnection.UserTypes mode = accessLevel;
-		/*if (accessLevel == DatabaseConnection.UserTypes.ADMIN) {
-            mode = DatabaseConnection.UserTypes.ADMIN;
-        } else if (accessLevel == DatabaseConnection.UserTypes.PROGRAMMER) {
-        	mode = DatabaseConnection.UserTypes.PROGRAMMER;
-        } else if (accessLevel == DatabaseConnection.UserTypes.OTHER) {
-        	mode = DatabaseConnection.UserTypes.OTHER;
-        } else {
-        	mode = DatabaseConnection.UserTypes.OBSERVER;
-        }*/
 		grid = new Grid();
 		if (Constants.CURRENT_MODE == DatabaseConnection.UserTypes.OTHER) {
-			path.clear();
+			robotController.setPath(new Path());
 			for (Waypoint p : oldList) {
-				path.add(p);
+				robotController.addWaypoint(p);
 			}
 		}
 		Constants.CURRENT_MODE = mode;
 		if (mode == DatabaseConnection.UserTypes.OTHER) {
 			copyPoints();
-			path.clear();
+			robotController.setPath(new Path());
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -123,33 +112,33 @@ public class JPlotController {
 	}
 
 	public Path getPath() {
-		return path;
+		return robotController.getPath();
 	}
 
 	public Waypoint[] getPathPoints() {
-		Waypoint[] points = new Waypoint[path.size()];
-		path.toArray(points);
+		Waypoint[] points = new Waypoint[robotController.getPath().size()];
+		robotController.getPath().toArray(points);
 		return points;
 	}
 
 	public void addPoint(Waypoint point) {
-		path.add(point);
+		robotController.addWaypoint(point);
 		if (jplot != null) {
 			jplot.getFrame().repaint();
 		}
 	}
 
 	public void removePoint(int indexOfPoint) {
-		path.remove(indexOfPoint);
+		robotController.getPath().remove(indexOfPoint);
 		jplot.getFrame().repaint();
 	}
 
 	public void copyPoints() {
 		oldList.clear();
-		for (Waypoint j : path) {
+		for (Waypoint j : robotController.getPath()) {
 			oldList.add(j);
 		}
-		path.clear();
+		robotController.setPath(new Path());
 		grid.redraw();
 	}
 
