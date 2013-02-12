@@ -2,7 +2,6 @@
 package edu.msoe.se2800.h4.jplot;
 
 import dagger.ObjectGraph;
-import edu.msoe.se2800.h4.H4Module;
 import edu.msoe.se2800.h4.IRobotController;
 import edu.msoe.se2800.h4.LejosModule;
 
@@ -30,6 +29,7 @@ public class Main implements Runnable {
         ObjectGraph objectGraph = ObjectGraph.create(new LejosModule());
         objectGraph.injectStatics();
         Main main = objectGraph.get(Main.class);
+        System.out.println("Hello");
         main.run();
 
         // RobotController rc = new RobotController();
