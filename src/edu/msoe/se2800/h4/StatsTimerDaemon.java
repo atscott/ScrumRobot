@@ -41,8 +41,12 @@ public class StatsTimerDaemon {
             public void run() {
                 StatsUpdateEvent event = new StatsUpdateEvent();
 
+                // The battery sometimes reports higher voltages than it is rated for. Standardize
+                // to a maximum value.
+                int milliVolts = Math.min(sMaxBattery, sBattery.getVoltageMilliVolt());
+
                 // Convert the battery amount to a percentage
-                event.milliVoltsPercent = sBattery.getVoltageMilliVolt() * 100 / sMaxBattery;
+                event.milliVoltsPercent = (milliVolts / sMaxBattery) * 100;
 
                 // Calculate the velocity in meters per second
                 double velocity = sRobotController.getVelocity();
