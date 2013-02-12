@@ -93,12 +93,6 @@ public class UserListUI extends JDialog {
                 }
             }
         });
-        if(plotController.havePermission(lmObservers)){
-        	listObservers.setEnabled(false);
-        	listProgrammers.setEnabled(false);
-        	listAdministrators.setEnabled(false);
-        }
-        System.out.println("Left");
         
         //CENTER COLUMN
         
@@ -117,13 +111,6 @@ public class UserListUI extends JDialog {
                 }
             }
         });
-        if(plotController.havePermission(lmProgrammers)){
-        	listObservers.setEnabled(false);
-        	listProgrammers.setEnabled(false);
-        	listAdministrators.setEnabled(false);
-        }
-        System.out.println("Center");
-        
         
         //RIGHT COLUMN
 
@@ -142,13 +129,6 @@ public class UserListUI extends JDialog {
                 }
             }
         });
-        if(plotController.havePermission(lmAdministrators)){
-        	listObservers.setEnabled(true);
-        	listProgrammers.setEnabled(true);
-        	listAdministrators.setEnabled(true);
-        }
-        System.out.println("Right");
-        
         
         contentPane.add(leftPanel, BorderLayout.WEST);
         contentPane.add(centerPanel, BorderLayout.CENTER);
