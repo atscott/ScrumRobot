@@ -25,7 +25,6 @@ public class Main implements Runnable {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", ".Scrumbot");
 
-        System.out.println("liajsdfklajsdfkl");
         // Setup dependency injection
         ObjectGraph objectGraph = ObjectGraph.create(new LejosModule());
         objectGraph.injectStatics();
