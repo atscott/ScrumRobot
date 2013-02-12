@@ -134,34 +134,6 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
                 (int) location.y - 10);
     }
 
-    /**
-     * This method is usually called if the SNAP_TO_GRID_CORNERS is set to true in the Constants
-     * file and it takes a given integer and returns the value corresponding to the closest value of
-     * a "corner" on the grid. It will be a multiple of STEP_INCREMENT in the constants file
-     * 
-     * @param num, the number to round
-     * @return the rounded number
-     */
-    public float round(float num) {
-        float newNum;
-
-        boolean keepStepping = true;
-        int highestStep = 0;
-        while (keepStepping) {
-            if (highestStep >= num) {
-                keepStepping = false;
-            } else {
-                highestStep += Constants.STEP_INCREMENT;
-            }
-        }
-        if ((highestStep - num) < (num - (highestStep - Constants.STEP_INCREMENT))) {
-            newNum = highestStep;
-        } else {
-            newNum = (highestStep - Constants.STEP_INCREMENT);
-        }
-        return newNum;
-    }
-
     public void drawLine(Graphics g, Waypoint one, Waypoint two) {
         Waypoint translated1 = translateToLocation(one);
         Waypoint translated2 = translateToLocation(two);
@@ -182,10 +154,10 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
     public Waypoint translateToLocation(Waypoint p) {
 
         float x = p.x;
-        x = (Constants.GRID_WIDTH()/2 + (x * (Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity())));
+        x = (Constants.GRID_WIDTH()/2 + (x/Constants.STEP_INCREMENT * (Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity())));
         
         float y = p.y;
-        y = (Constants.GRID_HEIGHT/2 + ((y*-1) * (Constants.GRID_HEIGHT/JPlotController.getInstance().getGridDensity())) - (2*Constants.POINT_RADIUS));
+        y = (Constants.GRID_HEIGHT/2 + ((y*(-1))/Constants.STEP_INCREMENT * (Constants.GRID_HEIGHT/JPlotController.getInstance().getGridDensity())) - (2*Constants.POINT_RADIUS));
         
         return new Waypoint(x, y);
     }
@@ -201,8 +173,8 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         float x = p.x;
         float y = p.y;
         
-        x = (x - (Constants.GRID_WIDTH()/2))/(Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity());
-        y = (y - (Constants.GRID_HEIGHT/2))*-1/(Constants.GRID_HEIGHT/JPlotController.getInstance().getGridDensity());
+        x = (x - (Constants.GRID_WIDTH()/2))/(Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity()/Constants.STEP_INCREMENT);
+        y = (y - (Constants.GRID_HEIGHT/2))*(-1)/(Constants.GRID_HEIGHT/JPlotController.getInstance().getGridDensity()/Constants.STEP_INCREMENT);
         
         return new Waypoint(x, y);
     }

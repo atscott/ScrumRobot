@@ -355,8 +355,8 @@ public class InfoPanel extends JPanel {
         public void keyTyped(KeyEvent event) {
             if (event.getKeyChar() == '\n') {
                 try {
-                    int x = Integer.parseInt(xTextField.getText().toString());
-                    int y = Integer.parseInt(yTextField.getText().toString());
+                    float x = Float.parseFloat(xTextField.getText().toString());
+                    float y = Float.parseFloat(yTextField.getText().toString());
                     Waypoint p = JPlotController.getInstance().getHighlightedPoint();
                     if (p != null) {
                         p.x = x;
