@@ -9,7 +9,7 @@ import edu.msoe.se2800.h4.control.IBattery;
 import edu.msoe.se2800.h4.jplot.JPlotController;
 import edu.msoe.se2800.h4.jplot.Main;
 
-@Module(entryPoints = Main.class)
+@Module(entryPoints = Main.class, staticInjections = StatsTimerDaemon.class)
 public class LejosModule {
     
     @Provides
