@@ -31,9 +31,6 @@ public class Main implements Runnable {
         Main main = objectGraph.get(Main.class);
         System.out.println("Hello");
         main.run();
-
-        // RobotController rc = new RobotController();
-        // JPlotController.getInstance().start(rc);
     }
 
 }
