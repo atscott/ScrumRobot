@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import javax.swing.JPanel;
@@ -129,7 +130,7 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         } else {
             g.setColor(Color.LIGHT_GRAY);
         }
-        g.drawString("" + coordinates.x + "," + coordinates.y, (int) location.x,
+        g.drawString("" + new DecimalFormat("#.#").format(coordinates.x) + "," + new DecimalFormat("#.#").format(coordinates.y), (int) location.x,
                 (int) location.y - 10);
     }
 
