@@ -27,12 +27,14 @@ public class PlotPanelAdminDecorator extends PlotPanelDecorator {
 		@Override
 		public void mouseClicked(MouseEvent event) {
 			if (event.getButton() == MouseEvent.BUTTON1) {
-				Waypoint point = plotPanel.translateToNearestPoint(new Waypoint(event.getX(), event.getY()));
+				Waypoint point = plotPanel.getInterceptedPoint(new Waypoint(event.getX(), event.getY()));
 				boolean found = false;
-				for (Waypoint p : JPlotController.getInstance().getPath()) {
-					if (p.x == point.x && p.y == point.y) {
-						found = true;
-						JPlotController.getInstance().setHighlightedPoint(JPlotController.getInstance().getPath().indexOf(p));
+				if (point != null) {
+					for (Waypoint p : JPlotController.getInstance().getPath()) {
+						if (p.x == point.x && p.y == point.y) {
+							found = true;
+							JPlotController.getInstance().setHighlightedPoint(JPlotController.getInstance().getPath().indexOf(p));
+						}
 					}
 				}
 				if (found == false) {
