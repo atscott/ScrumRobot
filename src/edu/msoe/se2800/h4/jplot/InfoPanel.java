@@ -1,6 +1,7 @@
 package edu.msoe.se2800.h4.jplot;
 
 import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.IRobotController;
 import lejos.robotics.navigation.Waypoint;
 
 import javax.swing.*;
@@ -21,11 +22,13 @@ public class InfoPanel extends JPanel {
     private JList pointsList;
     private JLabel numPoints;
     private SaveListener mSaveListener;
+    private IRobotController IRobotC;
 
     public InfoPanel() {
         setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
         setLayout(new FlowLayout(FlowLayout.CENTER));
         setVisible(true);
+        IRobotC = JPlotController.getInstance().getRobotController();
     }
 
     public void initSubviews() {
@@ -53,7 +56,7 @@ public class InfoPanel extends JPanel {
 
         pointsList = new JList();
         pointsList.setName("points_list");
-        pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 175));
+        pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 150));
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) {
             points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
@@ -115,7 +118,20 @@ public class InfoPanel extends JPanel {
         //Forward and Reverse Buttons
         ButtonGroup bg = new ButtonGroup();
         JToggleButton forward = new JToggleButton("Forward", true);
+        forward.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IRobotC.setReverse(false);
+            }
+        });
+
         JToggleButton reverse = new JToggleButton("Reverse");
+        reverse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IRobotC.setReverse(true);
+            }
+        });
         bg.add(forward);
         bg.add(reverse);
         rcpConstraints.gridx = 0;
@@ -130,7 +146,7 @@ public class InfoPanel extends JPanel {
         go.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                IRobotC.followRoute();
             }
         });
         rcpConstraints.gridx = GridBagConstraints.REMAINDER;
@@ -142,23 +158,35 @@ public class InfoPanel extends JPanel {
         stop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                IRobotC.stopImmediate();
             }
         });
         rcpConstraints.gridx = GridBagConstraints.REMAINDER;
         rcpConstraints.gridy = 4;
         robotControlPanel.add(stop,rcpConstraints);
 
-        //Single Step button and its properties
-        JButton singleStep = new JButton("Single Step");
-        singleStep.addActionListener(new ActionListener() {
+        //Stop Immediate Button & its properties
+        JButton stopNow = new JButton("Stop Now");
+        stopNow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                IRobotC.stopImmediate();
             }
         });
         rcpConstraints.gridx = GridBagConstraints.REMAINDER;
         rcpConstraints.gridy = 5;
+        robotControlPanel.add(stopNow,rcpConstraints);
+
+        //Single Step button and its properties
+        final JCheckBox singleStep = new JCheckBox("Single Step");
+        singleStep.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IRobotC.singleStep(singleStep.isSelected());
+            }
+        });
+        rcpConstraints.gridx = GridBagConstraints.REMAINDER;
+        rcpConstraints.gridy = 6;
         robotControlPanel.add(singleStep,rcpConstraints);
 
         //Zoom buttons & their properties
