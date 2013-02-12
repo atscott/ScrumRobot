@@ -64,7 +64,14 @@ public class RobotControllerLejos implements IRobotController {
             @Override
             public void run() {
                 if (!stopRequested) {
+                    nav.followPath();
+                    nav.waitForStop();
+                    // This has to be reset since path is reset in navigator after the followPath is called
                     if (nav.pathCompleted()) {
+                        for (int i = 0; i < path.size(); i++) {
+                            nav.addWaypoint(path.get(i));
+                        }
+
                         //toggle the state of the return
                         returningToBeginning = !returningToBeginning;
 
@@ -81,14 +88,7 @@ public class RobotControllerLejos implements IRobotController {
                             pilot = new DifferentialPilot(2, 7, Motor.A, Motor.B, isReverse);
                         }
                         nav = new Navigator(pilot);
-                    }
-                    nav.followPath();
-                    nav.waitForStop();
-                    // This has to be reset since path is reset in navigator after the followPath is called
-                    if (nav.pathCompleted()) {
-                        for (int i = 0; i < path.size(); i++) {
-                            nav.addWaypoint(path.get(i));
-                        }
+
                     }
 
                     //only loop if this is not single step mode
