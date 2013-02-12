@@ -29,6 +29,7 @@ public class Main implements Runnable {
         ObjectGraph objectGraph = ObjectGraph.create(new H4Module());
         objectGraph.injectStatics();
         Main main = objectGraph.get(Main.class);
+        System.out.println("Hello");
         main.run();
 
         // RobotController rc = new RobotController();
