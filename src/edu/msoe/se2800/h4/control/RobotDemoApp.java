@@ -3,6 +3,8 @@ package edu.msoe.se2800.h4.control;
 
 import java.util.List;
 
+import edu.msoe.se2800.h4.RobotControllerLejos;
+
 //import edu.msoe.se2800.h4.Path;
 import lejos.nxt.Motor;
 import lejos.nxt.Sound;
@@ -20,5 +22,13 @@ import lejos.robotics.pathfinding.Path;
  *
  */
 public class RobotDemoApp {
-
+	
+	static RobotControllerLejos test = new RobotControllerLejos();
+	public static void main(String[] args){
+		Path path = new Path();
+		path.add(new Waypoint(6,-6));
+		test.setPath(path);
+		test.followRoute();
+	}
+	
 }
