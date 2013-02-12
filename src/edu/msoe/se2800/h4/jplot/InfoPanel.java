@@ -45,6 +45,7 @@ public class InfoPanel extends JPanel {
     private JLabel numPoints;
     private SaveListener mSaveListener;
     private IRobotController IRobotC;
+    JCheckBox singleStep;
 
     /**
      * InfoPanel Contructor
@@ -177,6 +178,7 @@ public class InfoPanel extends JPanel {
         go.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                IRobotC.singleStep(singleStep.isSelected());
                 IRobotC.followRoute();
             }
         });
@@ -209,7 +211,7 @@ public class InfoPanel extends JPanel {
         robotControlPanel.add(stopNow,rcpConstraints);
 
         //Single Step button and its properties
-        final JCheckBox singleStep = new JCheckBox("Single Step");
+        singleStep = new JCheckBox("Single Step");
         singleStep.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

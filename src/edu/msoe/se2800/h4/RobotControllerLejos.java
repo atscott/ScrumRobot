@@ -33,6 +33,7 @@ public class RobotControllerLejos implements IRobotController {
     private static Path path;
 
     private boolean stopRequested = false;
+    private boolean singleStep;
 
     /**
      * The constructor instantiates the pilot and navigator. Single step is false.
@@ -41,6 +42,7 @@ public class RobotControllerLejos implements IRobotController {
         path = new Path();
         pilot = new DifferentialPilot(2, 7, Motor.A, Motor.B);
         nav = new Navigator(pilot);
+        this.singleStep = false;
         nav.singleStep(false);
     }
 
@@ -73,8 +75,11 @@ public class RobotControllerLejos implements IRobotController {
                     }
                     System.out.println(nav.getPath().size());
                     System.out.println(path.size());
-                    // test a loop
-                    this.run();
+
+                    //only loop if this is not single step mode
+                    if (!RobotControllerLejos.this.singleStep) {
+                        this.run();
+                    }
                 }
             }
         });
@@ -120,6 +125,7 @@ public class RobotControllerLejos implements IRobotController {
     @Override
     public void singleStep(boolean setting) {
         nav.singleStep(setting);
+        this.singleStep = setting;
     }
 
     @Override
@@ -151,8 +157,6 @@ public class RobotControllerLejos implements IRobotController {
     public void stop() {
         stopRequested = true;
         nav.singleStep(true);
-
-
     }
 
     @Override
