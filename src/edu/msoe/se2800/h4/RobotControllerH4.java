@@ -5,21 +5,23 @@ import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 
 public class RobotControllerH4 implements IRobotController {
+	
+	Path p = new Path();
 
 
     @Override
     public void setPath(Path aPath) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        p = aPath;
     }
 
     @Override
     public void addWaypoint(Waypoint aWaypoint) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        p.add(aWaypoint);
     }
 
     @Override
     public Path getPath() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return p;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
