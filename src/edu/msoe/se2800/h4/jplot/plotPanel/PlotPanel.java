@@ -210,7 +210,7 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
     public Waypoint translateToLocation(Waypoint p) {
 
         float x = p.x;
-        x = Constants.Y_AXIS_WIDTH + Constants.GRID_WIDTH()/2 + (x/Constants.STEP_INCREMENT * Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity());
+        x = Constants.Y_AXIS_WIDTH + Constants.GRID_WIDTH()/2 + ((x/Constants.STEP_INCREMENT) * (Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity()));
         //x = (x - Constants.Y_AXIS_WIDTH - (Constants.GRID_WIDTH()/2))/Constants.STEP_INCREMENT;
         
         float y = p.y;
@@ -259,7 +259,7 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         float x = p.x;
         float y = p.y;
         
-        x = (x - Constants.Y_AXIS_WIDTH - (Constants.GRID_WIDTH()/2))/Constants.STEP_INCREMENT;
+        x = (x - Constants.Y_AXIS_WIDTH - (Constants.GRID_WIDTH()/2))/(Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity());
         y = (y - (Constants.GRID_HEIGHT/2))/Constants.STEP_INCREMENT;
         //y = (Constants.GRID_HEIGHT/2 - y)/Constants.STEP_INCREMENT;
         
