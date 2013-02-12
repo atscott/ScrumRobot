@@ -45,10 +45,16 @@ public class AxisPanel extends JPanel {
         }
 
         g.setColor(Color.BLACK);
-        int counter = density/2*Constants.STEP_INCREMENT*-1;
-        for (int i = getHeight() + Constants.GRID_OFFSET; i < Constants.GRID_WIDTH() + getHeight(); i += (Constants.GRID_WIDTH() / density)) {
+        int counter = 0;
+        for (int i = Constants.GRID_WIDTH()/2 + getHeight(); i < Constants.GRID_WIDTH() + getHeight(); i += (Constants.GRID_WIDTH() / density)) {
         	g.drawString("" + counter, i - (("" + counter).length() * 4), 30);
             counter += Constants.STEP_INCREMENT;
+        }
+        
+        counter = 0;
+        for (int i = Constants.GRID_WIDTH()/2 + getHeight(); i > getHeight(); i -= (Constants.GRID_WIDTH() / density)) {
+        	g.drawString("" + counter, i - (("" + counter).length() * 4), 30);
+            counter -= Constants.STEP_INCREMENT;
         }
     }
 
@@ -61,11 +67,17 @@ public class AxisPanel extends JPanel {
         }
 
         g.setColor(Color.BLACK);
-        int newHeight = Constants.GRID_HEIGHT + (Constants.GRID_HEIGHT / density);
-        int counter = density/2*Constants.STEP_INCREMENT*-1;
-        for (int i = Constants.GRID_HEIGHT - Constants.GRID_OFFSET; i >= (Constants.GRID_HEIGHT - newHeight); i -= (Constants.GRID_HEIGHT / density)) {
-            g.drawString("" + counter, getWidth() - 30, i + 4);
+        
+        int counter = 0;
+        for (int i = Constants.GRID_HEIGHT/2; i < Constants.GRID_HEIGHT; i += (Constants.GRID_HEIGHT / density)) {
+        	g.drawString("" + counter, getWidth() - 30, i + 4);
             counter += Constants.STEP_INCREMENT;
+        }
+        
+        counter = 0;
+        for (int i = Constants.GRID_HEIGHT/2; i > 0; i -= (Constants.GRID_HEIGHT / density)) {
+        	g.drawString("" + counter, getWidth() - 30, i + 4);
+            counter -= Constants.STEP_INCREMENT;
         }
     }
 
