@@ -30,8 +30,8 @@ public class RobotControllerLejos implements IRobotController {
 	}
 	@Override
 	public void followRoute(){
-		reverse();
 		forward();
+		reverse();
 		nav.waitForStop();
 	}
 	@Override
@@ -45,12 +45,11 @@ public class RobotControllerLejos implements IRobotController {
 	}
 
 	public static void reverse(){
-		int size = path.size();
-		for(int i = size-2; i>-1; i--){
-			path.add(path.get(i));
+		for(int i = path.size()-2; i>-1; i--){
+			nav.goTo(path.get(i));
 			
 		}
-		path.add(new Waypoint(0, 0));
+		nav.goTo(0, 0);
 	}
 	@Override
 	public void goToImmediate(Waypoint wp){
@@ -89,9 +88,7 @@ public class RobotControllerLejos implements IRobotController {
 	
 	@Override
 	public void stop(){
-		Waypoint wp = nav.getWaypoint();
-		path.indexOf(wp);
-		
+		nav.singleStep(true);
 
 	}
 	@Override
