@@ -92,7 +92,8 @@ public class LoginUI extends JDialog {
      * @return String username
      */
     public String getUsername() {
-        return usernameField.getText();
+    	username = usernameField.getText();
+        return username;
     }
 
     /**
