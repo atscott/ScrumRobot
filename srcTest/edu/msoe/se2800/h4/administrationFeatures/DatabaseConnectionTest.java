@@ -68,14 +68,14 @@ public class DatabaseConnectionTest {
         assertTrue(users.size() == 0);
     }
 
-    @Test(description = "Because ")
+    @Test(description = "Because we only know that the admin will be an admin, we can only check that that user is present")
     public void getAdminUsersTest() throws IOException{
         List<String> users = DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.ADMIN);
         //really, the only thing we know for sure is that the admin user is in the list
         assertTrue(users.contains("ADMIN"));
     }
 
-    @Test
+    @Test(description = "Checks to see that the correct user role is retrieved")
     public void getUserRoleTest() throws IOException {
         DatabaseConnection db = DatabaseConnection.getInstance();
         //add dummy user
