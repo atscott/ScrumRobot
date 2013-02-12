@@ -37,7 +37,12 @@ public class RobotControllerLejos implements IRobotController {
 		path.add(wp);
 	}
 
-	public static  void forward(){
+    @Override
+    public Path getPath() {
+        return nav.getPath();
+    }
+
+    public static  void forward(){
 		nav.followPath();
 		
 	}

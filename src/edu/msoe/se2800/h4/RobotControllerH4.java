@@ -18,6 +18,11 @@ public class RobotControllerH4 implements IRobotController {
     }
 
     @Override
+    public Path getPath() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void followRoute() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
