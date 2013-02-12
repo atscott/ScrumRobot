@@ -40,13 +40,28 @@ public class CreateUserUI extends JDialog {
     private boolean successfullLogin = false;
 
     /**
-     * Char array of the password
+     * Confirm button for the create user UI
      */
-
     JButton confirmBtn;
+    
+    /**
+     * Panel for the entire create user UI
+     */
     JPanel panel;
+    
+    /**
+     * Cancel button for the create user UI
+     */
     JButton cancelBtn;
+    
+    /**
+     * Instance of the JPlotController class to refernce the user
+     */
     JPlotController controller;
+    
+    /**
+     * Combo box so that the user can choose between the different types of users
+     */
     JComboBox userTypeCmb;
 
     /**
@@ -69,6 +84,10 @@ public class CreateUserUI extends JDialog {
         initComponents();
     }
 
+    /**
+     * Method that initializes the entire create user UI,
+     * 	adds actionlisteners and functionality to the buttons.
+     */
     private void initComponents() {
         panel = new JPanel();
         panel.setLayout(new GridLayout(5, 2));
@@ -153,10 +172,18 @@ public class CreateUserUI extends JDialog {
         return new String(passwordField.getPassword());
     }
 
+    /**
+     * Method that returns the password from the confirm password text field.
+     * @return String password
+     */
     public String getConfirmPassword() {
         return new String(confirmPasswordField.getPassword());
     }
 
+    /**
+     * Method that determines which type the new user will become
+     * @return OBSERVER, PROGRAMMER, or ADMIN
+     */
     public DatabaseConnection.UserTypes getUserTypeCmb() {
         switch(userTypeCmb.getSelectedIndex()){
             case 0:
