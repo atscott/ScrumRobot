@@ -3,6 +3,11 @@ package edu.msoe.se2800.h4;
 import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Path;
 
+/**
+ * Interface that represents our interactions with the Robot
+ * @author scotta
+ *
+ */
 public interface IRobotController {
 
     /**
