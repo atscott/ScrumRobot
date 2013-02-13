@@ -148,6 +148,11 @@ public class RobotControllerLejos implements IRobotController {
             path.clear();
             nav.clearPath();
         }
+
+        if(nav.isMoving()){
+            nav.stop();
+        }
+
         path.add(wp);
         nav.addWaypoint(wp);
 
