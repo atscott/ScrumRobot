@@ -1,10 +1,7 @@
 
 package edu.msoe.se2800.h4;
 
-import java.awt.Point;
-
 import lejos.nxt.Motor;
-import lejos.nxt.remote.RemoteMotor;
 import lejos.robotics.localization.PoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Navigator;
@@ -151,8 +148,18 @@ public class RobotControllerLejos implements IRobotController {
             path.clear();
             nav.clearPath();
         }
-        nav.goTo(wp);
-        nav.waitForStop();
+        path.add(wp);
+        nav.addWaypoint(wp);
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                nav.followPath();
+                nav.waitForStop();
+            }
+        });
+
+        t.start();
         path.clear();
         nav.clearPath();
     }
