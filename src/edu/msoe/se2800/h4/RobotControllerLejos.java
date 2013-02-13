@@ -65,26 +65,20 @@ public class RobotControllerLejos implements IRobotController {
                     nav.waitForStop();
                     // This has to be reset since path is reset in navigator after the followPath is called
                     if (nav.pathCompleted()) {
-                        for (int i = 0; i < path.size(); i++) {
-                            nav.addWaypoint(path.get(i));
-                        }
-
                         //toggle the state of the return
                         returningToBeginning = !returningToBeginning;
 
                         //if we are returning to beginning of the path and isReverse is true, then
                         //navigation should procede in a forward manner
-                        if (returningToBeginning && isReverse) {
-                            pilot = new DifferentialPilot(2, 7, Motor.A, Motor.B, false);
-
-                        } else if (returningToBeginning && !isReverse) {
-                            pilot = new DifferentialPilot(2, 7, Motor.A, Motor.B, true);
+                        if (returningToBeginning) {
+                            for (int i = path.size() - 1; i >= 0; i--) {
+                                nav.addWaypoint(path.get(i));
+                            }
                         } else {
-                            //if we are not returning to the beginning, then navigation should proceed
-                            //in the manner defined by the reverse option
-                            pilot = new DifferentialPilot(2, 7, Motor.A, Motor.B, isReverse);
+                            for (int i = 0; i < path.size(); i++) {
+                                nav.addWaypoint(path.get(i));
+                            }
                         }
-                        nav = new Navigator(pilot);
 
                     }
 
@@ -149,7 +143,7 @@ public class RobotControllerLejos implements IRobotController {
             nav.clearPath();
         }
 
-        if(nav.isMoving()){
+        if (nav.isMoving()) {
             nav.stop();
         }
 
