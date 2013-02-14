@@ -18,6 +18,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
+import edu.msoe.se2800.h4.jplot.JPlotController;
 
 public class UserListUI extends JDialog {
 
@@ -38,7 +39,11 @@ public class UserListUI extends JDialog {
 	 * JLists for the Observers, Programmers, and Administrators
 	 */
     private JList listObservers, listProgrammers, listAdministrators;
-
+    
+    /**
+     * JPlotController object
+     */
+    private JPlotController plotController = new JPlotController();
     
     /**
      * Constructor that initializes all of the UI elements
