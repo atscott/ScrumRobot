@@ -10,7 +10,6 @@ import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.testng.testcase.FestSwingTestngTestCase;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
@@ -99,12 +98,12 @@ public class InfoPanelGUITest extends FestSwingTestngTestCase {
 
     @Test
     public void forwardButtonShouldBeAvailable() {
-        mWindow.button("Forward").requireVisible().requireEnabled();
+        mWindow.toggleButton("Forward").requireVisible().requireEnabled();
     }
 
     @Test
     public void reverseButtonShouldBeAvailable() {
-        mWindow.button("Reverse").requireVisible().requireEnabled();
+        mWindow.toggleButton("Reverse").requireVisible().requireEnabled();
     }
 
     @Test
