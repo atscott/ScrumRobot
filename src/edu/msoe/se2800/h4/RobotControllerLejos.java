@@ -1,6 +1,5 @@
 package edu.msoe.se2800.h4;
 
-
 import java.awt.Point;
 
 import javax.swing.SwingUtilities;
@@ -20,7 +19,8 @@ import lejos.robotics.pathfinding.Path;
  * @author koenigj
  * 
  */
-public class RobotControllerLejos implements IRobotController{
+public class RobotControllerLejos implements IRobotController {
+
 	private Path forward = new Path();
 	private boolean check = false;
 	/**
@@ -30,11 +30,11 @@ public class RobotControllerLejos implements IRobotController{
 	/**
 	 * The Navigator is used to follow a path or by point.
 	 */
-	private  Navigator nav;
+	private Navigator nav;
 	/**
 	 * The path to be followed by the robot.
 	 */
-	private  Path path;
+	private Path path;
 
 	/**
 	 * The constructor instantiates the pilot and navigator. Single step is
@@ -52,19 +52,23 @@ public class RobotControllerLejos implements IRobotController{
 	 */
 	@Override
 	public void setPath(Path path) {
-        forward.clear();
-        this.path.clear();
+		forward.clear();
+		this.path.clear();
 		for (int i = 0; i < path.size(); i++) {
 			forward.add(new Waypoint(path.get(i)));
-            this.path.add(new Waypoint(path.get(i)));
+			this.path.add(new Waypoint(path.get(i)));
 		}
 		for (int i = path.size() - 2; i > -1; i--) {
 			this.path.add(new Waypoint(path.get(i)));
 		}
+
+		this.path.add(new Waypoint(0, 0));
 		
-		this.path.add (new Waypoint(0, 0));
-		nav.setPath(this.path);
+		for(Waypoint wp : this.path){
+			nav.addWaypoint(wp);
+		}
 		
+
 	}
 
 	/**
@@ -72,23 +76,31 @@ public class RobotControllerLejos implements IRobotController{
 	 */
 	@Override
 	public void followRoute() {
-		Thread t = new Thread(new Runnable(){
+
+		Thread t = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				if(check == false){
+				if (check == false) {
 					nav.singleStep(false);
 				}
 				nav.followPath();
 				nav.waitForStop();
-				// This has to be reset since path is reset in navigator after the
-				// followPath is called
-				for (int i = 0; i < path.size(); i++) {
-					nav.addWaypoint(path.get(i));
+				System.out.println("nav size" + nav.getPath().size());
+				System.out.println("path size" + path.size());
+				if (nav.pathCompleted()) {
+					System.out.println("path completed");
+					// This has to be reset since path is reset in navigator
+					// after
+					// the
+					// followPath is called
+					for (Waypoint wp : path) {
+						nav.addWaypoint(wp);
+					}
 				}
 
 			}
-			
+
 		});
 		t.start();
 	}
@@ -96,7 +108,11 @@ public class RobotControllerLejos implements IRobotController{
 	@Override
 	public void addWaypoint(Waypoint wp) {
 		forward.add(wp);
-		this.setPath(forward);
+		Path temp = new Path();
+		for (Waypoint way : forward) {
+			temp.add(way);
+		}
+		this.setPath(temp);
 	}
 
 	@Override
@@ -104,27 +120,25 @@ public class RobotControllerLejos implements IRobotController{
 		return forward;
 	}
 
-	
-
 	@Override
 	public void goToImmediate(Waypoint wp) {
-		 if (path != null) {
-	            path.clear();
-	            nav.clearPath();
-	        }
-	        nav.addWaypoint(wp);
-	        path.add(wp);
+		if (path != null) {
+			path.clear();
+			nav.clearPath();
+		}
+		nav.addWaypoint(wp);
+		path.add(wp);
 
-	        Thread t = new Thread(new Runnable() {
-	            @Override
-	            public void run() {
-	                nav.followPath();
-	                path.clear();
-	                nav.clearPath();
-	            }
-	        });
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				nav.followPath();
+				path.clear();
+				nav.clearPath();
+			}
+		});
 
-	        t.start();
+		t.start();
 	}
 
 	@Override
