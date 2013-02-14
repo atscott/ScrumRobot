@@ -32,7 +32,7 @@ public class Main implements Runnable {
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", ".Scrumbot");
 
         // Setup dependency injection
-        ObjectGraph objectGraph = ObjectGraph.create(new LejosModule());
+        ObjectGraph objectGraph = ObjectGraph.create(new H4Module());
         objectGraph.injectStatics();
         Main main = objectGraph.get(Main.class);
         main.run();

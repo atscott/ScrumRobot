@@ -19,7 +19,7 @@ import javax.inject.Inject;
 public class StatsTimerDaemon {
 
     private static final double sMetersPerInch = .0254;
-    private static final int sMaxBattery = 7400;
+    private static final int sMaxBattery = 12000;
 
     @Inject
     static IBattery sBattery;
@@ -47,6 +47,8 @@ public class StatsTimerDaemon {
 
                 // Convert the battery amount to a percentage
                 event.milliVoltsPercent = (milliVolts / sMaxBattery) * 100;
+                System.out.println((milliVolts / sMaxBattery) * 100);
+                System.out.println(event.milliVoltsPercent);
 
                 // Calculate the velocity in meters per second
                 double velocity = sRobotController.getVelocity();
