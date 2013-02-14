@@ -21,6 +21,7 @@ import lejos.robotics.pathfinding.Path;
  * 
  */
 public class RobotControllerLejos implements IRobotController{
+	private Path forward = new Path();
 	private boolean check = false;
 	/**
 	 * The pilot class is set to 2 cm wheel diameter and 7 cm between the wheels
@@ -52,8 +53,17 @@ public class RobotControllerLejos implements IRobotController{
 	@Override
 	public void setPath(Path path) {
 		this.path = path;
-		nav.setPath(path);
-		System.out.println("here");
+		for (int i = 0; i < path.size(); i++) {
+			forward.add(new Waypoint(path.get(i)));
+		}
+		for (int i = path.size() - 2; i > -1; i--) {
+			this.path.add(new Waypoint(path.get(i)));
+		
+		}
+		
+		this.path.add (new Waypoint(0, 0));
+		nav.setPath(this.path);
+		
 	}
 
 	/**
@@ -68,8 +78,7 @@ public class RobotControllerLejos implements IRobotController{
 				if(check == false){
 					nav.singleStep(false);
 				}
-				forward();
-				reverse();
+				nav.followPath();
 				nav.waitForStop();
 				// This has to be reset since path is reset in navigator after the
 				// followPath is called
@@ -85,27 +94,16 @@ public class RobotControllerLejos implements IRobotController{
 
 	@Override
 	public void addWaypoint(Waypoint wp) {
-		nav.addWaypoint(wp);
-		path.add(wp);
+		forward.add(wp);
+		this.setPath(forward);
 	}
 
 	@Override
 	public Path getPath() {
-		return path;
+		return forward;
 	}
 
-	public static void forward() {
-		nav.followPath();
-
-	}
-
-	public static void reverse() {
-		for (int i = path.size() - 2; i > -1; i--) {
-			nav.goTo(path.get(i));
-
-		}
-		nav.goTo(0, 0);
-	}
+	
 
 	@Override
 	public void goToImmediate(Waypoint wp) {
