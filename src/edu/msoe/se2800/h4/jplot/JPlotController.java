@@ -208,6 +208,10 @@ public class JPlotController {
 		}
 	}
 
+    /**
+     * launches the login screen
+     * @param rc the robotController to be used in this run
+     */
 	public void start(IRobotController rc) {
 		checkNotNull(rc);
 
@@ -235,6 +239,9 @@ public class JPlotController {
 		}
 	}
 
+    /**
+     * logs out. makes sure robot is not running. Asks to save current path before logging out. relaunches the login screen.
+     */
 	public void logOut() {
 		if (jplot == null) {
 			throw new NullPointerException("Tried to log out when jplot was null");

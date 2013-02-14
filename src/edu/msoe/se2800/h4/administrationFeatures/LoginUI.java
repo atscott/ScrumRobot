@@ -57,6 +57,9 @@ public class LoginUI extends JDialog {
         initComponents();
     }
 
+    /**
+     * initializes components for the login UI
+     */
     private void initComponents() {
         JPanel panel = new JPanel();
         JLabel usernameLabel = new JLabel("Username: ");

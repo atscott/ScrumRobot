@@ -17,8 +17,19 @@ public class PasswordChangeUI extends JDialog {
 	/** Generated serialVersionUID */
 	private static final long serialVersionUID = -4811400671380444436L;
 	
+	/**
+	 * UserListController controller
+	 */
 	private UserListController controller;
+	
+	/**
+	 * The current user's username
+	 */
 	private String username;
+	
+	/**
+	 * JTextField for the password and password retype
+	 */
 	private JTextField txtPassword, txtPasswordRetype;
 	
 	public PasswordChangeUI(UserListController controller, String username) {
@@ -28,6 +39,9 @@ public class PasswordChangeUI extends JDialog {
 		initSubviews();
 	}
 	
+	/**
+	 * Initializes the UI for password change
+	 */
 	private void initSubviews() {
 		JPanel panel = new JPanel();
 		
@@ -86,6 +100,11 @@ public class PasswordChangeUI extends JDialog {
         this.setVisible(true);
 	}
 	
+	/**
+	 * Private class for the button listener
+	 * @author suckowm
+	 *
+	 */
 	private class BtnListener implements ActionListener {
 
         @Override
