@@ -30,11 +30,11 @@ public class RobotControllerLejos implements IRobotController{
 	/**
 	 * The Navigator is used to follow a path or by point.
 	 */
-	private static Navigator nav;
+	private  Navigator nav;
 	/**
 	 * The path to be followed by the robot.
 	 */
-	private static Path path;
+	private  Path path;
 
 	/**
 	 * The constructor instantiates the pilot and navigator. Single step is
