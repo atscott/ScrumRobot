@@ -30,7 +30,6 @@ public class Main implements Runnable {
         ObjectGraph objectGraph = ObjectGraph.create(new LejosModule());
         objectGraph.injectStatics();
         Main main = objectGraph.get(Main.class);
-        System.out.println("Hello");
         main.run();
     }
 
