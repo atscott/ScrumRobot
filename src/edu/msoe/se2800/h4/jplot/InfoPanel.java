@@ -174,7 +174,7 @@ public class InfoPanel extends JPanel {
         stop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IRobotC.stopImmediate();
+                IRobotC.stop();
             }
         });
         rcpConstraints.gridx = GridBagConstraints.REMAINDER;
