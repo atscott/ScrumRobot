@@ -76,4 +76,31 @@ public class InfoPanelGUITest extends FestSwingTestngTestCase {
         mWindow.list("points_list").requireVisible().requireEnabled();
     }
 
+    @Test
+    public void forwardButtonShouldBeAvailable(){
+        mWindow.button("Forward").requireVisible().requireEnabled();
+    }
+
+    @Test
+    public void reverseButtonShouldBeAvailable(){
+        mWindow.button("Reverse").requireVisible().requireEnabled();
+    }
+
+        @Test
+    public void goButtonShouldBeAvailable(){
+        mWindow.button("Go").requireVisible().requireEnabled();
+    }
+
+    @Test
+    public void stopButtonShouldBeAvailable(){
+        mWindow.button("Stop").requireVisible().requireEnabled();
+    }
+
+    @Test
+    public void stopNowButtonShouldBeAvailable(){
+        mWindow.button("Stop Now").requireVisible().requireEnabled();
+    }
+
+
+
 }
