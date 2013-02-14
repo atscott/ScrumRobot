@@ -133,6 +133,7 @@ public class RobotControllerLejos implements IRobotController {
 			@Override
 			public void run() {
 				nav.followPath();
+				nav.waitForStop();
 				path.clear();
 				nav.clearPath();
 			}

@@ -119,6 +119,7 @@ public class JPlotController {
             robotController.addWaypoint(point);
 
         }else{
+        	robotController.addWaypoint(point);
             robotController.goToImmediate(point);
         }
         if (jplot != null) {
