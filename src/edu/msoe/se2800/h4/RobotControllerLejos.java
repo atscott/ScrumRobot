@@ -181,7 +181,7 @@ public class RobotControllerLejos implements IRobotController {
 	@Override
 	public void stopImmediate() {
 		nav.stop();
-
+        Logger.INSTANCE.log(this.getClass().getSimpleName(), "Emergency stopped");
 	}
 
 	@Override
