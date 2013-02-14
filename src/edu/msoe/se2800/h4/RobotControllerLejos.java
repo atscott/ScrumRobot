@@ -52,13 +52,14 @@ public class RobotControllerLejos implements IRobotController{
 	 */
 	@Override
 	public void setPath(Path path) {
-		this.path = path;
+        forward.clear();
+        this.path.clear();
 		for (int i = 0; i < path.size(); i++) {
 			forward.add(new Waypoint(path.get(i)));
+            this.path.add(new Waypoint(path.get(i)));
 		}
 		for (int i = path.size() - 2; i > -1; i--) {
 			this.path.add(new Waypoint(path.get(i)));
-		
 		}
 		
 		this.path.add (new Waypoint(0, 0));
