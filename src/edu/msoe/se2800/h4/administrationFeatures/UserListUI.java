@@ -2,12 +2,14 @@ package edu.msoe.se2800.h4.administrationFeatures;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -16,9 +18,8 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
-
-import edu.msoe.se2800.h4.jplot.JPlotController;
 
 public class UserListUI extends JDialog {
 
@@ -39,11 +40,6 @@ public class UserListUI extends JDialog {
 	 * JLists for the Observers, Programmers, and Administrators
 	 */
     private JList listObservers, listProgrammers, listAdministrators;
-    
-    /**
-     * JPlotController object
-     */
-    private JPlotController plotController = new JPlotController();
     
     /**
      * Constructor that initializes all of the UI elements
@@ -113,6 +109,7 @@ public class UserListUI extends JDialog {
                 }
             }
         });
+        setKeyBindings(listObservers);
         
         //CENTER COLUMN
         listProgrammers.setDragEnabled(true);
@@ -130,6 +127,7 @@ public class UserListUI extends JDialog {
                 }
             }
         });
+        setKeyBindings(listProgrammers);
         
         //RIGHT COLUMN
         listAdministrators.setDragEnabled(true);
@@ -147,6 +145,7 @@ public class UserListUI extends JDialog {
                 }
             }
         });
+        setKeyBindings(listAdministrators);
         
         contentPane.add(leftPanel, BorderLayout.WEST);
         contentPane.add(centerPanel, BorderLayout.CENTER);
@@ -209,6 +208,39 @@ public class UserListUI extends JDialog {
             panel.setBorder(BorderFactory.createTitledBorder(title));
         }
         return panel;
+    }
+    
+    private void setKeyBindings(final JList list) {
+        list.getInputMap(JComponent.WHEN_FOCUSED)
+        	.put(KeyStroke.getKeyStroke("DELETE"), "clickDelete");
+        list.getActionMap().put("clickDelete", new EnterListener(list));
+        list.getInputMap(JComponent.WHEN_FOCUSED)
+        	.put(KeyStroke.getKeyStroke("BACK_SPACE"), "clickBackSpace");
+        list.getActionMap().put("clickBackSpace", new EnterListener(list));
+    }
+    
+    @SuppressWarnings("serial")
+	public class EnterListener extends AbstractAction {
+    	
+    	private JList list;
+    	
+    	public EnterListener(JList list) {
+    		this.list = list;
+    	}
+    	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				System.out.println("You pushed the delete button mr mother fucker on the name "+list.getModel().getElementAt(list.getSelectedIndex()));
+				int index = list.getSelectedIndex();
+				boolean success = controller.deleteUser(list.getModel().getElementAt(index).toString());
+				if (success) {
+					((DefaultListModel)list.getModel()).remove(index);
+				}
+			} catch (ArrayIndexOutOfBoundsException aioobe) {
+				//pass this happens when no one is selected and the delete button is pressed
+			}
+		}
     }
 
 }

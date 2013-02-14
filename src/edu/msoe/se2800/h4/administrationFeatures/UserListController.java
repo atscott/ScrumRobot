@@ -9,11 +9,6 @@ import javax.swing.JOptionPane;
 
 public class UserListController {
 	
-	/**
-	 * PasswordChangeUI object
-	 */
-	private PasswordChangeUI passChange;
-	
 	public UserListController() {
         try {
             new UserListUI(
@@ -22,7 +17,7 @@ public class UserListController {
                     DatabaseConnection.getInstance().getUsernamesWithRole(DatabaseConnection.UserTypes.ADMIN),
                     this);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Could not retrieve a list of users");
         }
     }
 
@@ -78,7 +73,7 @@ public class UserListController {
 	 * @param username String username
 	 */
 	public void showChangePassword(String username) {
-		passChange = new PasswordChangeUI(this, username);
+		new PasswordChangeUI(this, username);
 	}
 	
 	/**
@@ -100,6 +95,24 @@ public class UserListController {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		return success;
+	}
+	
+	/**
+	 * Called when a user is selected and the backspace / delete button is pushed
+	 * @param username to delete
+	 * @return true if the user was deleted otherwise false
+	 */
+	public boolean deleteUser(String username) {
+		boolean success = false;
+		try {
+			DatabaseConnection.getInstance().deleteUser(username);
+			success = true;
+		} catch (IllegalArgumentException e) {
+			System.out.println("Could not delete the user with name "+username);
+		} catch (IOException e) {
+			System.out.println("Could not delete the user with name "+username);
 		}
 		return success;
 	}
