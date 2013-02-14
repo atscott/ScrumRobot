@@ -71,13 +71,13 @@ public class AxisPanel extends JPanel {
         int counter = 0;
         for (int i = Constants.GRID_HEIGHT/2; i < Constants.GRID_HEIGHT; i += (Constants.GRID_HEIGHT / density)) {
         	g.drawString("" + counter, getWidth() - 30, i + 4);
-            counter += Constants.STEP_INCREMENT;
+            counter -= Constants.STEP_INCREMENT;
         }
         
         counter = 0;
         for (int i = Constants.GRID_HEIGHT/2; i > 0; i -= (Constants.GRID_HEIGHT / density)) {
         	g.drawString("" + counter, getWidth() - 30, i + 4);
-            counter -= Constants.STEP_INCREMENT;
+            counter += Constants.STEP_INCREMENT;
         }
     }
 

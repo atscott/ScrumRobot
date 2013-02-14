@@ -2,6 +2,7 @@
 package edu.msoe.se2800.h4.jplot;
 
 import dagger.ObjectGraph;
+import edu.msoe.se2800.h4.H4Module;
 import edu.msoe.se2800.h4.IRobotController;
 import edu.msoe.se2800.h4.LejosModule;
 

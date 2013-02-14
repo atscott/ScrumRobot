@@ -3,11 +3,13 @@ package edu.msoe.se2800.h4.jplot;
 import edu.msoe.se2800.h4.FileIO;
 import edu.msoe.se2800.h4.IRobotController;
 import lejos.robotics.navigation.Waypoint;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class InfoPanel extends JPanel {
@@ -22,9 +24,10 @@ public class InfoPanel extends JPanel {
     private JLabel numPoints;
     private SaveListener mSaveListener;
     private IRobotController IRobotC;
+    JCheckBox singleStep;
 
     /**
-     * InfoPanel Contructor
+     * InfoPanel Constructor
      */
     public InfoPanel() {
         setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
@@ -34,7 +37,7 @@ public class InfoPanel extends JPanel {
     }
 
     /**
-     * Initializes the Components to the main GUI Frame
+     * Initializes the Components to the side panel of the main GUI Frame
      */
     public void initSubviews() {
         //X,Y coordinate boxes & their properties
@@ -65,9 +68,8 @@ public class InfoPanel extends JPanel {
         pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 150));
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) {
-            points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
+            points.add(new DecimalFormat("#.#").format(((Waypoint) o).x) + ", " + new DecimalFormat("#.#").format(((Waypoint) o).y));
         }
-        ;
         pointsList.setListData(points.toArray());
         pointsList.addMouseListener(new PointsMouseListener());
         pointsList.addListSelectionListener(new PointsListListener());
@@ -134,6 +136,7 @@ public class InfoPanel extends JPanel {
                 IRobotC.setReverse(false);
             }
         });
+        forward.setName("Forward");
         JToggleButton reverse = new JToggleButton("Reverse");
         reverse.addActionListener(new ActionListener() {
             @Override
@@ -141,6 +144,7 @@ public class InfoPanel extends JPanel {
                 IRobotC.setReverse(true);
             }
         });
+        reverse.setName("Reverse");
         bg.add(forward);
         bg.add(reverse);
         rcpConstraints.gridx = 0;
@@ -152,9 +156,11 @@ public class InfoPanel extends JPanel {
 
         //Go button and its properties
         JButton go = new JButton("Go");
+        go.setName("Go");
         go.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                IRobotC.singleStep(singleStep.isSelected());
                 IRobotC.followRoute();
             }
         });
@@ -164,10 +170,11 @@ public class InfoPanel extends JPanel {
 
         //Stop button and its properties
         JButton stop = new JButton("Stop");
+        stop.setName("Stop");
         stop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IRobotC.stopImmediate();
+                IRobotC.stop();
             }
         });
         rcpConstraints.gridx = GridBagConstraints.REMAINDER;
@@ -176,6 +183,7 @@ public class InfoPanel extends JPanel {
 
         //Stop Immediate Button & its properties
         JButton stopNow = new JButton("Stop Now");
+        stopNow.setName("Stop Now");
         stopNow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -186,14 +194,15 @@ public class InfoPanel extends JPanel {
         rcpConstraints.gridy = 5;
         robotControlPanel.add(stopNow,rcpConstraints);
 
-        //Single Step button and its properties
-        final JCheckBox singleStep = new JCheckBox("Single Step");
+        //Single Step button & its properties
+        singleStep = new JCheckBox("Single Step");
         singleStep.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 IRobotC.singleStep(singleStep.isSelected());
             }
         });
+        singleStep.setName("Single Step");
         rcpConstraints.gridx = GridBagConstraints.REMAINDER;
         rcpConstraints.gridy = 6;
         robotControlPanel.add(singleStep,rcpConstraints);
@@ -241,7 +250,7 @@ public class InfoPanel extends JPanel {
     }
 
     /**
-     * Paints the
+     * Paints the  Points on the grid
      * @param g
      */
     @Override
@@ -249,12 +258,15 @@ public class InfoPanel extends JPanel {
         super.paintComponent(g);
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) {
-            points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
-        };
+        	points.add(new DecimalFormat("#.#").format(((Waypoint) o).x) + ", " + new DecimalFormat("#.#").format(((Waypoint) o).y));
+        }
         pointsList.setListData(points.toArray());
         pointsList.repaint();
     }
 
+    /**
+     * PointsListListener
+     */
     public class PointsListListener implements ListSelectionListener {
 
         @Override
@@ -267,6 +279,9 @@ public class InfoPanel extends JPanel {
 
     }
 
+    /**
+     * PointsMouseListener
+     */
     public class PointsMouseListener extends MouseAdapter {
 
         @Override
@@ -288,6 +303,9 @@ public class InfoPanel extends JPanel {
         }
     }
 
+    /**
+     * SaveListener
+     */
     public class SaveListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -299,6 +317,9 @@ public class InfoPanel extends JPanel {
         }
     }
 
+    /**
+     * LoadListener
+     */
     public class LoadListener implements ActionListener {
 
         @Override
@@ -307,6 +328,9 @@ public class InfoPanel extends JPanel {
         }
     }
 
+    /**
+     * ZoomListener
+     */
     public class ZoomListener implements ActionListener {
 
         @Override
@@ -320,6 +344,9 @@ public class InfoPanel extends JPanel {
 
     }
 
+    /**
+     * EnterListener
+     */
     public class EnterListener implements KeyListener {
         @Override
         public void keyPressed(KeyEvent arg0) {
@@ -333,8 +360,8 @@ public class InfoPanel extends JPanel {
         public void keyTyped(KeyEvent event) {
             if (event.getKeyChar() == '\n') {
                 try {
-                    int x = Integer.parseInt(xTextField.getText().toString());
-                    int y = Integer.parseInt(yTextField.getText().toString());
+                    float x = Float.parseFloat(xTextField.getText().toString());
+                    float y = Float.parseFloat(yTextField.getText().toString());
                     Waypoint p = JPlotController.getInstance().getHighlightedPoint();
                     if (p != null) {
                         p.x = x;
