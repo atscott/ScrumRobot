@@ -136,6 +136,7 @@ public class InfoPanel extends JPanel {
                 IRobotC.setReverse(false);
             }
         });
+        forward.setName("Forward");
         JToggleButton reverse = new JToggleButton("Reverse");
         reverse.addActionListener(new ActionListener() {
             @Override
@@ -143,6 +144,7 @@ public class InfoPanel extends JPanel {
                 IRobotC.setReverse(true);
             }
         });
+        reverse.setName("Reverse");
         bg.add(forward);
         bg.add(reverse);
         rcpConstraints.gridx = 0;
@@ -154,6 +156,7 @@ public class InfoPanel extends JPanel {
 
         //Go button and its properties
         JButton go = new JButton("Go");
+        go.setName("Go");
         go.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -167,6 +170,7 @@ public class InfoPanel extends JPanel {
 
         //Stop button and its properties
         JButton stop = new JButton("Stop");
+        stop.setName("Stop");
         stop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -179,6 +183,7 @@ public class InfoPanel extends JPanel {
 
         //Stop Immediate Button & its properties
         JButton stopNow = new JButton("Stop Now");
+        stopNow.setName("Stop Now");
         stopNow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -197,6 +202,7 @@ public class InfoPanel extends JPanel {
                 IRobotC.singleStep(singleStep.isSelected());
             }
         });
+        singleStep.setName("Single Step");
         rcpConstraints.gridx = GridBagConstraints.REMAINDER;
         rcpConstraints.gridy = 6;
         robotControlPanel.add(singleStep,rcpConstraints);
