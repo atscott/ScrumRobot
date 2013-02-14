@@ -17,10 +17,16 @@ public class ListTransferHandler extends TransferHandler {
 	private static final long serialVersionUID = 5054261398193798520L;
 	private JList list;
 	
+	
 	public ListTransferHandler(JList list) {
 		this.list = list;
 	}
 	
+	/**
+	 * Imports data flavors and returns a true or false if the flavor is flavored or not
+	 * 
+	 * @return Boolean
+	 */
 	public boolean canImport(TransferHandler.TransferSupport info) {
         // we only import Strings
         if (!info.isDataFlavorSupported(DataFlavor.stringFlavor)) {
@@ -34,6 +40,11 @@ public class ListTransferHandler extends TransferHandler {
         return true;
     }
 
+	/**
+	 * Imports data if the specific flavor is supported
+	 * 
+	 * @return Boolean
+	 */
     public boolean importData(TransferHandler.TransferSupport info) {
         if (!info.isDrop()) {
             return false;
@@ -90,10 +101,18 @@ public class ListTransferHandler extends TransferHandler {
         return true;
     }
     
+    /**
+     * Gets actions based on the JComponent c
+     */
     public int getSourceActions(JComponent c) {
         return MOVE;
     }
     
+    /**
+     * creates a transferable object
+     * 
+     * @return the Transferable object
+     */
     protected Transferable createTransferable(JComponent c) {
         JList list = (JList)c;
         Object[] values = list.getSelectedValues();
@@ -110,6 +129,10 @@ public class ListTransferHandler extends TransferHandler {
         return new StringSelection(buff.toString());
     }
     
+    /**
+     * Exports all the information based on source and data
+     * 
+     */
     @Override
     protected void exportDone(JComponent source, Transferable data, int action) {
     	if (action == TransferHandler.MOVE) {
