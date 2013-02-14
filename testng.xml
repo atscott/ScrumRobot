@@ -9,6 +9,8 @@
 			</run>
 		</groups>
 		<packages>
+		    <package name="edu.msoe.se2800.h4" />
+		    <package name="edu.msoe.se2800.h4.administrationFeatures" />
 			<package name="edu.msoe.se2800.h4.jplot" />
 			<package name="edu.msoe.se2800.h4.jplot.grid" />
 			<package name="edu.msoe.se2800.h4.jplot.plotPanel" />

@@ -7,6 +7,11 @@ import edu.msoe.se2800.h4.LejosModule;
 
 import javax.inject.Inject;
 
+/**
+ * Entry point of the program
+ * 
+ * @author marius, scotta, aultj
+ */
 public class Main implements Runnable {
 
     @Inject
@@ -29,7 +34,6 @@ public class Main implements Runnable {
         ObjectGraph objectGraph = ObjectGraph.create(new LejosModule());
         objectGraph.injectStatics();
         Main main = objectGraph.get(Main.class);
-        System.out.println("Hello");
         main.run();
     }
 
