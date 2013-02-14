@@ -15,164 +15,172 @@ import lejos.robotics.pathfinding.Path;
 
 /**
  * Provides the basic functions for controlling the lejos robot.
- * 
+ *
  * @author koenigj
- * 
  */
 public class RobotControllerLejos implements IRobotController, Runnable {
 
-	/**
-	 * The pilot class is set to 2 cm wheel diameter and 7 cm between the wheels
-	 */
-	private DifferentialPilot pilot;
-	/**
-	 * The Navigator is used to follow a path or by point.
-	 */
-	private static Navigator nav;
-	/**
-	 * The path to be followed by the robot.
-	 */
-	private static Path path;
+    /**
+     * The pilot class is set to 2 cm wheel diameter and 7 cm between the wheels
+     */
+    private DifferentialPilot pilot;
+    /**
+     * The Navigator is used to follow a path or by point.
+     */
+    private static Navigator nav;
+    /**
+     * The path to be followed by the robot.
+     */
+    private static Path path;
 
-	/**
-	 * The constructor instantiates the pilot and navigator. Single step is
-	 * false.
-	 */
-	public RobotControllerLejos() {
-		path = new Path();
-		pilot = new DifferentialPilot(2, 7.5, Motor.A, Motor.B);
-		nav = new Navigator(pilot);
-		nav.singleStep(false);
-	}
+    /**
+     * The constructor instantiates the pilot and navigator. Single step is
+     * false.
+     */
+    public RobotControllerLejos() {
+        path = new Path();
+        pilot = new DifferentialPilot(2, 7.5, Motor.A, Motor.B);
+        nav = new Navigator(pilot);
+        nav.singleStep(false);
+    }
 
-	/**
-	 * Set the path to be followed.
-	 */
-	@Override
-	public void setPath(Path path) {
-		this.path = path;
-		nav.setPath(path);
-		System.out.println("here");
-	}
+    /**
+     * Set the path to be followed.
+     */
+    @Override
+    public void setPath(Path path) {
+        this.path = path;
+        nav.setPath(path);
+        System.out.println("here");
+    }
 
-	/**
-	 * Follow the route
-	 */
-	@Override
-	public void followRoute() {
-		Thread t = new Thread(new Runnable(){
+    /**
+     * Follow the route
+     */
+    @Override
+    public void followRoute() {
+        Thread t = new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				forward();
-				reverse();
-				nav.waitForStop();
-				// This has to be reset since path is reset in navigator after the
-				// followPath is called
-				for (int i = 0; i < path.size(); i++) {
-					nav.addWaypoint(path.get(i));
-				}
+            @Override
+            public void run() {
+                forward();
+                reverse();
+                nav.waitForStop();
+                // This has to be reset since path is reset in navigator after the
+                // followPath is called
+                for (int i = 0; i < path.size(); i++) {
+                    nav.addWaypoint(path.get(i));
+                }
 
-			}
-			
-		});
-		t.start();
-	}
+            }
 
-	@Override
-	public void addWaypoint(Waypoint wp) {
-		nav.addWaypoint(wp);
-		path.add(wp);
-	}
+        });
+        t.start();
+    }
 
-	@Override
-	public Path getPath() {
-		return path;
-	}
+    @Override
+    public void addWaypoint(Waypoint wp) {
+        nav.addWaypoint(wp);
+        path.add(wp);
+    }
 
-	public static void forward() {
-		nav.followPath();
+    @Override
+    public Path getPath() {
+        return path;
+    }
 
-	}
+    public static void forward() {
+        nav.followPath();
 
-	public static void reverse() {
-		for (int i = path.size() - 2; i > -1; i--) {
-			nav.goTo(path.get(i));
+    }
 
-		}
-		nav.goTo(0, 0);
-	}
+    public static void reverse() {
+        for (int i = path.size() - 2; i > -1; i--) {
+            nav.goTo(path.get(i));
 
-	@Override
-	public void goToImmediate(Waypoint wp) {
-		if (path != null) {
-			path.clear();
-			nav.clearPath();
-		}
-		nav.goTo(wp);
-		nav.waitForStop();
-		path.clear();
-		nav.clearPath();
-	}
+        }
+        nav.goTo(0, 0);
+    }
 
-	@Override
-	public void singleStep(boolean setting) {
-		nav.singleStep(setting);
-	}
+    @Override
+    public void goToImmediate(Waypoint wp) {
+        if (path != null) {
+            path.clear();
+            nav.clearPath();
+        }
+        nav.addWaypoint(wp);
+        path.add(wp);
 
-	@Override
-	public Waypoint getLocation() {
-		PoseProvider provider = nav.getPoseProvider();
-		Pose pose = provider.getPose();
-		return (Waypoint) pose.getLocation();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                nav.followPath();
+                path.clear();
+                nav.clearPath();
+            }
+        });
 
-	}
+        t.start();
+    }
 
-	@Override
-	public void setVelocity(double speed) {
-		pilot.setTravelSpeed(speed);
-	}
+    @Override
+    public void singleStep(boolean setting) {
+        nav.singleStep(setting);
+    }
 
-	@Override
-	public boolean isMoving() {
-		return pilot.isMoving();
-	}
+    @Override
+    public Waypoint getLocation() {
+        PoseProvider provider = nav.getPoseProvider();
+        Pose pose = provider.getPose();
+        return (Waypoint) pose.getLocation();
 
-	@Override
-	public void setReverse(boolean isReverse) {
-		pilot = new DifferentialPilot(2, 7, Motor.A, Motor.B, isReverse);
-		nav = new Navigator(pilot);
-	}
+    }
 
-	@Override
-	public void stop() {
-		nav.singleStep(true);
+    @Override
+    public void setVelocity(double speed) {
+        pilot.setTravelSpeed(speed);
+    }
 
-	}
+    @Override
+    public boolean isMoving() {
+        return pilot.isMoving();
+    }
 
-	@Override
-	public void stopImmediate() {
-		nav.stop();
+    @Override
+    public void setReverse(boolean isReverse) {
+        pilot = new DifferentialPilot(2, 7, Motor.A, Motor.B, isReverse);
+        nav = new Navigator(pilot);
+    }
 
-	}
+    @Override
+    public void stop() {
+        nav.singleStep(true);
 
-	@Override
-	public double getVelocity() {
-		return pilot.getTravelSpeed();
-	}
+    }
 
-	@Override
-	public void run() {
-		forward();
-		reverse();
-		nav.waitForStop();
-		// This has to be reset since path is reset in navigator after the
-		// followPath is called
-		for (int i = 0; i < path.size(); i++) {
-			nav.addWaypoint(path.get(i));
-		}
-		System.out.println(nav.getPath().size());
-		System.out.println(path.size());
+    @Override
+    public void stopImmediate() {
+        nav.stop();
 
-	}
+    }
+
+    @Override
+    public double getVelocity() {
+        return pilot.getTravelSpeed();
+    }
+
+    @Override
+    public void run() {
+        forward();
+        reverse();
+        nav.waitForStop();
+        // This has to be reset since path is reset in navigator after the
+        // followPath is called
+        for (int i = 0; i < path.size(); i++) {
+            nav.addWaypoint(path.get(i));
+        }
+        System.out.println(nav.getPath().size());
+        System.out.println(path.size());
+
+    }
 }
