@@ -43,7 +43,7 @@ public class UserListUI extends JDialog {
     /**
      * JPlotController object
      */
-    private JPlotController plotController = new JPlotController();
+    private JPlotController plotController = JPlotController.getInstance();
     
     /**
      * Constructor that initializes all of the UI elements
