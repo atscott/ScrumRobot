@@ -1,14 +1,37 @@
 package edu.msoe.se2800.h4.jplot;
 
-import edu.msoe.se2800.h4.FileIO;
-import edu.msoe.se2800.h4.IRobotController;
-import lejos.robotics.navigation.Waypoint;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+
+import lejos.robotics.navigation.Waypoint;
+import edu.msoe.se2800.h4.FileIO;
+import edu.msoe.se2800.h4.IRobotController;
 
 public class InfoPanel extends JPanel {
 
@@ -22,6 +45,7 @@ public class InfoPanel extends JPanel {
     private JLabel numPoints;
     private SaveListener mSaveListener;
     private IRobotController IRobotC;
+    JCheckBox singleStep;
 
     /**
      * InfoPanel Contructor
@@ -65,9 +89,8 @@ public class InfoPanel extends JPanel {
         pointsList.setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, 150));
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) {
-            points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
+            points.add(new DecimalFormat("#.#").format(((Waypoint) o).x) + ", " + new DecimalFormat("#.#").format(((Waypoint) o).y));
         }
-        ;
         pointsList.setListData(points.toArray());
         pointsList.addMouseListener(new PointsMouseListener());
         pointsList.addListSelectionListener(new PointsListListener());
@@ -155,6 +178,7 @@ public class InfoPanel extends JPanel {
         go.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                IRobotC.singleStep(singleStep.isSelected());
                 IRobotC.followRoute();
             }
         });
@@ -187,7 +211,7 @@ public class InfoPanel extends JPanel {
         robotControlPanel.add(stopNow,rcpConstraints);
 
         //Single Step button and its properties
-        final JCheckBox singleStep = new JCheckBox("Single Step");
+        singleStep = new JCheckBox("Single Step");
         singleStep.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -249,8 +273,8 @@ public class InfoPanel extends JPanel {
         super.paintComponent(g);
         ArrayList<String> points = new ArrayList<String>();
         for (Object o : JPlotController.getInstance().getPath().toArray()) {
-            points.add(((Waypoint) o).x + ", " + ((Waypoint) o).y);
-        };
+        	points.add(new DecimalFormat("#.#").format(((Waypoint) o).x) + ", " + new DecimalFormat("#.#").format(((Waypoint) o).y));
+        }
         pointsList.setListData(points.toArray());
         pointsList.repaint();
     }
@@ -333,8 +357,8 @@ public class InfoPanel extends JPanel {
         public void keyTyped(KeyEvent event) {
             if (event.getKeyChar() == '\n') {
                 try {
-                    int x = Integer.parseInt(xTextField.getText().toString());
-                    int y = Integer.parseInt(yTextField.getText().toString());
+                    float x = Float.parseFloat(xTextField.getText().toString());
+                    float y = Float.parseFloat(yTextField.getText().toString());
                     Waypoint p = JPlotController.getInstance().getHighlightedPoint();
                     if (p != null) {
                         p.x = x;

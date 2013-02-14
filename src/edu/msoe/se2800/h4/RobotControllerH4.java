@@ -6,12 +6,13 @@ import lejos.robotics.pathfinding.Path;
 
 /**
  * Offline implementation of the RobotController. Does not interact with the robot.
- * 
+ *
  * @author scotta
  */
 public class RobotControllerH4 implements IRobotController {
 
     Path p = new Path();
+    private boolean stopRequested = false;
 
     @Override
     public void setPath(Path aPath) {
@@ -30,7 +31,21 @@ public class RobotControllerH4 implements IRobotController {
 
     @Override
     public void followRoute() {
-        // To change body of implemented methods use File | Settings | File Templates.
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (!stopRequested) {
+                    for (int i = 0; i < 1000000; i++) {
+                        System.out.println("going" + i);
+                    }
+                    this.run();
+                }
+            }
+
+        });
+
+        // start adding in another thread
+        t.start();
     }
 
     @Override
@@ -40,12 +55,12 @@ public class RobotControllerH4 implements IRobotController {
 
     @Override
     public void stop() {
-        // To change body of implemented methods use File | Settings | File Templates.
+        stopRequested = true;
     }
 
     @Override
     public void stopImmediate() {
-        // To change body of implemented methods use File | Settings | File Templates.
+        stopRequested = true;
     }
 
     @Override

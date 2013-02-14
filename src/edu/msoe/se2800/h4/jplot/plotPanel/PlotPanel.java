@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import javax.swing.JPanel;
@@ -129,36 +130,8 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         } else {
             g.setColor(Color.LIGHT_GRAY);
         }
-        g.drawString("" + coordinates.x + "," + coordinates.y, (int) location.x,
+        g.drawString("" + new DecimalFormat("#.#").format(coordinates.x) + "," + new DecimalFormat("#.#").format(coordinates.y), (int) location.x,
                 (int) location.y - 10);
-    }
-
-    /**
-     * This method is usually called if the SNAP_TO_GRID_CORNERS is set to true in the Constants
-     * file and it takes a given integer and returns the value corresponding to the closest value of
-     * a "corner" on the grid. It will be a multiple of STEP_INCREMENT in the constants file
-     * 
-     * @param num, the number to round
-     * @return the rounded number
-     */
-    public float round(float num) {
-        float newNum;
-
-        boolean keepStepping = true;
-        int highestStep = 0;
-        while (keepStepping) {
-            if (highestStep >= num) {
-                keepStepping = false;
-            } else {
-                highestStep += Constants.STEP_INCREMENT;
-            }
-        }
-        if ((highestStep - num) < (num - (highestStep - Constants.STEP_INCREMENT))) {
-            newNum = highestStep;
-        } else {
-            newNum = (highestStep - Constants.STEP_INCREMENT);
-        }
-        return newNum;
     }
 
     public void drawLine(Graphics g, Waypoint one, Waypoint two) {
@@ -178,44 +151,14 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
      * @param p
      * @return
      */
-    /*public Waypoint translateToLocation(Waypoint p) {
-
-        float x = p.x;
-        System.out.println("x(1-1) = "+x);
-        float y = p.y;
-        System.out.println("y(1-1) = "+y);
-
-        //this next calculation assigns x to the distance from the 0 point it should be
-        x = (float)Math.floor(0.5 + ((Constants.GRID_WIDTH() / JPlotController.getInstance()
-                .getGridDensity()) * (x / Constants.STEP_INCREMENT)));
-        System.out.println("x(1-2) = "+x);
-        x = ( Constants.GRID_OFFSET + ( JPlotController.getInstance().getGridDensity() / 2.0f * ( Constants.GRID_WIDTH() * 1.0f / ( JPlotController.getInstance().getGridDensity() * 1.0f ) ) ) ) + x;
-        System.out.println("x(1-3) = "+x);
-        //x = x - (Constants.POINT_RADIUS*2);
-        y = (float)Math.floor(0.5 + ((Constants.GRID_HEIGHT / JPlotController.getInstance()
-                .getGridDensity()) * (y / Constants.STEP_INCREMENT)));
-        System.out.println("y(1-2) = "+y);
-        y = (Constants.GRID_OFFSET+(JPlotController.getInstance().getGridDensity()/2*(Constants.GRID_HEIGHT/JPlotController.getInstance().getGridDensity()))) + y;
-        System.out.println("y(1-3) = "+y);
-        y = Constants.GRID_HEIGHT - Constants.GRID_OFFSET - y;
-        System.out.println("y(1-4) = "+y);
-        //y = y + (Constants.POINT_RADIUS*2);
-        //x += Constants.GRID_OFFSET;
-        System.out.println("final x(1-4) = "+x);
-        //y -= Constants.GRID_OFFSET;
-        System.out.println("final y(1-5) = "+y);
-
-        return new Waypoint(x, y);
-    }*/
     public Waypoint translateToLocation(Waypoint p) {
 
         float x = p.x;
-        x = Constants.Y_AXIS_WIDTH + Constants.GRID_WIDTH()/2 + ((x/Constants.STEP_INCREMENT) * (Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity()));
-        //x = (x - Constants.Y_AXIS_WIDTH - (Constants.GRID_WIDTH()/2))/Constants.STEP_INCREMENT;
+        x = (Constants.GRID_WIDTH()/2 + (x/Constants.STEP_INCREMENT * (Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity())));
         
         float y = p.y;
-        y = Constants.GRID_HEIGHT/2  - Constants.STATS_HEIGHT + (y*Constants.STEP_INCREMENT);
-
+        y = (Constants.GRID_HEIGHT/2 + ((y*(-1))/Constants.STEP_INCREMENT * (Constants.GRID_HEIGHT/JPlotController.getInstance().getGridDensity())) - (2*Constants.POINT_RADIUS));
+        
         return new Waypoint(x, y);
     }
 
@@ -225,43 +168,13 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
      * translate into the point (-30, 70) on the Grid.
      */
     @Override
-    /*public Waypoint translateToNearestPoint(Waypoint p) {
-
-        float x = p.x;
-        System.out.println("x(1) = "+x);
-        float y = p.y;
-        System.out.println("y(1) = "+y);
-
-        x -= Constants.GRID_OFFSET;
-        System.out.println("x(2) = "+x);
-        y += Constants.GRID_OFFSET;
-        System.out.println("y(2) = "+y);
-        y = Constants.GRID_HEIGHT - Constants.GRID_OFFSET - y;
-        System.out.println("y(3) = "+y);
-        x = (int) Math
-                .floor(0.5 + ((x * Constants.STEP_INCREMENT) / (Constants.GRID_WIDTH() / JPlotController
-                        .getInstance().getGridDensity())));
-        System.out.println("x(3) = "+x);
-        y = (int) Math
-                .floor(0.5 + ((y * Constants.STEP_INCREMENT) / (Constants.GRID_HEIGHT / JPlotController
-                        .getInstance().getGridDensity())));
-        System.out.println("y(4) = "+y);
-
-        x-=Constants.STEP_INCREMENT*JPlotController.getInstance().getGridDensity()/2;
-        y-=Constants.STEP_INCREMENT*JPlotController.getInstance().getGridDensity()/2;
-        
-        System.out.println("final x = "+x);
-        System.out.println("final y = "+y);
-        return new Waypoint(x, y);
-    }*/
     public Waypoint translateToNearestPoint(Waypoint p) {
 
         float x = p.x;
         float y = p.y;
         
-        x = (x - Constants.Y_AXIS_WIDTH - (Constants.GRID_WIDTH()/2))/(Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity());
-        y = (y - (Constants.GRID_HEIGHT/2))/Constants.STEP_INCREMENT;
-        //y = (Constants.GRID_HEIGHT/2 - y)/Constants.STEP_INCREMENT;
+        x = (x - (Constants.GRID_WIDTH()/2))/(Constants.GRID_WIDTH()/JPlotController.getInstance().getGridDensity()/Constants.STEP_INCREMENT);
+        y = (y - (Constants.GRID_HEIGHT/2))*(-1)/(Constants.GRID_HEIGHT/JPlotController.getInstance().getGridDensity()/Constants.STEP_INCREMENT);
         
         return new Waypoint(x, y);
     }
