@@ -32,7 +32,7 @@ public class InfoPanelGUITest extends FestSwingTestngTestCase {
     @Override
         protected void onSetUp() {
             JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
-                protected JPlot executeInEDT() {
+                public JPlot executeInEDT() {
                     return new JPlot(DatabaseConnection.UserTypes.ADMIN, new Grid());
                 }
             });
