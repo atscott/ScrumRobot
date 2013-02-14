@@ -25,12 +25,33 @@ public class UserListUI extends JDialog {
 	/** Generated serialVersionUID */
 	private static final long serialVersionUID = -6457636746676490029L;
 	
+	/**
+	 * UserListController object
+	 */
 	private UserListController controller;
 	
+	/**
+	 * JPanel for all of the content
+	 */
 	private JPanel contentPane;
+	
+	/**
+	 * JLists for the Observers, Programmers, and Administrators
+	 */
     private JList listObservers, listProgrammers, listAdministrators;
+    
+    /**
+     * JPlotController object
+     */
     private JPlotController plotController = new JPlotController();
     
+    /**
+     * Constructor that initializes all of the UI elements
+     * @param observers List<String>
+     * @param programmers List<String>
+     * @param administrators List<String>
+     * @param controller UserListController object
+     */
     public UserListUI(List<String> observers, List<String> programmers, List<String> administrators, UserListController controller) {
     	this.controller = controller;
     	//Create and set up the window.
@@ -140,18 +161,34 @@ public class UserListUI extends JDialog {
         setVisible(true);
     }
     
+    /**
+     * Gets the list of observers
+     * @return DefaultListModel of Observers
+     */
     public DefaultListModel getObserversListModel() {
     	return (DefaultListModel)listObservers.getModel();
     }
     
+    /**
+     * Gets the list of Programmers
+     * @return DefaultListModel of Programmers
+     */
     public DefaultListModel getProgrammersListModel() {
     	return (DefaultListModel)listProgrammers.getModel();
     }
     
+    /**
+     * Gets the list of Administrators
+     * @return DefaultListModel of Administrators
+     */
     public DefaultListModel getAdministratorsListModel() {
     	return (DefaultListModel)listAdministrators.getModel();
     }
 
+    /**
+     * Protected method that creates a vertical box pane
+     * @return JPanel 
+     */
     protected JPanel createVerticalBoxPanel() {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
@@ -159,6 +196,12 @@ public class UserListUI extends JDialog {
         return p;
     }
 
+    /**
+     * Creats a panel for the parameters comp and title
+     * @param comp JComponent
+     * @param title String
+     * @return JPanel
+     */
     public JPanel createPanelForComponent(JComponent comp, String title) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(comp, BorderLayout.CENTER);

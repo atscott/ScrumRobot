@@ -9,6 +9,9 @@ import javax.swing.JOptionPane;
 
 public class UserListController {
 	
+	/**
+	 * PasswordChangeUI object
+	 */
 	private PasswordChangeUI passChange;
 	
 	public UserListController() {
@@ -23,6 +26,12 @@ public class UserListController {
         }
     }
 
+	/**
+	 * Method that handles when the User List is closed
+	 * @param observerModel DefaultListModel
+	 * @param programmerModel DefaultListModel
+	 * @param administratorModel DefaultListModel
+	 */
 	public void onClose(DefaultListModel observerModel, DefaultListModel programmerModel, DefaultListModel administratorModel) {
 		boolean errors = false;
 		for (int i = 0; i < observerModel.size(); i++) {
@@ -64,10 +73,20 @@ public class UserListController {
 		}
 	}
 	
+	/**
+	 * Creates a change password UI
+	 * @param username String username
+	 */
 	public void showChangePassword(String username) {
 		passChange = new PasswordChangeUI(this, username);
 	}
 	
+	/**
+	 * Called when the SAVE buttons is click on the UI
+	 * @param username String username
+	 * @param password String password
+	 * @return Boolean
+	 */
 	public boolean onPasswordChangeSave(String username, String password) {
 		boolean success = false;
 		try {
