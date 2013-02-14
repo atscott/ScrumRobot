@@ -39,11 +39,8 @@ public class UserListUI extends JDialog {
 	 * JLists for the Observers, Programmers, and Administrators
 	 */
     private JList listObservers, listProgrammers, listAdministrators;
+
     
-    /**
-     * JPlotController object
-     */
-    private JPlotController plotController = new JPlotController();
     
     /**
      * Constructor that initializes all of the UI elements
