@@ -1,25 +1,41 @@
 package edu.msoe.se2800.h4.jplot;
 
+import dagger.Module;
+import dagger.ObjectGraph;
+import edu.msoe.se2800.h4.H4Module;
+import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
+import edu.msoe.se2800.h4.jplot.grid.Grid;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.testng.testcase.FestSwingTestngTestCase;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
-import edu.msoe.se2800.h4.jplot.grid.Grid;
 
 public class InfoPanelGUITest extends FestSwingTestngTestCase {
     
     private FrameFixture mWindow;
 
+    @Module(
+            entryPoints = InfoPanelGUITest.class,
+            //includes = RobotControllerH4.class
+            includes = H4Module.class
+    )
+    static class TestModule {
+    }
+
+    @BeforeClass
+    protected void setup() {
+        ObjectGraph.create(new TestModule()).inject(this);
+    }
+
     @Override
-    protected void onSetUp() {
-        JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
-            protected JPlot executeInEDT() {
-              return new JPlot(DatabaseConnection.UserTypes.ADMIN, new Grid());  
-            }
-        });
+        protected void onSetUp() {
+            JPlot frame = GuiActionRunner.execute(new GuiQuery<JPlot>() {
+                protected JPlot executeInEDT() {
+                    return new JPlot(DatabaseConnection.UserTypes.ADMIN, new Grid());
+                }
+            });
         // IMPORTANT: note the call to 'robot()'
         // we must use the Robot from FestSwingTestngTestCase
         mWindow = new FrameFixture(robot(), frame);
@@ -101,6 +117,8 @@ public class InfoPanelGUITest extends FestSwingTestngTestCase {
         mWindow.button("Stop Now").requireVisible().requireEnabled();
     }
 
-
-
+    @Test
+    public void singleStepShouldBeAvailable(){
+        mWindow.checkBox("Single Step").requireVisible().requireEnabled();
+    }
 }
