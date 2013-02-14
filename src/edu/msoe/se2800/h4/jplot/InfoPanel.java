@@ -1,37 +1,16 @@
 package edu.msoe.se2800.h4.jplot;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import lejos.robotics.navigation.Waypoint;
 import edu.msoe.se2800.h4.FileIO;
 import edu.msoe.se2800.h4.IRobotController;
+import lejos.robotics.navigation.Waypoint;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class InfoPanel extends JPanel {
 
@@ -48,7 +27,7 @@ public class InfoPanel extends JPanel {
     JCheckBox singleStep;
 
     /**
-     * InfoPanel Contructor
+     * InfoPanel Constructor
      */
     public InfoPanel() {
         setPreferredSize(new Dimension(Constants.INFO_PANEL_WIDTH, Constants.GRID_HEIGHT));
@@ -58,7 +37,7 @@ public class InfoPanel extends JPanel {
     }
 
     /**
-     * Initializes the Components to the main GUI Frame
+     * Initializes the Components to the side panel of the main GUI Frame
      */
     public void initSubviews() {
         //X,Y coordinate boxes & their properties
@@ -210,7 +189,7 @@ public class InfoPanel extends JPanel {
         rcpConstraints.gridy = 5;
         robotControlPanel.add(stopNow,rcpConstraints);
 
-        //Single Step button and its properties
+        //Single Step button & its properties
         singleStep = new JCheckBox("Single Step");
         singleStep.addActionListener(new ActionListener() {
             @Override
@@ -265,7 +244,7 @@ public class InfoPanel extends JPanel {
     }
 
     /**
-     * Paints the
+     * Paints the  Points on the grid
      * @param g
      */
     @Override
@@ -279,6 +258,9 @@ public class InfoPanel extends JPanel {
         pointsList.repaint();
     }
 
+    /**
+     * PointsListListener
+     */
     public class PointsListListener implements ListSelectionListener {
 
         @Override
@@ -291,6 +273,9 @@ public class InfoPanel extends JPanel {
 
     }
 
+    /**
+     * PointsMouseListener
+     */
     public class PointsMouseListener extends MouseAdapter {
 
         @Override
@@ -312,6 +297,9 @@ public class InfoPanel extends JPanel {
         }
     }
 
+    /**
+     * SaveListener
+     */
     public class SaveListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -323,6 +311,9 @@ public class InfoPanel extends JPanel {
         }
     }
 
+    /**
+     * LoadListener
+     */
     public class LoadListener implements ActionListener {
 
         @Override
@@ -331,6 +322,9 @@ public class InfoPanel extends JPanel {
         }
     }
 
+    /**
+     * ZoomListener
+     */
     public class ZoomListener implements ActionListener {
 
         @Override
@@ -344,6 +338,9 @@ public class InfoPanel extends JPanel {
 
     }
 
+    /**
+     * EnterListener
+     */
     public class EnterListener implements KeyListener {
         @Override
         public void keyPressed(KeyEvent arg0) {
