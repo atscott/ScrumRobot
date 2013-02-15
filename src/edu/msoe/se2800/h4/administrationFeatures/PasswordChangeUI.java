@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -110,9 +111,13 @@ public class PasswordChangeUI extends JDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equalsIgnoreCase("save")) {
-                if (controller.onPasswordChangeSave(username, txtPassword.getText())) {
-                	dispose();
-                }
+            	if (txtPassword.getText().toString().equals(txtPasswordRetype.getText().toString())) {
+	                if (controller.onPasswordChangeSave(username, txtPassword.getText())) {
+	                	dispose();
+	                }
+            	} else {
+            		JOptionPane.showMessageDialog(null, "Your passwords do not match");
+            	}
             } else if (e.getActionCommand().equalsIgnoreCase("cancel")) {
                 dispose();
             }
