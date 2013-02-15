@@ -87,10 +87,7 @@ public class RobotControllerLejos implements IRobotController {
 				}
 				nav.followPath();
 				nav.waitForStop();
-				System.out.println("nav size" + nav.getPath().size());
-				System.out.println("path size" + path.size());
 				if (nav.pathCompleted()) {
-					System.out.println("path completed");
 					// This has to be reset since path is reset in navigator
 					// after
 					// the
@@ -99,12 +96,15 @@ public class RobotControllerLejos implements IRobotController {
 						nav.addWaypoint(wp);
 					}
 				}
-
+				nav.rotateTo(0);
 			}
 
 		});
 		t.start();
 	}
+	
+
+	
 
 	@Override
 	public void addWaypoint(Waypoint wp) {
