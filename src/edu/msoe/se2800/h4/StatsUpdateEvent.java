@@ -10,11 +10,24 @@ public class StatsUpdateEvent {
     /**
      * How much battery is remaining as a percent
      */
-    public int milliVoltsPercent;
+    private int mMilliVoltsPercent;
     
     /**
      * Velocity of the robot in meters per second
      */
-    public double velocity;
+    private double mVelocity;
+    
+    public StatsUpdateEvent(int milliVoltsPercent, double velocity) {
+        mMilliVoltsPercent = milliVoltsPercent;
+        mVelocity = velocity;
+    }
+
+    public int getmilliVoltsPercent() {
+        return mMilliVoltsPercent;
+    }
+
+    public double getVelocity() {
+        return mVelocity;
+    }
 
 }

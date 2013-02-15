@@ -19,7 +19,7 @@ import javax.inject.Inject;
 public class StatsTimerDaemon {
 
     private static final double sMetersPerInch = .0254;
-    private static final int sMaxBattery = 12000;
+    private static final float sMaxBattery = 12000;
 
     @Inject
     static IBattery sBattery;
@@ -33,27 +33,24 @@ public class StatsTimerDaemon {
      */
     public static void start() {
 
-        // Start the timer as a deamon to prevent it from keeping the system awake
+        // Start the timer as a daemon to prevent it from keeping the system awake
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
-                StatsUpdateEvent event = new StatsUpdateEvent();
 
                 // The battery sometimes reports higher voltages than it is rated for. Standardize
                 // to a maximum value.
-                int milliVolts = Math.min(sMaxBattery, sBattery.getVoltageMilliVolt());
+                float milliVolts = Math.min(sMaxBattery, sBattery.getVoltageMilliVolt());
 
                 // Convert the battery amount to a percentage
-                event.milliVoltsPercent = (milliVolts / sMaxBattery) * 100;
-                System.out.println((milliVolts / sMaxBattery) * 100);
-                System.out.println(event.milliVoltsPercent);
+                int percent = Math.round((milliVolts / sMaxBattery) * 100);
 
                 // Calculate the velocity in meters per second
                 double velocity = sRobotController.getVelocity();
                 velocity = velocity * sMetersPerInch / 60;
-                event.velocity = velocity;
+                StatsUpdateEvent event = new StatsUpdateEvent(percent, velocity);
                 JPlotController.getInstance().getEventBus().post(event);
             }
 

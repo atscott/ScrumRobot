@@ -7,7 +7,7 @@ public class BatteryH4 implements IBattery {
     @Override
     public int getVoltageMilliVolt() {
         Random random = new Random();
-        return random.nextInt();
+        return random.nextInt(11999) + 1;
     }
     
     
