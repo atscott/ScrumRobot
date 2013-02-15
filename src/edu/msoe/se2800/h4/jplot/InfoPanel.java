@@ -235,9 +235,11 @@ public class InfoPanel extends JPanel {
         for (Component c : this.getComponents()) {
             if(c instanceof JPanel){
                 for(Component d: ((JPanel) c).getComponents()){
-                    if(!d.getName().equals("\"Stop Now\""))
+          
                         d.setEnabled(false);
-
+                        if(d.getName() != null && d.getName().equals("Stop Now")){
+                        	d.setEnabled(true);
+                        }
                 }
             }
             c.setEnabled(false);
