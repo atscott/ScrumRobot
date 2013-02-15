@@ -119,6 +119,7 @@ public class JPlotController {
             robotController.addWaypoint(point);
 
         }else{
+        	robotController.addWaypoint(point);
             robotController.goToImmediate(point);
         }
         if (jplot != null) {
@@ -185,12 +186,7 @@ public class JPlotController {
     }
 
     public void listUsers() {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            @SuppressWarnings("unused")
-            public void run() {
-                new UserListController();
-            }
-        });
+        new UserListController();
     }
 
 

@@ -234,8 +234,11 @@ public class InfoPanel extends JPanel {
     public void disableSubviews() {
         for (Component c : this.getComponents()) {
             if(c instanceof JPanel){
-                for(Component d: ((JPanel) c).getComponents())
-                    d.setEnabled(false);
+                for(Component d: ((JPanel) c).getComponents()){
+                    if(!d.getName().equals("\"Stop Now\""))
+                        d.setEnabled(false);
+
+                }
             }
             c.setEnabled(false);
         }
