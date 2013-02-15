@@ -231,7 +231,6 @@ public class UserListUI extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				System.out.println("You pushed the delete button mr mother fucker on the name "+list.getModel().getElementAt(list.getSelectedIndex()));
 				int index = list.getSelectedIndex();
 				boolean success = controller.deleteUser(list.getModel().getElementAt(index).toString());
 				if (success) {
