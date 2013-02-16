@@ -8,10 +8,10 @@ import javax.inject.Inject;
 public class TestSetup {
     
     @Inject
-    private JPlotController mJPlotController;
+    public JPlotController mJPlotController;
 
     @Inject
-    private IRobotController mRobotController;
+    public IRobotController mRobotController;
     
     public static void run() {
         
