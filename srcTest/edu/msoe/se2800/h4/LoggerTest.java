@@ -14,17 +14,26 @@ import java.util.Date;
 import java.util.Scanner;
 
 /**
- * Created with IntelliJ IDEA. User: tohtzk Date: 1/15/13 Time: 10:19 AM To change this template use
+ * Testing the logger Class
+ * @author tohtzk
+ * Date: 1/15/13
+ * Time: 10:19 AM To change this template use
  * File | Settings | File Templates.
  */
 public class LoggerTest {
     private Logger logs;
 
+    /**
+     * Gets the instance of the logger before every test
+     */
     @BeforeClass
     public void setupLogger() {
         logs = Logger.INSTANCE;
     }
 
+    /**
+     * Deletes the file before each test
+     */
     @BeforeMethod
     public void setupTestEnv() {
         File f = new File(Logger.FILE_NAME);
@@ -58,12 +67,8 @@ public class LoggerTest {
         Assert.assertEquals(s, date + " | " + "LoggerTest | " + "testingprint");
     }
 
-    // TODO write the tests for the stub method in the logger class. It's documented so you should
-    // be able to write the tests for it without knowing the implementation.
-    // TODO i updated the log method javadoc so make sure all that functionality is tested.
-    // TODO test tread safety of Logger
     /**
-     * Testiing for log method
+     * Testing Log method for normal workflow.
      */
     @Test(description = "This is testing using the log method normally as intended")
     public void normalLogTest() throws FileNotFoundException {

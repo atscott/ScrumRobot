@@ -12,6 +12,12 @@ import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+/**
+ * Provides robot and view control to the GUI
+ * @author Kevin Tohtz, Josh Ault
+ * Date: 1/15/13
+ * Time: 10:19 AM
+ */
 public class InfoPanel extends JPanel {
 
     /**
