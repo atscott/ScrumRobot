@@ -8,6 +8,8 @@ import java.io.IOException;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
+/** User: scottat, suckowm
+  * This provides the interface for users to log in.  */
 public class LoginUI extends JDialog {
 
     /**
