@@ -2,8 +2,8 @@
 package edu.msoe.se2800.h4.jplot;
 
 import dagger.ObjectGraph;
-import edu.msoe.se2800.h4.H4Module;
 import edu.msoe.se2800.h4.IRobotController;
+import edu.msoe.se2800.h4.LejosModule;
 
 import javax.inject.Inject;
 
@@ -31,7 +31,7 @@ public class Main implements Runnable {
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", ".Scrumbot");
 
         // Setup dependency injection
-        ObjectGraph objectGraph = ObjectGraph.create(new H4Module());
+        ObjectGraph objectGraph = ObjectGraph.create(new LejosModule());
         objectGraph.injectStatics();
         Main main = objectGraph.get(Main.class);
         main.run();
