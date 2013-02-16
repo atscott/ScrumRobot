@@ -210,21 +210,27 @@ public class JPlotController {
     public void start(IRobotController rc) {
         checkNotNull(rc);
 
+
         this.robotController = rc;
+        //create a dummy frame so the dialog shows up in the taskbar
         JFrame dummyFrame = new JFrame();
         dummyFrame.setUndecorated(true);
         dummyFrame.setVisible(true);
         login = new LoginUI(dummyFrame);
         dummyFrame.dispose();
+        //if the login was successful, start the program. otherwise a cancel occured and exit the program
         if (login.wasLoginSuccessful()) {
+            //log the login to the logger
             Logger.INSTANCE.log(this.getClass().getSimpleName(),
                     "Logged in as: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
+            //set the current user
             this.currentUser = DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser();
+            //initialize
             this.init();
             try {
+                //change the access mode to the mode of the user
                 this.changeMode(DatabaseConnection.getInstance().getUserRole(login.getUsername()));
                 username = login.getUsername();
-                System.out.println(username);
             } catch (IOException e) {
                 System.out.println("Unable to retrieve user role and set grid mode");
             }
@@ -242,8 +248,10 @@ public class JPlotController {
             throw new NullPointerException("Tried to log out when jplot was null");
         }
 
+        //if the robot is moving, don't allow a log out
         if (!this.robotController.isMoving()) {
             try {
+                //observers can't save so don't show the prompt if the current user is an observer
                 if (DatabaseConnection.getInstance().getUserRole(this.currentUser) != DatabaseConnection.UserTypes.OBSERVER) {
                     if (FileIO.getCurrentPathFile() != null || !JPlotController.this.getPath().isEmpty()) {
                         int result = JOptionPane
@@ -257,8 +265,10 @@ public class JPlotController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //close the frame
             this.jplot.getFrame().dispose();
             //this.currentUser = "";
+            //log the logout to the logger
             Logger.INSTANCE.log(this.getClass().getSimpleName(),
                     "Logged out of: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
 
