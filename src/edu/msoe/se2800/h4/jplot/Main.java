@@ -16,10 +16,10 @@ import javax.inject.Inject;
 public class Main implements Runnable {
 
     @Inject
-    private JPlotController mJPlotController;
+    public JPlotController mJPlotController;
 
     @Inject
-    private IRobotController mRobotController;
+    public IRobotController mRobotController;
 
     @Override
     public void run() {
