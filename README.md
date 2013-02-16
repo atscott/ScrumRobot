@@ -2,6 +2,7 @@ ScrumRobot
 ==========
 
 [![Build Status](https://secure.travis-ci.org/atscott/ScrumRobot.png?branch=master)](http://travis-ci.org/atscott/ScrumRobot)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/atscott/ScrumRobot)
 
 Scrum class at Milwaukee School of Engineering to produce a robot based on Lego NXT that is able to monitor a hallway, has user access control and provide easy programming interfaces.
 
