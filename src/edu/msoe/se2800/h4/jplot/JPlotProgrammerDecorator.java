@@ -1,3 +1,8 @@
+/**
+ * @author aultj
+ * 
+ * Concrete decorator that adds menu items for switching between immediate mode and normal mode
+ */
 package edu.msoe.se2800.h4.jplot;
 
 import java.awt.event.ActionEvent;
@@ -7,7 +12,6 @@ import java.io.IOException;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import edu.msoe.se2800.h4.Logger;
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 
 public class JPlotProgrammerDecorator extends JPlotDecorator {
@@ -16,6 +20,9 @@ public class JPlotProgrammerDecorator extends JPlotDecorator {
 		super(jplot);
 	}
 
+	/**
+	 * Creates and adds menu items to the JMenuBar
+	 */
 	@Override
 	public void initSubviews() {
 		jplot.initSubviews();
@@ -40,15 +47,16 @@ public class JPlotProgrammerDecorator extends JPlotDecorator {
         getFrame().getJMenuBar().add(jMenuMode);
 	}
 	
+	/**
+	 * This class handles user clicking to change to immediate mode and back
+	 */
 	public class MenuActionListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equalsIgnoreCase("immediate")) {
-                System.out.println("you chose immediate mode");
                 JPlotController.getInstance().changeMode(DatabaseConnection.UserTypes.OTHER);
             } else if (e.getActionCommand().equalsIgnoreCase("administrator")) {
-                System.out.println("you chose administrator mode");
                 try {
 					JPlotController.getInstance().changeMode(DatabaseConnection.getInstance().getUserRole(DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser()));
 				} catch (IOException e1) {

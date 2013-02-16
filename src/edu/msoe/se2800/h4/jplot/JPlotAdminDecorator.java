@@ -1,3 +1,8 @@
+/**
+ * @author aultj
+ * 
+ * This concrete decorator adds menu items to list and create users for when an Administrator is logged in.
+ */
 package edu.msoe.se2800.h4.jplot;
 
 import java.awt.event.ActionEvent;
@@ -14,6 +19,9 @@ public class JPlotAdminDecorator extends JPlotDecorator {
 		super(jplot);
 	}
 
+	/**
+	 * Creates and adds the two new menus for administrators to create and list users
+	 */
 	@Override
 	public void initSubviews() {
 		jplot.initSubviews();
@@ -38,6 +46,9 @@ public class JPlotAdminDecorator extends JPlotDecorator {
 		getFrame().getJMenuBar().add(jMenuAdmin);
 	}
 	
+	/**
+	 * Handles user clicks on the menu items to show the GUI to list/create a user
+	 */
 	public class MenuActionListener implements ActionListener {
 
         @Override
@@ -45,9 +56,6 @@ public class JPlotAdminDecorator extends JPlotDecorator {
             if (e.getActionCommand().equals("create_user")) {
                 CreateUserUI createUserUI = new CreateUserUI(JPlotController.getInstance());
                 createUserUI.setVisible(true);
-            	//TODO @andrew get the username, password, and role from the gui
-            	//TODO @andrew pass them to the controller JPlotController.getInstance().createUser(user, pass, role);
-            	//TODO also you need to change the createUser method in JPlotController to accept the parameters
             } else if (e.getActionCommand().equals("list_user")) {
                 JPlotController.getInstance().listUsers();
             }

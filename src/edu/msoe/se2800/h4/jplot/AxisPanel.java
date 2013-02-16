@@ -1,3 +1,9 @@
+/**
+ * @author Josh Ault
+ * 
+ * This class is used for drawing the labels on the x and y axis' displaying the number of each grid line
+ */
+
 package edu.msoe.se2800.h4.jplot;
 
 import java.awt.Color;
@@ -15,6 +21,10 @@ public class AxisPanel extends JPanel {
 
     private int ORIENTATION = Constants.HORIZONTAL; //default orientation is set to horizontal (x axis)
 
+    /**
+     * You must pass in an orientation of which kind of axis should be drawn, a vertical or horizontal one.
+     * @param orientation
+     */
     public AxisPanel(int orientation) {
         if (orientation == Constants.HORIZONTAL) {
             ORIENTATION = Constants.HORIZONTAL;
@@ -28,10 +38,12 @@ public class AxisPanel extends JPanel {
         setVisible(true);
     }
 
+    /**
+     * Sets the size of the x and y panels
+     */
     private void initHorizontal() {
         setPreferredSize(new Dimension(Constants.GRID_WIDTH(), Constants.X_AXIS_HEIGHT));
     }
-
     private void initVertical() {
         setPreferredSize(new Dimension(Constants.Y_AXIS_WIDTH, Constants.GRID_HEIGHT));
     }

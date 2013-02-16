@@ -1,3 +1,9 @@
+/**
+ * @author aultj
+ * 
+ * This abstract decorator holds the wrapped component that all the concrete decorators for the PlotPanel use.
+ * 
+ */
 package edu.msoe.se2800.h4.jplot.plotPanel;
 
 import java.awt.Component;
@@ -13,11 +19,20 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 	
 	protected PlotPanelInterface plotPanel;
 	
+	/**
+	 * sets the wrapped component and adds a mouse listener
+	 * @param plotPanel
+	 */
 	public PlotPanelDecorator(PlotPanelInterface plotPanel) {
 		this.plotPanel = plotPanel;
 		getComponent().addMouseMotionListener(new PlotMouseMotionListener());
 	}
 	
+	/**
+	 * This MouseMotionListener will is responsible for telling the JPlotController which point is being
+	 * hovered above so that it can delegate drawing the coordinates above this point in a different
+	 * color.
+	 */
 	private class PlotMouseMotionListener implements MouseMotionListener {
 		@Override
 		public void mouseDragged(MouseEvent event) {
@@ -41,6 +56,9 @@ public abstract class PlotPanelDecorator implements PlotPanelInterface {
 		}
 	}
 	
+	/**
+	 * Getters and setters
+	 */
 	@Override
 	public Component getComponent() {
 		return plotPanel.getComponent();

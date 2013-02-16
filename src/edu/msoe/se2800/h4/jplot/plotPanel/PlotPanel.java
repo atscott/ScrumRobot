@@ -1,4 +1,11 @@
 
+/**
+ * @author aultj
+ * 
+ * This class is the actual grid in the middle of the screen with the black background.  This is what the 
+ * grid lines are drawn on and this class is in charge of drawing all of the points on the grid and translating
+ * their grid relative coordinates to screen relative coordinates.
+ */
 package edu.msoe.se2800.h4.jplot.plotPanel;
 
 import java.awt.Color;
@@ -207,6 +214,9 @@ public class PlotPanel extends JPanel implements PlotPanelInterface {
         }
     }
 
+    /**
+     * the  Zoom listener
+     */
     private class PlotMouseWheelListener implements MouseWheelListener {
 
         @Override

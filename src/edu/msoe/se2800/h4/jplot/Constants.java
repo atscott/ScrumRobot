@@ -1,3 +1,8 @@
+/**
+ * @author Josh Ault
+ * 
+ * Contains nearly all constants or final values used throughout the program. No actual logic methods are in here
+ */
 package edu.msoe.se2800.h4.jplot;
 
 import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
@@ -5,7 +10,7 @@ import edu.msoe.se2800.h4.administrationFeatures.DatabaseConnection;
 public class Constants {
 
     /** These are dynamic values.  If anything in this class depends on these values, a getter
-	 * should be implemented for thos values.
+	 * should be implemented for those values.
 	 */
 	public static DatabaseConnection.UserTypes CURRENT_MODE = DatabaseConnection.UserTypes.OBSERVER;
 	public static int INFO_PANEL_WIDTH = 0;//WINDOW_WIDTH-GRID_WIDTH-Y_AXIS_WIDTH;

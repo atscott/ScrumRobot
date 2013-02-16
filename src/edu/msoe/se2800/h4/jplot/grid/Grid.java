@@ -1,3 +1,9 @@
+/**
+ * @author aultj
+ * 
+ * This class is the main JPanel that is shown on the screen that contains all the other panels such as the Grid,
+ * the InfoPanel and the x and y AxisPanels. 
+ */
 package edu.msoe.se2800.h4.jplot.grid;
 
 import java.awt.BorderLayout;

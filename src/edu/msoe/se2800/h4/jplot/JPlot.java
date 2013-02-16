@@ -1,3 +1,9 @@
+/**
+ * @author aultj
+ * 
+ * This class is the overall JFrame that contains all other parts of the program such as the Grid,
+ * Info Panel, Axis Panels, etc.
+ */
 package edu.msoe.se2800.h4.jplot;
 
 import java.awt.Dimension;
@@ -24,6 +30,11 @@ public class JPlot extends JFrame implements JPlotInterface {
     
     private JMenuBar jMenuBar;
 
+    /**
+     * Initializes all sub components based on what mode we are in
+     * @param mode one of OBSERVER, PROGRAMMER, ADMINISTRATOR, or OTHER
+     * @param grid
+     */
     public JPlot(DatabaseConnection.UserTypes mode, GridInterface grid) {
     	setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     	setResizable(false);
@@ -34,7 +45,7 @@ public class JPlot extends JFrame implements JPlotInterface {
             Constants.INFO_PANEL_WIDTH = 150;
             if (mode == DatabaseConnection.UserTypes.ADMIN || mode == DatabaseConnection.UserTypes.PROGRAMMER) {
                 grid = new AdminGridDecorator(grid);
-            } else if (mode == DatabaseConnection.UserTypes.OTHER) {//TODO used to be immediate
+            } else if (mode == DatabaseConnection.UserTypes.OTHER) {
                 grid = new ImmediateGridDecorator(grid);
             }
         }
@@ -68,6 +79,11 @@ public class JPlot extends JFrame implements JPlotInterface {
         return this;
     }
 
+    /**
+     * The class to handle clicking the logging out menu item
+     * @author aultj
+     *
+     */
     public class MenuActionListener implements ActionListener {
 
         @Override
