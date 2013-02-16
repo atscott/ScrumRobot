@@ -15,8 +15,13 @@ import lejos.robotics.pathfinding.Path;
  * 
  */
 public class RobotControllerLejos implements IRobotController {
-
+	/**
+	 * A copy of the forward path.
+	 */
 	private Path forward = new Path();
+	/**
+	 * Used for singleStep. Checks to see if singleStep is called by stop or the singleStep method.
+	 */
 	private boolean check = false;
 	/**
 	 * The pilot class is set to 5.6 cm wheel diameter and 16.8 cm between the wheels
