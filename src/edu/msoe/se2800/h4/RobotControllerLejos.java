@@ -1,11 +1,6 @@
 package edu.msoe.se2800.h4;
 
-import java.awt.Point;
-
-import javax.swing.SwingUtilities;
-
 import lejos.nxt.Motor;
-import lejos.nxt.remote.RemoteMotor;
 import lejos.robotics.localization.PoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Navigator;
