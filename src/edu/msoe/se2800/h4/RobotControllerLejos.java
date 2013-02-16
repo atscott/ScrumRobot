@@ -24,7 +24,7 @@ public class RobotControllerLejos implements IRobotController {
 	private Path forward = new Path();
 	private boolean check = false;
 	/**
-	 * The pilot class is set to 2 cm wheel diameter and 7 cm between the wheels
+	 * The pilot class is set to 5.6 cm wheel diameter and 16.8 cm between the wheels
 	 */
 	private DifferentialPilot pilot;
 	/**
@@ -42,7 +42,7 @@ public class RobotControllerLejos implements IRobotController {
 	 */
 	public RobotControllerLejos() {
 		path = new Path();
-		pilot = new DifferentialPilot(2, 7.5, Motor.A, Motor.B);
+		pilot = new DifferentialPilot(5.6, 18, Motor.A, Motor.B);
 		nav = new Navigator(pilot);
 		nav.singleStep(false);
 	}
@@ -54,6 +54,7 @@ public class RobotControllerLejos implements IRobotController {
 	public void setPath(Path path) {
 		forward.clear();
 		this.path.clear();
+		nav.clearPath();
 		for (int i = 0; i < path.size(); i++) {
 			forward.add(new Waypoint(path.get(i)));
 			this.path.add(new Waypoint(path.get(i)));
@@ -86,10 +87,7 @@ public class RobotControllerLejos implements IRobotController {
 				}
 				nav.followPath();
 				nav.waitForStop();
-				System.out.println("nav size" + nav.getPath().size());
-				System.out.println("path size" + path.size());
 				if (nav.pathCompleted()) {
-					System.out.println("path completed");
 					// This has to be reset since path is reset in navigator
 					// after
 					// the
@@ -98,12 +96,15 @@ public class RobotControllerLejos implements IRobotController {
 						nav.addWaypoint(wp);
 					}
 				}
-
+				nav.rotateTo(0);
 			}
 
 		});
 		t.start();
 	}
+	
+
+	
 
 	@Override
 	public void addWaypoint(Waypoint wp) {
