@@ -46,18 +46,18 @@ uploadArchives {
 sourceSets {
 	main {
 		java {
-			srcDir 'src'
+			srcDir 'app/src'
 		}
 		resources {
-			srcDir 'resources'
+			srcDir 'app/resources'
 		}
 	}
 	test {
 		java {
-			srcDir 'srcTest'
+			srcDir 'app/srcTest'
 		}
 		resources {
-			srcDir 'resourcesTest'
+			srcDir 'app/resourcesTest'
 		}
 	}
 }
