@@ -100,7 +100,9 @@ public class RobotControllerLejos implements IRobotController {
 	
 
 	
-
+	/**
+	 * Adds a waypoint to the current path
+	 */
 	@Override
 	public void addWaypoint(Waypoint wp) {
 		forward.add(wp);
@@ -110,12 +112,17 @@ public class RobotControllerLejos implements IRobotController {
 		}
 		this.setPath(temp);
 	}
-
+	/**
+	 * Returns the current path
+	 * @return Path, the current path
+	 */
 	@Override
 	public Path getPath() {
 		return forward;
 	}
-
+	/**
+	 * The method used for immediate mode. Robot goes to the point.
+	 */
 	@Override
 	public void goToImmediate(Waypoint wp) {
 		if (path != null) {
@@ -137,13 +144,18 @@ public class RobotControllerLejos implements IRobotController {
 
 		t.start();
 	}
-
+	/**
+	 * Sets the robot to single step mode.
+	 */
 	@Override
 	public void singleStep(boolean setting) {
 		check = setting;
 		nav.singleStep(setting);
 	}
-
+	/**
+	 * Returns a waypoint of the current location.
+	 * @return Waypoint, current location
+	 */
 	@Override
 	public Waypoint getLocation() {
 		PoseProvider provider = nav.getPoseProvider();
@@ -151,35 +163,50 @@ public class RobotControllerLejos implements IRobotController {
 		return (Waypoint) pose.getLocation();
 
 	}
-
+	/**
+	 * Set the velocity of the robot. Wheel diameter units per second 
+	 */
 	@Override
 	public void setVelocity(double speed) {
 		pilot.setTravelSpeed(speed);
 	}
-
+	/**
+	 * Returns a boolean based on the robot moving.
+	 * @return boolean, True if robot is moving
+	 */
 	@Override
 	public boolean isMoving() {
 		return pilot.isMoving();
 	}
-
+	/**
+	 * Sets the robot in reverse mode.
+	 * 
+	 */
 	@Override
 	public void setReverse(boolean isReverse) {
 		pilot = new DifferentialPilot(2, 7, Motor.A, Motor.B, isReverse);
 		nav = new Navigator(pilot);
 	}
-
+	/**
+	 * Stops the robot when it hits the next waypoint.
+	 */
 	@Override
 	public void stop() {
 		nav.singleStep(true);
 
 	}
-
+	/**
+	 * Stops the robot right away.
+	 */
 	@Override
 	public void stopImmediate() {
 		nav.stop();
         Logger.INSTANCE.log(this.getClass().getSimpleName(), "Emergency stopped");
 	}
-
+	/**
+	 * Returns the velocity of the robot.
+	 * @return double, the velocity of the robot in wheel diameter units per second
+	 */
 	@Override
 	public double getVelocity() {
 		return pilot.getTravelSpeed();
