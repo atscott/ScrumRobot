@@ -257,16 +257,17 @@ public class JPlotController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            this.jplot.getFrame().dispose();
+            //this.currentUser = "";
+            Logger.INSTANCE.log(this.getClass().getSimpleName(),
+                    "Logged out of: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
 
         } else {
             JOptionPane.showMessageDialog(null, "Robot is running. Cannot log out.");
         }
 
 
-        this.jplot.getFrame().dispose();
-        //this.currentUser = "";
-        Logger.INSTANCE.log(this.getClass().getSimpleName(),
-                "Logged out of: " + DatabaseConnection.getInstance().getLastSuccessfullyValidatedUser());
+
     }
 
     public EventBus getEventBus() {
