@@ -24,24 +24,50 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * This is the main class that controls all other components of the program.  It is in charge of
+ * keeping the JPlot and Grid components, wrapping them in their respective decorators, changing the
+ * viewing mode of the program, and because it is a singleton , it provides methods to all of its sub components
+ * to add points, remove points, zoom in/out, and  control the creation and showing of new windows for 
+ * creating users and listing users.
+ * 
+ * @author aultj, suckowm, scotta, koenigj, tohtzk, volkhartm
+ *
+ */
 @Singleton
 public class JPlotController {
-
+	/** Singleton object **/
     private static JPlotController instance = null;
 
+    /** The density is the number of grid lines that should be shown horizontally and vertically on the screen **/
     private int gridDensity = Constants.DEFAULT_GRID_DENSITY;
 
+    /** JPlot and Grid components that make up the entire GUI **/
     private JPlotInterface jplot;
     private GridInterface grid;
+    
+    /** This is used in immediate mode to save all the previous points so they arent lost **/
     private List<Waypoint> oldList;
+    
+    /** The point that should be drawn orange during a redraw **/
     private Waypoint highlightedPoint;
     private boolean closingForModeChange = false;
+    
+    /** Events such as the battery or speed update events are posted to this bus **/
     private EventBus mEventBus;
+    
+    /** The interface that controls the robot movements **/
     protected IRobotController robotController;
+    
+    /** The current user username */
     private String currentUser = "";
+    
     LoginUI login;
-    private String username;
 
+    /**
+     * The singleton instance method
+     * @return the singleton
+     */
     public static JPlotController getInstance() {
         if (instance == null) {
             synchronized (JPlotController.class) {
@@ -58,6 +84,9 @@ public class JPlotController {
         instance = this;
     }
 
+    /**
+     * Initializes the grid and jplot as well as adding a window listener to logout instead of closing the program
+     */
     public void init() {
         grid = new Grid();
         jplot = new JPlot(DatabaseConnection.UserTypes.OBSERVER, grid);
@@ -70,6 +99,12 @@ public class JPlotController {
         return grid;
     }
 
+    /**
+     * This method changes the current running mode between Observer, Immediate, Programmer, or Administrator.
+     * This is called when a user logs in in order to initialize the Grid and JPlot and wrap them when needed. 
+     * If changing from immediate mode, the points from the old list are added back into the new list
+     * @param accessLevel
+     */
     public void changeMode(DatabaseConnection.UserTypes accessLevel) {
         DatabaseConnection.UserTypes mode = accessLevel;
         grid = new Grid();
@@ -107,13 +142,22 @@ public class JPlotController {
     public Path getPath() {
         return robotController.getPath();
     }
-
+    
+    /**
+     * Helper method that returns an array of waypoints instead of just the path itself
+     * @return
+     */
     public Waypoint[] getPathPoints() {
         Waypoint[] points = new Waypoint[robotController.getPath().size()];
         robotController.getPath().toArray(points);
         return points;
     }
-
+    
+    /**
+     * Adds a waypoint to the list as well as tell the robot to immediately go to that point if in 
+     * immediate mode
+     * @param point
+     */
     public void addPoint(Waypoint point) {
         if (Constants.CURRENT_MODE != DatabaseConnection.UserTypes.OTHER) {
             robotController.addWaypoint(point);
@@ -132,6 +176,10 @@ public class JPlotController {
         jplot.getFrame().repaint();
     }
 
+    /**
+     * Helper method removes all points from the current path and saves them in the old list to be added
+     * back in after immediate mode is over
+     */
     public void copyPoints() {
         oldList.clear();
         for (Waypoint j : robotController.getPath()) {
@@ -141,11 +189,17 @@ public class JPlotController {
         grid.redraw();
     }
 
+    /**
+     * decrements the grid density to show fewer grid lines giving a zoom in effect
+     */
     public void zoomIn() {
         setGridDensity(getGridDensity() - 1);
         grid.redraw();
     }
 
+    /**
+     * increments the grid density to show more grid lines giving a zoom out effect
+     */
     public void zoomOut() {
         setGridDensity(getGridDensity() + 1);
         grid.redraw();
@@ -155,6 +209,10 @@ public class JPlotController {
         return gridDensity;
     }
 
+    /**
+     * sets the grid density to the passed in value or a minimum of 1 and a maximum of 100
+     * @param density
+     */
     public void setGridDensity(int density) {
         if (density > 1) {
             gridDensity = Math.min(density, 100);
@@ -169,6 +227,11 @@ public class JPlotController {
         return this.highlightedPoint;
     }
 
+    /**
+     * helper method to set the highlighted point based upon the index in the array of points previously set
+     * in another method
+     * @param indexInPointsArray
+     */
     public void setHighlightedPoint(int indexInPointsArray) {
         if (indexInPointsArray == -5) {
             this.highlightedPoint = null;
@@ -177,6 +240,13 @@ public class JPlotController {
         }
     }
 
+    /**
+     * This method creates a user in the database with the given username, password,and role
+     * @param username
+     * @param password
+     * @param role, one of Programmer, Observer, or Administrator
+     * @return
+     */
     public ResultInfo createUser(String username, String password, DatabaseConnection.UserTypes role) {
         try {
             return DatabaseConnection.getInstance().addUser(username, password, role);
@@ -185,11 +255,18 @@ public class JPlotController {
         }
     }
 
+    /**
+     * Shows the GUI for listing all users, this is also where you change user roles / passwords
+     */
     public void listUsers() {
         new UserListController();
     }
 
-
+    /**
+     * Window listener to log out the current user instead of closing the program when a quit command is issued
+     * or if the user clicks on the close button.
+     *
+     */
     private class JPlotWindowListener extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
@@ -230,7 +307,6 @@ public class JPlotController {
             try {
                 //change the access mode to the mode of the user
                 this.changeMode(DatabaseConnection.getInstance().getUserRole(login.getUsername()));
-                username = login.getUsername();
             } catch (IOException e) {
                 System.out.println("Unable to retrieve user role and set grid mode");
             }
@@ -280,6 +356,10 @@ public class JPlotController {
 
     }
 
+    /**
+     * Get the event bus that is used for posting battery/speed updates
+     * @return
+     */
     public EventBus getEventBus() {
         if (mEventBus == null) {
             synchronized (this) {

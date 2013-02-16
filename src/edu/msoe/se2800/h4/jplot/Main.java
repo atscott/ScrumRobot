@@ -26,7 +26,8 @@ public class Main implements Runnable {
     }
 
     public static void main(String[] args) {
-
+    	/** used for apple computers to move the JMenuBar to the very top of the screen to provide a consistent
+    	 * experience with other programs **/
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", ".Scrumbot");
 

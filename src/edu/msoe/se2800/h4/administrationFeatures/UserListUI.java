@@ -21,6 +21,14 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
+/**
+ * @author aultj
+ *
+ * This class lists every user in the Database in one of three JList's.  One for programmers, one for 
+ * observers, and one for Administrators.  You can drag and drop between the three lists in order to change 
+ * that user's role.  All changes are saved when the UI is closed.  Double clicking a user's name will also
+ * display a window to change their password
+ */
 public class UserListUI extends JDialog {
 
 	/** Generated serialVersionUID */

@@ -7,6 +7,12 @@ import java.io.IOException;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
+/**
+ * @author aultj, scotta
+ *
+ * This controller handles all the Database connectivity needed by the UserListUI and the password List UI in order
+ * to follow the model view controller pattern.
+ */
 public class UserListController {
 	
 	public UserListController() {

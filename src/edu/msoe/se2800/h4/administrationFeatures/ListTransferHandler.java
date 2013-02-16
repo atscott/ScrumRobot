@@ -11,6 +11,14 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
+/**
+ * 
+ * @author aultj
+ *
+ * This class is the TransferHandler used in the UserListUI.java file.  It handles dragging and dropping between 
+ * three JList components by transferring the string value of the currently highlighted cell that is being
+ * draggeed across the screen
+ */
 public class ListTransferHandler extends TransferHandler {
 	
 	/** Generated serialVersionUID */
@@ -71,22 +79,6 @@ public class ListTransferHandler extends TransferHandler {
         } catch (Exception e) { 
         	return false;
         }
-        
-        /*// Display a dialog with the drop information.
-        String dropValue = "\"" + data + "\" dropped ";
-        if (dl.isInsert()) {
-            if (dl.getIndex() == 0) {
-                displayDropLocation(dropValue + "at beginning of list");
-            } else if (dl.getIndex() >= list.getModel().getSize()) {
-                displayDropLocation(dropValue + "at end of list");
-            } else {
-                String value1 = (String)list.getModel().getElementAt(dl.getIndex() - 1);
-                String value2 = (String)list.getModel().getElementAt(dl.getIndex());
-                displayDropLocation(dropValue + "between \"" + value1 + "\" and \"" + value2 + "\"");
-            }
-        } else {
-            displayDropLocation(dropValue + "on top of " + "\"" + value + "\"");
-        }*/
         
         /**  This is commented out for the basicdemo.html tutorial page.
          **  If you add this code snippet back and delete the

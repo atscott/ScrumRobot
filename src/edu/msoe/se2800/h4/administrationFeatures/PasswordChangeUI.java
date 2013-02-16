@@ -5,6 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * @author aultj, suckowm
+ *
+ * Shows all the needed components to change a users password
+ */
 public class PasswordChangeUI extends JDialog {
 
 	/** Generated serialVersionUID */

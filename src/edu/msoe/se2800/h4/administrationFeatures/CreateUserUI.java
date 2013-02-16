@@ -9,6 +9,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+/**
+ * 
+ * @author scotta
+ *
+ * This GUI shows the needed components to create a user 
+ */
 @SuppressWarnings("serial")
 public class CreateUserUI extends JDialog {
 
